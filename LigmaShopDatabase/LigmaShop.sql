@@ -47,6 +47,7 @@ create table CATEGORIES (
 go
 insert into CATEGORIES (CategoryName, Description)
 values 
+(N'Tất cả sản phẩm',N'Tất cả sản phẩm'),
 (N'Quần áo Nam', N'Tất cả quần và áo dành cho Nam'),
 (N'Quần áo Nữ', N'Tất cả quần và áo dành cho Nữ'),
 (N'Áo Nam', N'Tất cả áo dành cho Nam'),
@@ -129,7 +130,8 @@ SELECT p.ProductID, c.CategoryID
 FROM CATEGORIES c
 JOIN PRODUCTS p
 ON (   
-    (c.CategoryName = N'Áo Nam' AND p.ProductName LIKE N'Áo%Nam') 
+	   (c.CategoryName = N'Tất cả sản phẩm' AND (p.ProductName LIKE N'Áo%' OR p.ProductName LIKE N'Quần%' OR p.ProductName LIKE N'Đầm%'))
+    OR (c.CategoryName = N'Áo Nam' AND p.ProductName LIKE N'Áo%Nam') 
     OR (c.CategoryName = N'Áo Nữ' AND p.ProductName LIKE N'Áo%Nữ')
     OR (c.CategoryName = N'Quần Nam' AND p.ProductName LIKE N'Quần%Nam')
     OR (c.CategoryName = N'Quần Nữ' AND p.ProductName LIKE N'Quần%Nữ')
