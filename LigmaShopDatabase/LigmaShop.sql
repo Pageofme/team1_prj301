@@ -9,19 +9,20 @@ create table USERS (
     Password varchar(255) not null,
     PhoneNumber varchar(15),
     Address text,
-    Role varchar(50) check (Role in ('VIP','Thuong'))
+    Role varchar(10) check (Role in ('user','admin'))
 );
 go
+/*
 insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role)
 values 
-('Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', 'Hanoi', 'VIP'),
-('Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', 'HCM City', 'Thuong'),
-('Le Van C', 'levanc@example.com', 'password102', '0911223344', 'Da Nang', 'VIP'),
-('Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', 'Hue', 'Thuong'),
-('Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', 'Can Tho', 'Thuong'),
-('Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', 'Hai Phong', 'VIP'),
-('Vu Van G', 'vuvang@example.com', 'password106', '0945566778', 'Quang Ninh', 'Thuong');
-
+('Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', 'Hanoi', 'admin'),
+('Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', 'HCM City', 'admin'),
+('Le Van C', 'levanc@example.com', 'password102', '0911223344', 'Da Nang', 'user'),
+('Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', 'Hue', 'user'),
+('Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', 'Can Tho', 'user'),
+('Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', 'Hai Phong', 'user'),
+('Vu Van G', 'vuvang@example.com', 'password106', '0945566778', 'Quang Ninh', 'user');
+*/
 go
 create table COMPANY (
     CompanyID int primary key identity(1,1), -- ID duy nhất của công ty
