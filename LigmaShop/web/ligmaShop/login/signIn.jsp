@@ -35,6 +35,9 @@
                                         <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                     </div>
                                 </div>
+                                <div class="form-sub-w3">
+                                    <input type="checkbox" name="rememberMe" /> Remember Me
+                                </div>
                                 <p class="p-bottom-w3ls">Forgot Password?<a class href="#">  Click here</a></p>
                                 <p class="p-bottom-w3ls1">New User?<a class href="register.jsp">  Register here</a></p>
                                 <div class="clear"></div>
