@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,8 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="Clean Login Form Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-        <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
-
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/style.css">
         <link href="//fonts.googleapis.com/css?family=Sirin+Stencil" rel="stylesheet">
 
     </head>
@@ -26,6 +26,14 @@
                     <div class="main-agileits">
                         <div class="form-w3-agile">
                             <h2>Register Now</h2>
+                            
+                            <!-- error handle with user hit the cancel button or login google failed -->
+                            <c:if test="${not empty message}">
+                                <div class="alert alert-${messageType}">
+                                    <c:out value="${message}"/>
+                                </div>
+                            </c:if>
+                            
                             <form action="registersvt" method="post">
                                 <div class="form-sub-w3">
                                     <input type="text" name="fullname" placeholder="Full Name" required>
@@ -63,8 +71,13 @@
                                     <div class="clear"></div>
                                 </div>
                                 <div class="icons">
-                                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                                    <a href="#"><i class="fa-brands fa-google"></i></a>
+                                    <a>
+                                        <i class="fa-brands fa-facebook"></i>
+                                    </a>
+
+                                    <a  href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/LigmaShop/logingg&response_type=code&client_id=104499240705-951rk6sn3o4g8cbj0kmf8toc06i934ln.apps.googleusercontent.com&approval_prompt=force">
+                                        <i class="fa-brands fa-google"></i>
+                                    </a>
 
                                     <div class="clear"></div>
                                 </div>

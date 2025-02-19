@@ -369,6 +369,25 @@ i.fa-brands.fa-google{
     font-size: 1.4rem;
 }
 
+.alert {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
 
 /*--- Responsive Code ---*/
 @media screen and (max-width: 1920px) {
