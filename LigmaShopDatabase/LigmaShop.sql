@@ -12,7 +12,6 @@ create table USERS (
     Role varchar(10) check (Role in ('user','admin'))
 );
 go
-/*
 insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role)
 values 
 ('Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', 'Hanoi', 'admin'),
@@ -22,7 +21,6 @@ values
 ('Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', 'Can Tho', 'user'),
 ('Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', 'Hai Phong', 'user'),
 ('Vu Van G', 'vuvang@example.com', 'password106', '0945566778', 'Quang Ninh', 'user');
-*/
 go
 create table COMPANY (
     CompanyID int primary key identity(1,1), -- ID duy nhất của công ty
@@ -123,7 +121,6 @@ create table ProductCategories (
     foreign key (CategoryID) references CATEGORIES(CategoryID) on update cascade on delete cascade
 );
 go
-
 -- Chèn dữ liệu vào bảng ProductCategories
 INSERT INTO ProductCategories (ProductID, CategoryID)
 SELECT p.ProductID, c.CategoryID
@@ -209,7 +206,6 @@ insert into COLORS (ColorName, Description)
 values 
 ('Đen', 'Màu đen'),
 ('Trắng', 'Màu trắng'),
-('Xanh dương đậm', 'Màu xanh dương đậm'),
 ('Be', 'Màu be');
 go
 create table SIZES (
@@ -220,7 +216,6 @@ create table SIZES (
 go
 insert into SIZES (SizeName, Description)
 values 
-('M', 'Size Medium'),
 ('L', 'Size Large'),
 ('XL', 'Size Extra Large'),
 ('XXL', 'Size Double Extra Large');
@@ -235,6 +230,13 @@ create table PRODUCTSIZECOLOR (
     foreign key (ColorID) references COLORS(ColorID) on update cascade on delete cascade
 );
 go
+insert into PRODUCTSIZECOLOR (ProductID, SizeID, ColorID)
+select P.ProductID, S.SizeID, C.ColorID
+from PRODUCTS P
+cross join SIZES S
+cross join COLORS C
+;
+go
 create table CART (
     CartID int primary key identity(1,1),
     UserID int not null,
@@ -245,35 +247,55 @@ go
 insert into CART (UserID, CreatedDate)
 values 
 (1, '2025-01-01'),
+(1, '2025-01-02'),
+(1, '2025-01-03'),
+(1, '2025-01-04'),
 (2, '2025-01-01'),
-(3, '2025-01-01'),
-(4, '2025-01-01');
+(2, '2025-01-01'),
+(2, '2025-01-05'),
+(2, '2025-01-06'),
+(3, '2025-01-07'),
+(3, '2025-01-07'),
+(4, '2025-01-07'),
+(4, '2025-01-08'),
+(5, '2025-01-01'),
+(6, '2025-01-02'),
+(7, '2025-01-01'),
+(7, '2025-01-03');
 go
 create table CARTITEMS (
     CartItemID int primary key identity(1,1),
     CartID int not null,
     ProductSizeColorID int not null,
     Quantity int not null,
-    AddedDate datetime not null default getdate(),
+    AddedDate datetime not null default getdate(), --Cần check ngày thêm phải sau ngày tạo CART (CreatedDate)
     foreign key (CartID) references CART(CartID) on update cascade on delete cascade,
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
 go
-/*insert into CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
-values 
-(1, 1, 2, '2025-01-02'),
-(1, 2, 3, '2025-01-02'),
-(2, 3, 1, '2025-01-02'),
-(3, 4, 4, '2025-01-02'),
-(4, 5, 2, '2025-01-02'),
-(4, 6, 1, '2025-01-02');
-*/
+--Thêm dữ liệu bảng CartItem
+INSERT INTO CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
+SELECT 
+    C.CartID, 
+    PS.ProductSizeColorID, 
+    1 AS Quantity, -- hoặc số lượng bạn muốn (1 ở đây là ví dụ)
+    GETDATE() AS AddedDate
+FROM 
+    CART C
+JOIN 
+    PRODUCTSIZECOLOR PS ON PS.ProductSizeColorID BETWEEN 1 AND 100
+WHERE 
+    C.CartID IN (1, 2, 3, 4, 5, 6, 7) -- Bạn có thể thay đổi CartID tùy vào dữ liệu của bạn
+ORDER BY 
+    C.CartID, PS.ProductSizeColorID;
+
+
 go
 create table PaymentMethods (
-    PaymentMethodID int primary key identity(1,1), -- ID duy nhất của phương thức thanh toán
-    MethodName varchar(255) not null,             -- Tên phương thức thanh toán (ví dụ: COD, Credit Card)
-    Description text,                             -- Mô tả chi tiết (nếu cần)
-    IsActive bit not null default 1               -- Trạng thái kích hoạt (1: Đang hoạt động, 0: Không hoạt động)
+	PaymentMethodID int primary key identity(1,1), -- ID duy nhất của phương thức thanh toán
+	MethodName varchar(255) not null,             -- Tên phương thức thanh toán (ví dụ: COD, Credit Card)
+	Description text,                             -- Mô tả chi tiết (nếu cần)
+	IsActive bit not null default 1               -- Trạng thái kích hoạt (1: Đang hoạt động, 0: Không hoạt động)
 );
 go
 insert into PaymentMethods (MethodName, Description, IsActive)
@@ -282,19 +304,52 @@ values
 ('Credit Card', 'Payment via Credit Card', 1);
 go
 create table ORDERS (
-    OrderID int primary key identity(1,1),
-    UserID int not null,
-    OrderDate date not null,
-    TotalAmount decimal(10,2) not null,
-    PaymentMethodID int references PaymentMethods(PaymentMethodID) on update cascade on delete cascade,
-    foreign key (UserID) references USERS(UserID) on update cascade on delete cascade
+	OrderID int primary key identity(1,1),
+	UserID int not null,
+	OrderDate date not null,
+	TotalAmount decimal(10,2) null,
+	PaymentMethodID int references PaymentMethods(PaymentMethodID) on update cascade on delete cascade,
+	foreign key (UserID) references USERS(UserID) on update cascade on delete cascade
 );
+go
+--Cần check để bảng này không thể nhiều dữ liệu hơn bảng Cart
+INSERT INTO ORDERS (UserID, OrderDate, TotalAmount, PaymentMethodID)
+VALUES
+(1, '2025-01-01', NULL, 1),
+(1, '2025-01-02', NULL, 1),
+(1, '2025-01-03', NULL, 2),
+(2, '2025-01-01', NULL, 1),
+(2, '2025-01-05', NULL, 2),
+(3, '2025-01-07', NULL, 1),
+(3, '2025-01-07', NULL, 2),
+(4, '2025-01-07', NULL, 1),
+(4, '2025-01-08', NULL, 2),
+(5, '2025-01-01', NULL, 1),
+(6, '2025-01-02', NULL, 2),	
+(7, '2025-01-01', NULL, 1),
+(7, '2025-01-03', NULL, 2);
 go
 create table ORDERSTATUS (
     OrderID int foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
     StatusName varchar(50) not null,
 	primary key(OrderID)
 );
+go
+INSERT INTO ORDERSTATUS (OrderID, StatusName)
+VALUES
+(1, 'Pending'),
+(2, 'Processing'),
+(3, 'Shipped'),
+(4, 'Pending'),
+(5, 'Shipped'),
+(6, 'Processing'),
+(7, 'Pending'),
+(8, 'Shipped'),
+(9, 'Pending'),
+(10, 'Processing'),
+(11, 'Shipped'),
+(12, 'Pending'),
+(13, 'Shipped');
 go
 create table ORDERDETAILS (
     OrderDetailID int primary key identity(1,1),
@@ -305,6 +360,33 @@ create table ORDERDETAILS (
     foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
+go	
+--Thêm dữ liệu vào ORDERDETAILS
+DECLARE @OrderID INT, @ProductSizeColorID INT, @Quantity INT, @Price DECIMAL(10, 2);
+SET @Quantity = 1; -- Số lượng sản phẩm (có thể thay đổi)
+SET @Price = 100.00; -- Giá sản phẩm (có thể thay đổi)
+
+-- Lặp qua từng OrderID từ 1 đến 13 và thêm 50 sản phẩm cho mỗi OrderID
+DECLARE @i INT = 1;
+WHILE @i <= 13
+BEGIN
+    SET @OrderID = @i;
+    
+    -- Lặp qua các ProductSizeColorID từ 1 đến 50 cho mỗi OrderID
+    DECLARE @j INT = 1;
+    WHILE @j <= 50
+    BEGIN
+        SET @ProductSizeColorID = @j;
+        
+        -- Thêm vào ORDERDETAILS
+        INSERT INTO ORDERDETAILS (OrderID, ProductSizeColorID, Quantity, Price)
+        VALUES (@OrderID, @ProductSizeColorID, @Quantity, @Price);
+        
+        SET @j = @j + 1;
+    END
+
+    SET @i = @i + 1;
+END
 go
 create table REVIEWS (
     ReviewID int primary key identity(1,1),
@@ -317,6 +399,25 @@ create table REVIEWS (
     foreign key (ProductID) references PRODUCTS(ProductID) on update cascade on delete cascade
 );
 go
+INSERT INTO REVIEWS (UserID, ProductID, Rating, Comment, ReviewDate)
+VALUES
+(1, 1, 5, N'Sản phẩm tuyệt vời, tôi rất hài lòng!', '2025-02-20'),
+(1, 2, 4, N'Chất lượng tốt, nhưng giá hơi cao.', '2025-02-20'),
+(2, 3, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-20'),
+(2, 4, 2, N'Hơi thất vọng, sản phẩm không đúng mô tả.', '2025-02-21'),
+(3, 5, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-21'),
+(3, 6, 5, N'Rất thích sản phẩm này, sẽ mua lại.', '2025-02-22'),
+(4, 7, 3, N'Không hợp với tôi, sẽ không mua nữa.', '2025-02-22'),
+(4, 8, 4, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-22'),
+(5, 9, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-22'),
+(5, 10, 4, N'Mua cho quà tặng, người nhận rất thích.', '2025-02-23'),
+(6, 1, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-23'),
+(6, 2, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-23'),
+(7, 3, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-24'),
+(7, 4, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-24');
+
+go
+--theo dõi và ghi nhận hành vi của người dùng đối với các sản phẩm cụ thể.
 create table PRODUCTVIEWS (
     ViewID int primary key identity(1,1),
     ProductID int not null,
@@ -351,29 +452,49 @@ create table INVENTORY (
     foreign key (ProductSizeColorID) references ProductSizeColor(ProductSizeColorID) on delete cascade on update cascade
 );
 go
+INSERT INTO INVENTORY (ProductSizeColorID, Stock, LastUpdated)
+SELECT ProductSizeColorID, 20 AS Stock, GETDATE() AS LastUpdated
+FROM PRODUCTSIZECOLOR;
+go
 create table ShippingCompanies (
     ShippingCompanyID int primary key identity(1,1), -- ID duy nhất cho từng đơn vị vận chuyển
-    CompanyName varchar(255) not null,              -- Tên đơn vị vận chuyển
+    CompanyName nvarchar(255) not null,              -- Tên đơn vị vận chuyển
     Address text                                    -- Địa chỉ trụ sở chính
 );
 go
 insert into ShippingCompanies (CompanyName, Address)
 values 
-('Bưu điện', 'Address 1'),
-('Shopee', 'Address 2'),
-('Grab', 'Address 3');
+(N'Bưu điện', 'Address 1'),
+(N'Shopee', 'Address 2'),
+(N'Grab', 'Address 3');
 go
 create table Shipping (
     ShippingID int primary key identity(1,1),   -- ID duy nhất cho từng mục vận chuyển
     OrderID int foreign key (OrderID) references ORDERS(OrderID) on delete cascade on update cascade,                       -- Liên kết với đơn hàng
 	ShippingCompanyID int foreign key (ShippingCompanyID) references ShippingCompanies(ShippingCompanyID) on delete cascade on update cascade,
     Address text not null,                      -- Địa chỉ giao hàng
-    ShippingMethod varchar(255) not null,       -- Phương thức vận chuyển (ví dụ: Giao hàng nhanh, giao hàng thường)
-    ShippingStatus varchar(50) not null,        -- Trạng thái giao hàng (ví dụ: Đang vận chuyển, Đã giao)
-    EstimatedDeliveryDate datetime,             -- Ngày giao hàng dự kiến
-    ActualDeliveryDate datetime,                -- Ngày giao hàng thực tế (nếu có)
+    ShippingMethod nvarchar(255) not null,       -- Phương thức vận chuyển (ví dụ: Giao hàng nhanh, giao hàng thường)
+    ShippingStatus nvarchar(50) not null,        -- Trạng thái giao hàng (ví dụ: Đang vận chuyển, Đã giao)
+    EstimatedDeliveryDate date null,             -- Ngày giao hàng dự kiến
+    ActualDeliveryDate date null,                -- Ngày giao hàng thực tế (nếu có)
     TrackingNumber varchar(255),                -- Mã theo dõi đơn hàng (từ công ty vận chuyển)
 );
+go
+INSERT INTO Shipping (OrderID, ShippingCompanyID, Address, ShippingMethod, ShippingStatus, EstimatedDeliveryDate, ActualDeliveryDate, TrackingNumber)
+VALUES
+(1, 1, N'123 Đường ABC, Quận 1, TP.HCM', N'Giao hàng nhanh', N'Đang vận chuyển', '2025-02-25', NULL, 'TRACK12345'),
+(2, 2, N'456 Đường XYZ, Quận 3, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-02-26', NULL, 'TRACK12346'),
+(3, 1, N'789 Đường PQR, Quận 5, TP.HCM', N'Giao hàng nhanh', N'Đã giao', '2025-02-24', '2025-02-24', 'TRACK12347'),
+(4, 2, N'321 Đường LMN, Quận 7, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-02-27', NULL, 'TRACK12348'),
+(5, 3, N'654 Đường STU, Quận 10, TP.HCM', N'Giao hàng nhanh', N'Đã giao', '2025-02-25', '2025-02-25', 'TRACK12349'),
+(6, 2, N'987 Đường WXY, Quận 2, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-02-28', NULL, 'TRACK12350'),
+(7, 1, N'111 Đường ABC, Quận 4, TP.HCM', N'Giao hàng nhanh', N'Đã giao', '2025-02-22', '2025-02-22', 'TRACK12351'),
+(8, 2, N'222 Đường DEF, Quận 11, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-02-28', NULL, 'TRACK12352'),
+(9, 3, N'333 Đường GHI, Quận 12, TP.HCM', N'Giao hàng nhanh', N'Đã giao', '2025-02-23', '2025-02-23', 'TRACK12353'),
+(10, 2, N'444 Đường JKL, Quận 8, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-03-01', NULL, 'TRACK12354'),
+(11, 1, N'555 Đường MNO, Quận 6, TP.HCM', N'Giao hàng nhanh', N'Đã giao', '2025-02-24', '2025-02-24', 'TRACK12355'),
+(12, 2, N'666 Đường OPQ, Quận 9, TP.HCM', N'Giao hàng thường', N'Đang vận chuyển', '2025-03-02', NULL, 'TRACK12356'),
+(13, 1, N'777 Đường RST, Quận 5, TP.HCM', N'Giao hàng nhanh', N'Đang vận chuyển', '2025-02-28', NULL, 'TRACK12357');
 go
 create table Voucher(
 	VoucherID int primary key identity(1,1),
@@ -395,3 +516,29 @@ VALUES
 select ProductCategoryID,pc.ProductID,pc.CategoryID,CategoryName,ProductName
 from ProductCategories pc inner join PRODUCTS p on p.ProductID=pc.ProductID
 inner join CATEGORIES c on c.CategoryID=pc.CategoryID
+
+--Tạo trigger check ngày thêm vào giỏ hàng phải lớn hơn ngày tạo giỏ
+CREATE TRIGGER trg_CheckAddedDate
+ON CARTITEMS
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @CartID INT, @CreatedDate DATE, @AddedDate DATETIME;
+
+    -- Lấy thông tin CartID, CreatedDate từ bảng CART và AddedDate từ bảng CARTITEMS
+    SELECT @CartID = CartID FROM INSERTED;
+    SELECT @AddedDate = AddedDate FROM INSERTED;
+    
+    -- Lấy CreatedDate từ bảng CART dựa trên CartID
+    SELECT @CreatedDate = CreatedDate
+    FROM CART
+    WHERE CartID = @CartID;
+    
+    -- Kiểm tra điều kiện: nếu AddedDate không sau CreatedDate, trả về lỗi
+    IF @AddedDate <= @CreatedDate
+    BEGIN
+        RAISERROR('Ngày thêm vào phải sau ngày tạo giỏ hàng.', 16, 1);
+        ROLLBACK TRANSACTION; -- Hủy thao tác insert nếu không thỏa mãn điều kiện
+    END
+END;
+GO
