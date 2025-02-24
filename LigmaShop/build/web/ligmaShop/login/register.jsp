@@ -27,14 +27,25 @@
                         <div class="form-w3-agile">
                             <h2>Register Now</h2>
                             
-                            <!-- error handle with user hit the cancel button or login google failed -->
+                            <!-- error handle with user hit the cancel button or login google failed 
                             <c:if test="${not empty message}">
+                                <div class="alert alert-${messageType}">
+                                    <c:out value="${message}"/>
+                                </div>
+                            </c:if>-->
+                            <c:if test="${param.error == 'invalid_email'}">
+                                <div class="alert alert-${messageType}">
+                                    <c:out value="${message}"/>
+                                </div>
+                            </c:if>
+                            <c:if test="${param.error == 'invalid_password'}">
                                 <div class="alert alert-${messageType}">
                                     <c:out value="${message}"/>
                                 </div>
                             </c:if>
                             
-                            <form action="registersvt" method="post">
+                            <form action="${pageContext.request.contextPath}/authservlet" method="POST" onsubmit="return validateRegister()">
+                                <input type="hidden" name="action" value="register"/>
                                 <div class="form-sub-w3">
                                     <input type="text" name="fullname" placeholder="Full Name" required>
                                     <div class="icon-w3">
@@ -42,10 +53,11 @@
                                     </div>
                                 </div>
                                 <div class="form-sub-w3">
-                                    <input type="email" name="email" placeholder="Email" required>
+                                    <input type="email" name="email" id="email" placeholder="Email" required>
                                     <div class="icon-w3">
                                         <i class="fa fa-envelope" aria-hidden="true"></i>
                                     </div>
+                                    <span id="emailError" style="color: red;"></span>
                                 </div>
                                 <div class="form-sub-w3">
                                     <input type="text" name="username" placeholder="Username" required>
@@ -54,10 +66,11 @@
                                     </div>
                                 </div>
                                 <div class="form-sub-w3">
-                                    <input type="password" name="password" placeholder="Password" required>
+                                    <input type="password" name="password" placeholder="Password" id="password" required>
                                     <div class="icon-w3">
                                         <i class="fa fa-lock" aria-hidden="true"></i>
                                     </div>
+                                    <span id="passwordError" style="color: red;"></span>
                                 </div>
                                 <p class="p-bottom-w3ls1">Already have an account? <a href="signIn.jsp">Login here</a></p>
                                 <div class="clear"></div>
@@ -65,6 +78,32 @@
                                     <input type="submit" value="Register">
                                 </div>
                             </form>
+                            <script>
+                                functinon validateRegister() {
+                                    var email = document.getElementById("email");
+                                    var email_regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                    
+                                    var password = document.getElementById("password");
+                                    var password_regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+                                    
+                                    var valid = true;
+                                    
+                                    if (!email_regex.test(email)) {
+                                        email.defineProperty(email, "value", "");
+                                        email.defineProperty(email, "placeholder", "Invalid email");
+                                        valid = false;
+                                    } else
+                                        document.getElementById("emailError").textContent = "";
+                                        
+                                    if (!password_regex.test(password)) {
+                                        document.getElementById("passwordError").textContent = "Invalid password format.";
+                                        valid = false;
+                                    } else
+                                        document.getElementById("passwordError").textContent = "";
+                                    
+                                    return valid;
+                                }
+                            </script>
                             <div class="social w3layouts">
                                 <div class="heading">
                                     <h5>Or Register with</h5>
