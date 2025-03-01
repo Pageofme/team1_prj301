@@ -4,6 +4,7 @@
  */
 package controller;
 
+import service.GoogleLogin;
 import entity.GoogleAccount;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -32,6 +34,7 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
 
         String error = request.getParameter("error");
         if (error != null) {
@@ -56,6 +59,7 @@ public class LoginServlet extends HttpServlet {
                     //1 line to store user infor in session
 
                     //redirect to homepage
+                    session.setAttribute("userName", acc.getName());
                     response.sendRedirect("ligmaShop/login/user.jsp");
                 } else {
                     request.setAttribute("message", "Failed to get user information");

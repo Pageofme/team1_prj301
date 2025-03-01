@@ -16,12 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name = "AuthServlet", urlPatterns =
-{
-    "/authservlet"
-})
-public class AuthServlet extends HttpServlet
-{
+@WebServlet(name = "AuthServlet", urlPatterns
+        = {
+            "/authservlet"
+        })
+public class AuthServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,60 +44,60 @@ public class AuthServlet extends HttpServlet
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         return email.matches(regex);
     }
+
     private boolean isValidPassword(String password) {
         String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,}$";
         return password.matches(regex);
     }
+
     protected void handleLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String username = request.getParameter("Username");
         String password = request.getParameter("Password");
         System.out.println(username + password);
 
-        if ("admin".equals(username) && "123456".equals(password))
-        {
+        if ("admin".equals(username) && "123456".equals(password)) {
             System.out.println(username + password);
             response.sendRedirect(request.getContextPath() + "/ligmaShop/login/user.jsp");
-        } else
-        {
+        } else {
             response.sendRedirect("register.jsp?error=1");
         }
     }
+
     protected void handleRegister(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         System.out.println(fullname + email + username + password);
-        
-        if (!isValidEmail(email))
+
+        if (!isValidEmail(email)) {
             response.sendRedirect("register.jsp?error=invalid_email");
-        else if (!isValidPassword(password))
+        } else if (!isValidPassword(password)) {
             response.sendRedirect("register.jsp?error=invalid_password");
-        else
+        } else {
             response.sendRedirect("signIn.jsp");
+        }
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
             System.out.println("action empty");
-        } else
+        } else {
             System.out.println(action);
+        }
         switch (action) {
             case "login":
                 handleLogin(request, response);
@@ -115,8 +114,7 @@ public class AuthServlet extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

@@ -12,9 +12,8 @@ import java.util.List;
 import productDAO.*;
 import model.*;
 
-@WebServlet(name="SearchServlet", urlPatterns={"/search"})
-public class SearchServlet extends HttpServlet
-{
+@WebServlet(name = "SearchServlet", urlPatterns = {"/search"})
+public class SearchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -25,10 +24,8 @@ public class SearchServlet extends HttpServlet
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void searchProduct(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String keyword = request.getParameter("query");
         ProductDAO productDAO = new ProductDAO();
         List<Product> productList = productDAO.searchProduct(keyword);
@@ -51,8 +48,7 @@ public class SearchServlet extends HttpServlet
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         searchProduct(request, response);
     }
 
@@ -66,8 +62,7 @@ public class SearchServlet extends HttpServlet
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         searchProduct(request, response);
     }
 
@@ -77,8 +72,7 @@ public class SearchServlet extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
