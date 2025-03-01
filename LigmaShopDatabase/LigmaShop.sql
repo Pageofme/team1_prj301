@@ -4,38 +4,38 @@ use LigmaShop
 go
 create table USERS (
     UserID int primary key identity(1,1),
-    FullName varchar(255) not null,
+    FullName nvarchar(255) not null,
     Email varchar(255) unique not null,
     Password varchar(255) not null,
     PhoneNumber varchar(15),
-    Address text,
+    Address nvarchar(100),
     Role varchar(10) check (Role in ('user','admin'))
 );
 go
 insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role)
 values 
-('Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', 'Hanoi', 'admin'),
-('Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', 'HCM City', 'admin'),
-('Le Van C', 'levanc@example.com', 'password102', '0911223344', 'Da Nang', 'user'),
-('Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', 'Hue', 'user'),
-('Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', 'Can Tho', 'user'),
-('Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', 'Hai Phong', 'user'),
-('Vu Van G', 'vuvang@example.com', 'password106', '0945566778', 'Quang Ninh', 'user');
+(N'Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', N'Hanoi', 'admin'),
+(N'Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', N'HCM City', 'admin'),
+(N'Le Van C', 'levanc@example.com', 'password102', '0911223344', N'Da Nang', 'user'),
+(N'Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', N'Hue', 'user'),
+(N'Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', N'Can Tho', 'user'),
+(N'Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', N'Hai Phong', 'user'),
+(N'Vu Van G', 'vuvang@example.com', 'password106', '0945566778', N'Quang Ninh', 'user');
 go
 create table COMPANY (
     CompanyID int primary key identity(1,1), -- ID duy nhất của công ty
-    CompanyName varchar(255) not null,       -- Tên công ty
-    Address text,                            -- Địa chỉ công ty
+    CompanyName nvarchar(255) not null,       -- Tên công ty
+    Address nvarchar(100),                            -- Địa chỉ công ty
     ContactNumber varchar(15),               -- Số điện thoại liên hệ
     Email varchar(255)                       -- Email công ty
 );
 go
 insert into COMPANY (CompanyName, Address, ContactNumber, Email)
 values 
-('Company A', '123 Street, Hanoi', '0123456789', 'contact@companya.com'),
-('Company B', '456 Street, HCM City', '0987654321', 'contact@companyb.com'),
-('Company C', '789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
-('Company D', '321 Street, Can Tho', '0933445566', 'contact@companyd.com');
+(N'Company A', N'123 Street, Hanoi', '0123456789', 'contact@companya.com'),
+(N'Company B', N'456 Street, HCM City', '0987654321', 'contact@companyb.com'),
+(N'Company C', N'789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
+(N'Company D', N'321 Street, Can Tho', '0933445566', 'contact@companyd.com');
 go
 create table CATEGORIES (
     CategoryID int primary key identity(1,1),
@@ -202,20 +202,20 @@ values
 go
 create table COLORS (
     ColorID int primary key identity(1,1),
-    ColorName varchar(50) not null,
-    Description text
+    ColorName nvarchar(50) not null,
+    Description nvarchar(50)
 );
 go
 insert into COLORS (ColorName, Description)
 values 
-('Đen', 'Màu đen'),
-('Trắng', 'Màu trắng'),
-('Be', 'Màu be');
+(N'Đen', N'Màu đen'),
+(N'Trắng', N'Màu trắng'),
+(N'Be', N'Màu be');
 go
 create table SIZES (
     SizeID int primary key identity(1,1),
     SizeName varchar(50) not null,
-    Description text
+    Description varchar(100)
 );
 go
 insert into SIZES (SizeName, Description)
@@ -397,7 +397,7 @@ create table REVIEWS (
     UserID int not null,
     ProductID int not null,
     Rating int not null,
-    Comment text,
+    Comment nvarchar(500),
     ReviewDate date not null,
     foreign key (UserID) references USERS(UserID) on update cascade on delete cascade,
     foreign key (ProductID) references PRODUCTS(ProductID) on update cascade on delete cascade
@@ -443,7 +443,7 @@ create table CHATMESSAGES (
     MessageID int primary key identity(1,1), -- ID duy nhất cho mỗi tin nhắn
     SessionID int not null,                  -- ID của phiên trò chuyện
     Sender varchar(50) not null,             -- Người gửi: 'User' hoặc 'AI'
-    MessageText text not null,               -- Nội dung tin nhắn
+    MessageText nvarchar(2000) not null,               -- Nội dung tin nhắn
     Timestamp datetime not null default getdate(), -- Thời gian gửi tin nhắn
     foreign key (SessionID) references CHATSESSIONS(SessionID) on update cascade on delete cascade -- Liên kết tới phiên trò chuyện
 );
@@ -463,7 +463,7 @@ go
 create table ShippingCompanies (
     ShippingCompanyID int primary key identity(1,1), -- ID duy nhất cho từng đơn vị vận chuyển
     CompanyName nvarchar(255) not null,              -- Tên đơn vị vận chuyển
-    Address text                                    -- Địa chỉ trụ sở chính
+    Address nvarchar(100)                                    -- Địa chỉ trụ sở chính
 );
 go
 insert into ShippingCompanies (CompanyName, Address)
@@ -476,7 +476,7 @@ create table Shipping (
     ShippingID int primary key identity(1,1),   -- ID duy nhất cho từng mục vận chuyển
     OrderID int foreign key (OrderID) references ORDERS(OrderID) on delete cascade on update cascade,                       -- Liên kết với đơn hàng
 	ShippingCompanyID int foreign key (ShippingCompanyID) references ShippingCompanies(ShippingCompanyID) on delete cascade on update cascade,
-    Address text not null,                      -- Địa chỉ giao hàng
+    Address nvarchar(200) not null,                      -- Địa chỉ giao hàng
     ShippingMethod nvarchar(255) not null,       -- Phương thức vận chuyển (ví dụ: Giao hàng nhanh, giao hàng thường)
     ShippingStatus nvarchar(50) not null,        -- Trạng thái giao hàng (ví dụ: Đang vận chuyển, Đã giao)
     EstimatedDeliveryDate date null,             -- Ngày giao hàng dự kiến
