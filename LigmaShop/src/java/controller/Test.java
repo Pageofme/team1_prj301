@@ -19,7 +19,7 @@ public class Test extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Chuyển hướng đến trang JSP
-        request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);
+        request.getRequestDispatcher("ligmaShop/login/cart.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

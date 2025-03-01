@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,15 +30,16 @@
                                     <c:out value="${message}"/>
                                 </div>
                             </c:if>
-                            <form action="authservlet" method="post">
+                            <form action="${pageContext.request.contextPath}/authservlet" method="POST">
+                                <input type="hidden" name="action" value="login"/>
                                 <div class="form-sub-w3">
-                                    <input type="text" name="Username" placeholder="Username" required="" />
+                                    <input type="text" name="Username" placeholder="Username" required />
                                     <div class="icon-w3">
                                         <i class="fa fa-user" aria-hidden="true"></i>
                                     </div>
                                 </div>
                                 <div class="form-sub-w3">
-                                    <input type="password" name="Password" placeholder="Password" required="" />
+                                    <input type="password" name="Password" placeholder="Password" required />
                                     <div class="icon-w3">
                                         <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                     </div>

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -40,7 +40,7 @@ public class GoogleLogin {
         return accessToken;
 
     }
-    
+
     public static GoogleAccount getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
 
         String link = Iconstant.GOOGLE_LINK_GET_USER_INFO + accessToken;
