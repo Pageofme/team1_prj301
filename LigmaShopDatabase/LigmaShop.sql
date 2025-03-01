@@ -54,7 +54,9 @@ values
 (N'Quần Nữ', N'Tất cả quần cho Nữ'),
 (N'Áo khoác', N'Tất cả áo khoác'),
 (N'Đầm', N'Đầm dành cho nữ'),
-(N'Đồ thể thao', N'Đồ thể thao dành cho cả Nam và Nữ');
+(N'Đồ thể thao', N'Đồ thể thao dành cho cả Nam và Nữ'),
+(N'Thời trang mùa đông', N'Thời trang dành cho mùa đông'),
+(N'Thời trang mùa hè', N'Thời trang dành cho mùa hè');
 go
 create table PRODUCTS (
     ProductID int primary key identity(1,1),
@@ -137,6 +139,8 @@ ON (
 	OR (c.CategoryName = N'Áo khoác' AND p.ProductName LIKE N'Áo%khoác%')
 	OR (c.CategoryName = N'Đầm' AND p.ProductName LIKE N'Đầm%')
 	OR (c.CategoryName = N'Đồ thể thao' AND (p.ProductName LIKE N'%thể thao%' OR p.ProductName LIKE N'%legging%'))
+	OR (c.CategoryName = N'Thời trang mùa đông' AND (p.ProductName LIKE N'%len%' OR p.ProductName LIKE N'%hoodie%'  OR p.ProductName LIKE N'%khoác lông%' OR p.ProductName LIKE N'%jeans%' OR p.ProductName LIKE N'%dài tay%' OR p.ProductName LIKE N'%dáng dài%'))
+	OR (c.CategoryName = N'Thời trang mùa hè' AND (p.ProductName LIKE N'%sơ mi%' OR p.ProductName LIKE N'%short%'  OR p.ProductName LIKE N'%croptop%' OR p.ProductName LIKE N'%ngắn tay%' OR p.ProductName LIKE N'%chống nắng%' ))
 );
 go
 create table PRODUCTIMAGES (
