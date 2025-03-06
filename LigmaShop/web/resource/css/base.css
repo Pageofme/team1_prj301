@@ -97,6 +97,29 @@ html{
     background-color:  red;
     
 }
+.pagination-item__link:hover {
+    background-color: lightgray;
+}
+
+/* Trang hiện tại (đang active) */
+.active-page {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    pointer-events: none; /* Không thể click */
+}
+
+/* Mũi tên trái/phải */
+.pagination-arrow {
+    background-color: #ddd;
+    padding: 2px 15px;
+    border-radius: 5px;
+}
+
+.pagination-arrow:hover {
+    background-color: gray;
+    color: white;
+}
 
 .pagination-item__link{
     --height: 30px;
