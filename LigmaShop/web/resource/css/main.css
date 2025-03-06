@@ -820,11 +820,43 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
     transition: transform linear 0.1s;
     will-change: transform;
+    cursor: pointer;
 }
 .home-product-item:hover{
     transform: translateY(-1px);
     box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.05) ;
 }
+.home-product-item__buttons {
+    display: none; /* Ẩn ban đầu */
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding:15px 0px;
+    border-radius: 5px;
+    white-space: nowrap; /* Giữ các nút trên cùng một hàng */
+}
+
+
+.home-product-item__buttons a {
+    font-size: 16px; /* Tăng kích cỡ chữ */
+    padding: 10px 15px; /* Tăng kích thước nút */
+    background: red;  /* Màu nền */
+    color: white;
+    border-radius: 5px;
+    margin: 10px;
+    text-decoration: none;
+    display: inline-block;
+    z-index: 9999;
+
+}
+
+/* Khi có class "show" thì hiện lên */
+.home-product-item__buttons.show {
+    display: block;
+}
+
 
 .home-product-item__img{
     padding-top: 100%;
