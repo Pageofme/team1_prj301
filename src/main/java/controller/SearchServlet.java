@@ -28,11 +28,11 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         String keyword = request.getParameter("query");
         ProductDAO productDAO = new ProductDAO();
-        List<Product> productList = productDAO.searchProduct(keyword);
+        List<Products> productList = productDAO.searchProduct(keyword);
         request.setAttribute("products", productList);
         System.out.println("Search results: " + productList.size() + " query = " + keyword);
-        for (Product p : productList) {
-            System.out.println(p.getName()); // Ensure products are being retrieved
+        for (Products p : productList) {
+            System.out.println(p.getProductName()); // Ensure products are being retrieved
         }
         request.getRequestDispatcher("ligmaShop/login/searchResult.jsp").forward(request, response);
     }

@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Product;
+import model.*;
 import productDAO.ProductDAO;
 
 /**
@@ -43,7 +43,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Product> list = productDAO.selectAllProducts();
+        List<Products> list = productDAO.selectAllProducts();
         HttpSession session=request.getSession();
         if (list != null && !list.isEmpty()) {
 //            // Kiểm tra và in dữ liệu của mỗi sản phẩm

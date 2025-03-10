@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-    <!-- Define Persistence Unit -->
-    <persistence-unit name="my_persistence_unit">
-        
-    </persistence-unit>
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="my_persistence_unit">
+    <class>model.Categories</class>
+    <class>model.Users</class>
+    <class>model.Orderdetails</class>
+    <class>model.Productviews</class>
+    <class>model.Company</class>
+    <class>model.Colors</class>
+    <class>model.Sizes</class>
+    <class>model.Productimages</class>
+    <class>model.Voucher</class>
+    <class>model.Inventory</class>
+    <class>model.Orderstatus</class>
+    <class>model.ShippingCompanies</class>
+    <class>model.Products</class>
+    <class>model.Cartitems</class>
+    <class>model.PaymentMethods</class>
+    <class>model.Reviews</class>
+    <class>model.Chatmessages</class>
+    <class>model.Cart</class>
+    <class>model.Chatsessions</class>
+    <class>model.ProductCategories</class>
+    <class>model.Productsizecolor</class>
+    <class>model.Shipping</class>
+    <class>model.Orders</class>
+  </persistence-unit>
 </persistence>

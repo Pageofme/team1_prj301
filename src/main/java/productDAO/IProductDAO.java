@@ -8,11 +8,11 @@ import java.sql.SQLException;
 public interface IProductDAO {
 //    public void insertProduct (Product pro) throws SQLException;
 
-    public Product selectProduct (int id);
+    public Products selectProduct (int id);
 //
-    public List<Product> selectAllProducts();
+    public List<Products> selectAllProducts();
     
-    public List<Product> searchProduct(String keyword);
+    public List<Products> searchProduct(String keyword);
 
 //    public boolean deleteProduct (int id) throws SQLException;
 //

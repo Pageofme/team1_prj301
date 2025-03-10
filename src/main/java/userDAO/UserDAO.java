@@ -1,77 +1,110 @@
 package userDAO;
 
-import dao.DBConnection;
+import jakarta.persistence.*;
 import java.util.List;
-import model.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import model.*;
 import java.sql.SQLException;
 
 public class UserDAO implements IUserDAO
 {
-
-    private static final String LOGIN = "SELECT UserID from [Users] where userName=? and password=?";
-    private static final String LOGIN1 = "SELECT id, userName, role from [Users] where userName=? and password=?";
-    private static final String INSERT_USER = "INSERT INTO Users (username, email, country, role, status, password) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_USER_BY_ID = "SELECT FROM Users WHERE id= ?";
-    private static final String UPDATE_USER = "UPDATE Users SET username ?, email?, country ?, role ?, status ?, password ? WHERE id = ?";
-    private static final String SELECT_ALL_USERS = "select * from users";
-
-    public static User checklogin1(String name, String password)
+    private EntityManagerFactory emf;
+    private EntityManager em;
+    
+    public UserDAO()
     {
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        User us = null;
-        try (Connection con = DBConnection.getConnection())
+        emf = Persistence.createEntityManagerFactory("ligmaBallsPU");
+        em = emf.createEntityManager();
+    }
+
+    @Override
+    public void insertUser(Users user)
+    {
+        if (user == null)
+            throw new IllegalArgumentException("User is null");
+        em.getTransaction().begin();
+        try
         {
-            String sql = LOGIN;
-            pstm = con.prepareStatement(sql);
-            pstm.setString(1, name);
-            pstm.setString(2, password);
-            rs = pstm.executeQuery();
-            if (rs.next())
-            {
-                int id = rs.getInt("id");
-                String user = rs.getString("userName");
-                String role = rs.getString("Role");
-                us = new User(id, user, "", role);
-            }
-        } catch (Exception e)
+            em.persist(user);
+            em.getTransaction().commit();
+        } catch (NoResultException e)
         {
-            e.printStackTrace();
+            em.getTransaction().rollback();
         }
-        return us;
     }
 
     @Override
-    public void insertUser(User user) throws SQLException
+    public Users selectUser(int id) throws NoResultException
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        TypedQuery<Users> query = em.createNamedQuery("Users.selectByID", Users.class);
+        query.setParameter("userID", id);
+        return query.getSingleResult();
     }
 
     @Override
-    public User selectUser(int id)
+    public List<Users> selectAllUsers() throws NoResultException
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        TypedQuery<Users> query = em.createNamedQuery("Users.selectAll", Users.class);
+        return query.getResultList();
     }
 
     @Override
-    public List<User> selectAllUsers()
+    public void deleteUser(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Integer userID = id;
+        if (userID == null) 
+            throw new IllegalArgumentException("UserID cannot be null");
+        em.getTransaction().begin();
+        try 
+        {
+            Users user = em.find(Users.class, userID);
+            if (user == null) 
+            {
+                em.getTransaction().rollback();
+                throw new RuntimeException("User not found with ID: " + userID);
+            }
+            em.remove(user);
+            em.getTransaction().commit();
+        } catch (Exception e) 
+        {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to delete user: " + e.getMessage(), e);
+        }
     }
-
+    
     @Override
-    public boolean deleteUser(int id) throws SQLException
+    public void updateUser(Users updatedUser) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (updatedUser == null || updatedUser.getUserID() == null)
+            throw new IllegalArgumentException("User and UserID cannot be null");
+        em.getTransaction().begin();
+        try 
+        {
+            Users existingUser = em.find(Users.class, updatedUser.getUserID());
+            if (existingUser == null) 
+            {
+                em.getTransaction().rollback();
+                throw new RuntimeException("User not found with ID: " + updatedUser.getUserID());
+            }
+            // Update fields
+            existingUser.setFullName(updatedUser.getFullName());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setPassword(updatedUser.getPassword());
+            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setRole(updatedUser.getRole());
+            em.getTransaction().commit();
+        } catch (Exception e) 
+        {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to update user: " + e.getMessage(), e);
+        }
     }
-
-    @Override
-    public boolean updateUser(User user) throws SQLException
+    
+    public void close() 
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (em != null && em.isOpen()) 
+            em.close();
+        if (emf != null && emf.isOpen()) 
+            emf.close();
     }
-
 }
