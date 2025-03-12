@@ -6,50 +6,58 @@ import model.*;
 import jakarta.persistence.*;
 
 public class ProductDAO implements IProductDAO {
+
     private EntityManagerFactory emf;
     private EntityManager em;
-    public ProductDAO()
-    {
+
+    public ProductDAO() {
         emf = Persistence.createEntityManagerFactory("ligmaBallsPU");
         em = emf.createEntityManager();
     }
 
     @Override
-    public List<Products> searchProduct(String keyword) throws NoResultException 
-    {
+    public List<Products> searchProduct(String keyword) throws NoResultException {
         TypedQuery<Products> query = em.createNamedQuery("Products.searchProducts", Products.class);
         query.setParameter("keyword", "%" + keyword + "%");
         return query.getResultList();
     }
 
     @Override
-    public Products selectProduct(int id) throws NoResultException 
-    {
+    public Products selectProduct(int id) throws NoResultException {
         TypedQuery<Products> query = em.createNamedQuery("Products.selectByID", Products.class);
         query.setParameter("productID", id);
         return query.getSingleResult();
     }
 
     @Override
-    public List<Products> selectAllProducts() throws NoResultException 
-    {
+    public List<Products> selectAllProducts() throws NoResultException {
         TypedQuery<Products> query = em.createNamedQuery("Products.selectAll", Products.class);
         return query.getResultList();
     }
     
-    public void close() 
-    {
-        if (em != null && em.isOpen()) 
-            em.close();
-        if (emf != null && emf.isOpen()) 
-            emf.close();
+    //retrieve a category list from Categories table
+    //pass this information to the ProductServlet to display on the USER PAGE FUCKING USER PAGE NIGGER
+    public List<Categories> selectAllCategory() throws NoResultException {
+        TypedQuery<Categories> query = em.createNamedQuery("Categories.findAll", Categories.class);
+        return query.getResultList();
     }
 
-    public static void main(String[] args) throws SQLException 
-    {
-        ProductDAO dao = new ProductDAO();
-        List<Products> list = dao.selectAllProducts();
-        System.out.println(list);
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
+    }
+
+    public static void main(String[] args) {
+        ProductDAO cate = new ProductDAO();
+        List<Categories> list = cate.selectAllCategory();
+        for (Categories categories : list) {
+            System.out.println("name: " + categories.getCategoryName());
+            System.out.println("description: " + categories.getDescription());
+        }
     }
 
 }

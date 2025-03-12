@@ -5,13 +5,11 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.*;
 import productDAO.ProductDAO;
@@ -43,19 +41,32 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         List<Products> list = productDAO.selectAllProducts();
-        HttpSession session=request.getSession();
-        if (list != null && !list.isEmpty()) {
+        List<Categories> listCategory = productDAO.selectAllCategory();
+        System.out.println("THE LIST OF RETRIEVED PRODUCTS: \n");
+        try {
+            if (list != null && !list.isEmpty() && listCategory != null && !listCategory.isEmpty()) {
 //            // Kiểm tra và in dữ liệu của mỗi sản phẩm
-//            for (Product product : list) {
-//                System.out.println("Product ID: " + product.getId()
-//                        + ", Name: " + product.getName()
-//                        + ", Price: " + product.getPrice()
-//                        + ", Description: " + product.getDescription());
-//            }
-            session.setAttribute("list", list);
-        } else {
-            System.out.println("No products found!");
+//                for (Products product : list) {
+//                    System.out.println("Product name: " + product.getProductName()
+//                            + ", Price: " + product.getPrice()
+//                            + ", Description: " + product.getDescription());
+//                }
+                // checking the list of category
+                for (Categories cate : listCategory) {
+                    System.out.println("Product name: " + cate.getCategoryName() 
+                            + "Description: " + cate.getDescription());
+                }
+
+                request.setAttribute("products", list);
+                request.setAttribute("category", listCategory);
+            } else {
+                System.out.println("No products found!");
+            }
+        } catch (Exception e) {
+            System.out.println("error: " + e.getMessage());
+            e.printStackTrace();
         }
 
         request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);

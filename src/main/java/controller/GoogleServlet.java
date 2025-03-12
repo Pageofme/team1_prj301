@@ -7,7 +7,6 @@ package controller;
 import service.GoogleLogin;
 import entity.GoogleAccount;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,10 +16,10 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author nkmq21
+ * @author nkmq21   
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/logingg"})
-public class LoginServlet extends HttpServlet {
+public class GoogleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

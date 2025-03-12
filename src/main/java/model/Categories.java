@@ -30,14 +30,13 @@ import java.util.Collection;
 @Table(name = "CATEGORIES")
 @XmlRootElement
 @NamedQueries(
-{
-    @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c"),
-    @NamedQuery(name = "Categories.findByCategoryID", query = "SELECT c FROM Categories c WHERE c.categoryID = :categoryID"),
-    @NamedQuery(name = "Categories.findByCategoryName", query = "SELECT c FROM Categories c WHERE c.categoryName = :categoryName"),
-    @NamedQuery(name = "Categories.findByDescription", query = "SELECT c FROM Categories c WHERE c.description = :description")
-})
-public class Categories implements Serializable
-{
+        {
+            @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c"),
+            @NamedQuery(name = "Categories.findByCategoryID", query = "SELECT c FROM Categories c WHERE c.categoryID = :categoryID"),
+            @NamedQuery(name = "Categories.findByCategoryName", query = "SELECT c FROM Categories c WHERE c.categoryName = :categoryName"),
+            @NamedQuery(name = "Categories.findByDescription", query = "SELECT c FROM Categories c WHERE c.description = :description")
+        })
+public class Categories implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,90 +55,74 @@ public class Categories implements Serializable
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryID")
     private Collection<ProductCategories> productCategoriesCollection;
 
-    public Categories()
-    {
+    public Categories() {
     }
 
-    public Categories(Integer categoryID)
-    {
+    public Categories(Integer categoryID) {
         this.categoryID = categoryID;
     }
 
-    public Categories(Integer categoryID, String categoryName)
-    {
+    public Categories(Integer categoryID, String categoryName) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
     }
 
-    public Integer getCategoryID()
-    {
+    public Integer getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(Integer categoryID)
-    {
+    public void setCategoryID(Integer categoryID) {
         this.categoryID = categoryID;
     }
 
-    public String getCategoryName()
-    {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName)
-    {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     @XmlTransient
-    public Collection<ProductCategories> getProductCategoriesCollection()
-    {
+    public Collection<ProductCategories> getProductCategoriesCollection() {
         return productCategoriesCollection;
     }
 
-    public void setProductCategoriesCollection(Collection<ProductCategories> productCategoriesCollection)
-    {
+    public void setProductCategoriesCollection(Collection<ProductCategories> productCategoriesCollection) {
         this.productCategoriesCollection = productCategoriesCollection;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (categoryID != null ? categoryID.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Categories))
-        {
+        if (!(object instanceof Categories)) {
             return false;
         }
         Categories other = (Categories) object;
-        if ((this.categoryID == null && other.categoryID != null) || (this.categoryID != null && !this.categoryID.equals(other.categoryID)))
-        {
+        if ((this.categoryID == null && other.categoryID != null) || (this.categoryID != null && !this.categoryID.equals(other.categoryID))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "model.Categories[ categoryID=" + categoryID + " ]";
+    public String toString() {
+        return "\nCategories{" + "categoryID=" + categoryID + ", categoryName=" + categoryName + ", description=" + description + ", productCategoriesCollection=" + productCategoriesCollection + '}';
     }
     
 }

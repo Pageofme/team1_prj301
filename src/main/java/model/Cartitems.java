@@ -30,14 +30,13 @@ import java.util.Date;
 @Table(name = "CARTITEMS")
 @XmlRootElement
 @NamedQueries(
-{
-    @NamedQuery(name = "Cartitems.findAll", query = "SELECT c FROM Cartitems c"),
-    @NamedQuery(name = "Cartitems.findByCartItemID", query = "SELECT c FROM Cartitems c WHERE c.cartItemID = :cartItemID"),
-    @NamedQuery(name = "Cartitems.findByQuantity", query = "SELECT c FROM Cartitems c WHERE c.quantity = :quantity"),
-    @NamedQuery(name = "Cartitems.findByAddedDate", query = "SELECT c FROM Cartitems c WHERE c.addedDate = :addedDate")
-})
-public class Cartitems implements Serializable
-{
+        {
+            @NamedQuery(name = "Cartitems.findAll", query = "SELECT c FROM Cartitems c"),
+            @NamedQuery(name = "Cartitems.findByCartItemID", query = "SELECT c FROM Cartitems c WHERE c.cartItemID = :cartItemID"),
+            @NamedQuery(name = "Cartitems.findByQuantity", query = "SELECT c FROM Cartitems c WHERE c.quantity = :quantity"),
+            @NamedQuery(name = "Cartitems.findByAddedDate", query = "SELECT c FROM Cartitems c WHERE c.addedDate = :addedDate")
+        })
+public class Cartitems implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,100 +60,82 @@ public class Cartitems implements Serializable
     @ManyToOne(optional = false)
     private Productsizecolor productSizeColorID;
 
-    public Cartitems()
-    {
+    public Cartitems() {
     }
 
-    public Cartitems(Integer cartItemID)
-    {
+    public Cartitems(Integer cartItemID) {
         this.cartItemID = cartItemID;
     }
 
-    public Cartitems(Integer cartItemID, int quantity, Date addedDate)
-    {
+    public Cartitems(Integer cartItemID, int quantity, Date addedDate) {
         this.cartItemID = cartItemID;
         this.quantity = quantity;
         this.addedDate = addedDate;
     }
 
-    public Integer getCartItemID()
-    {
+    public Integer getCartItemID() {
         return cartItemID;
     }
 
-    public void setCartItemID(Integer cartItemID)
-    {
+    public void setCartItemID(Integer cartItemID) {
         this.cartItemID = cartItemID;
     }
 
-    public int getQuantity()
-    {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity)
-    {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Date getAddedDate()
-    {
+    public Date getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(Date addedDate)
-    {
+    public void setAddedDate(Date addedDate) {
         this.addedDate = addedDate;
     }
 
-    public Cart getCartID()
-    {
+    public Cart getCartID() {
         return cartID;
     }
 
-    public void setCartID(Cart cartID)
-    {
+    public void setCartID(Cart cartID) {
         this.cartID = cartID;
     }
 
-    public Productsizecolor getProductSizeColorID()
-    {
+    public Productsizecolor getProductSizeColorID() {
         return productSizeColorID;
     }
 
-    public void setProductSizeColorID(Productsizecolor productSizeColorID)
-    {
+    public void setProductSizeColorID(Productsizecolor productSizeColorID) {
         this.productSizeColorID = productSizeColorID;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (cartItemID != null ? cartItemID.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cartitems))
-        {
+        if (!(object instanceof Cartitems)) {
             return false;
         }
         Cartitems other = (Cartitems) object;
-        if ((this.cartItemID == null && other.cartItemID != null) || (this.cartItemID != null && !this.cartItemID.equals(other.cartItemID)))
-        {
+        if ((this.cartItemID == null && other.cartItemID != null) || (this.cartItemID != null && !this.cartItemID.equals(other.cartItemID))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "model.Cartitems[ cartItemID=" + cartItemID + " ]";
     }
-    
+
 }

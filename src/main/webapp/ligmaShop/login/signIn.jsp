@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+    <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +59,7 @@
                                 <div class="icons">
                                     <a href="#"><i class="fa-brands fa-facebook"></i></a>
 
-                                    <a  href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/LigmaShop/logingg&response_type=code&client_id=104499240705-951rk6sn3o4g8cbj0kmf8toc06i934ln.apps.googleusercontent.com&approval_prompt=force">
+                                    <a  href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/LigmaBallsOfficial/logingg&response_type=code&client_id=104499240705-951rk6sn3o4g8cbj0kmf8toc06i934ln.apps.googleusercontent.com&approval_prompt=force">
                                         <i class="fa-brands fa-google"></i>
                                     </a>
 

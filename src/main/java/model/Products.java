@@ -33,8 +33,7 @@ import java.util.Date;
             @NamedQuery(name = "Products.selectByID", query = "SELECT p FROM Products p WHERE p.productID = :productID"),
             @NamedQuery(name = "Products.searchProducts", query = "SELECT p FROM Products p WHERE p.productName LIKE :keyword")
         })
-public class Products implements Serializable
-{
+public class Products implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -74,25 +73,21 @@ public class Products implements Serializable
     @ManyToOne
     private Company companyID;
 
-    public Products()
-    {
+    public Products() {
     }
 
-    public Products(Integer productID)
-    {
+    public Products(Integer productID) {
         this.productID = productID;
     }
 
-    public Products(Integer productID, String productName, BigDecimal price, Date createdDate)
-    {
+    public Products(Integer productID, String productName, BigDecimal price, Date createdDate) {
         this.productID = productID;
         this.productName = productName;
         this.price = price;
         this.createdDate = createdDate;
     }
 
-    public Products(Integer productID, String productName, String description, BigDecimal price, Date createdDate, Company companyID)
-    {
+    public Products(Integer productID, String productName, String description, BigDecimal price, Date createdDate, Company companyID) {
         this.productID = productID;
         this.productName = productName;
         this.description = description;
@@ -101,149 +96,122 @@ public class Products implements Serializable
         this.companyID = companyID;
     }
 
-    public Integer getProductID()
-    {
+    public Integer getProductID() {
         return productID;
     }
 
-    public void setProductID(Integer productID)
-    {
+    public void setProductID(Integer productID) {
         this.productID = productID;
     }
 
-    public String getProductName()
-    {
+    public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName)
-    {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public BigDecimal getPrice()
-    {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price)
-    {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public Date getCreatedDate()
-    {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate)
-    {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
     @XmlTransient
-    public Collection<Reviews> getReviewsCollection()
-    {
+    public Collection<Reviews> getReviewsCollection() {
         return reviewsCollection;
     }
 
-    public void setReviewsCollection(Collection<Reviews> reviewsCollection)
-    {
+    public void setReviewsCollection(Collection<Reviews> reviewsCollection) {
         this.reviewsCollection = reviewsCollection;
     }
 
     @XmlTransient
-    public Collection<Productsizecolor> getProductsizecolorCollection()
-    {
+    public Collection<Productsizecolor> getProductsizecolorCollection() {
         return productsizecolorCollection;
     }
 
-    public void setProductsizecolorCollection(Collection<Productsizecolor> productsizecolorCollection)
-    {
+    public void setProductsizecolorCollection(Collection<Productsizecolor> productsizecolorCollection) {
         this.productsizecolorCollection = productsizecolorCollection;
     }
 
     @XmlTransient
-    public Collection<Productimages> getProductimagesCollection()
-    {
+    public Collection<Productimages> getProductimagesCollection() {
         return productimagesCollection;
     }
 
-    public void setProductimagesCollection(Collection<Productimages> productimagesCollection)
-    {
+    public void setProductimagesCollection(Collection<Productimages> productimagesCollection) {
         this.productimagesCollection = productimagesCollection;
     }
 
     @XmlTransient
-    public Collection<Productviews> getProductviewsCollection()
-    {
+    public Collection<Productviews> getProductviewsCollection() {
         return productviewsCollection;
     }
 
-    public void setProductviewsCollection(Collection<Productviews> productviewsCollection)
-    {
+    public void setProductviewsCollection(Collection<Productviews> productviewsCollection) {
         this.productviewsCollection = productviewsCollection;
     }
 
     @XmlTransient
-    public Collection<ProductCategories> getProductCategoriesCollection()
-    {
+    public Collection<ProductCategories> getProductCategoriesCollection() {
         return productCategoriesCollection;
     }
 
-    public void setProductCategoriesCollection(Collection<ProductCategories> productCategoriesCollection)
-    {
+    public void setProductCategoriesCollection(Collection<ProductCategories> productCategoriesCollection) {
         this.productCategoriesCollection = productCategoriesCollection;
     }
 
-    public Company getCompanyID()
-    {
+    public Company getCompanyID() {
         return companyID;
     }
 
-    public void setCompanyID(Company companyID)
-    {
+    public void setCompanyID(Company companyID) {
         this.companyID = companyID;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (productID != null ? productID.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Products))
-        {
+        if (!(object instanceof Products)) {
             return false;
         }
         Products other = (Products) object;
-        if ((this.productID == null && other.productID != null) || (this.productID != null && !this.productID.equals(other.productID)))
-        {
+        if ((this.productID == null && other.productID != null) || (this.productID != null && !this.productID.equals(other.productID))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "model.Products[ productID=" + productID + " ]";
+    public String toString() {
+        return "\nProducts{" + "productID=" + productID + ", productName=" + productName + ", description=" + description + ", price=" + price + ", createdDate=" + createdDate + ", reviewsCollection=" + reviewsCollection + ", productsizecolorCollection=" + productsizecolorCollection + ", productimagesCollection=" + productimagesCollection + ", productviewsCollection=" + productviewsCollection + ", productCategoriesCollection=" + productCategoriesCollection + ", companyID=" + companyID + '}';
     }
 
 }
