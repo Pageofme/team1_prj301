@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import model.Categories;
 import model.ProductCategories;
 import model.Products;
 import productDAO.ProductDAO;
@@ -61,11 +62,14 @@ public class CategoryServlet extends HttpServlet {
         }
         List<ProductCategories> categorizeList = new ArrayList<>();
         List<Products> products = new ArrayList<>();
+        List<Categories> listCategory = productDAO.selectAllCategory();
+
         //productID list retrieve with categoryID
         categorizeList = categoryDAO.categorizeProduct(categoryID);
         //categorized products list
         products = categorizeProductList(categorizeList);
         request.setAttribute("products", products);
+        request.setAttribute("category", listCategory);
         request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);
     }
 
