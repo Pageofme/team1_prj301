@@ -150,7 +150,7 @@
                                 <ul class="category-list">
                                     <c:forEach items="${category}" var="o">
                                         <li class="category-item">
-                                            <a href="" class="category-item__link">${o.categoryName}</a>
+                                            <a href="category?cID=${o.categoryID}" class="category-item__link">${o.categoryName}</a>
                                         </li>
                                     </c:forEach>
                                 </ul>

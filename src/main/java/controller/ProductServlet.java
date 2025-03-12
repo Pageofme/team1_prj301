@@ -44,7 +44,8 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         List<Products> list = productDAO.selectAllProducts();
         List<Categories> listCategory = productDAO.selectAllCategory();
-        System.out.println("THE LIST OF RETRIEVED PRODUCTS: \n");
+        //headline for debugging in tomcat log
+//        System.out.println("THE LIST OF RETRIEVED PRODUCTS: \n"); 
         try {
             if (list != null && !list.isEmpty() && listCategory != null && !listCategory.isEmpty()) {
 //            // Kiểm tra và in dữ liệu của mỗi sản phẩm

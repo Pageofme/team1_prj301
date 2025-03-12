@@ -26,12 +26,10 @@ import java.io.Serializable;
 @Table(name = "ProductCategories")
 @XmlRootElement
 @NamedQueries(
-{
-    @NamedQuery(name = "ProductCategories.findAll", query = "SELECT p FROM ProductCategories p"),
-    @NamedQuery(name = "ProductCategories.findByProductCategoryID", query = "SELECT p FROM ProductCategories p WHERE p.productCategoryID = :productCategoryID")
-})
-public class ProductCategories implements Serializable
-{
+        {
+            @NamedQuery(name = "ProductCategories.findAll", query = "SELECT p FROM ProductCategories p"),
+            @NamedQuery(name = "ProductCategories.categorizeProductByCategoryID", query = "SELECT p FROM ProductCategories p WHERE p.categoryID.categoryID = :categoryID"),})
+public class ProductCategories implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,73 +44,60 @@ public class ProductCategories implements Serializable
     @ManyToOne(optional = false)
     private Products productID;
 
-    public ProductCategories()
-    {
+    public ProductCategories() {
     }
 
-    public ProductCategories(Integer productCategoryID)
-    {
+    public ProductCategories(Integer productCategoryID) {
         this.productCategoryID = productCategoryID;
     }
 
-    public Integer getProductCategoryID()
-    {
+    public Integer getProductCategoryID() {
         return productCategoryID;
     }
 
-    public void setProductCategoryID(Integer productCategoryID)
-    {
+    public void setProductCategoryID(Integer productCategoryID) {
         this.productCategoryID = productCategoryID;
     }
 
-    public Categories getCategoryID()
-    {
+    public Categories getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(Categories categoryID)
-    {
+    public void setCategoryID(Categories categoryID) {
         this.categoryID = categoryID;
     }
 
-    public Products getProductID()
-    {
+    public Products getProductID() {
         return productID;
     }
 
-    public void setProductID(Products productID)
-    {
+    public void setProductID(Products productID) {
         this.productID = productID;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (productCategoryID != null ? productCategoryID.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductCategories))
-        {
+        if (!(object instanceof ProductCategories)) {
             return false;
         }
         ProductCategories other = (ProductCategories) object;
-        if ((this.productCategoryID == null && other.productCategoryID != null) || (this.productCategoryID != null && !this.productCategoryID.equals(other.productCategoryID)))
-        {
+        if ((this.productCategoryID == null && other.productCategoryID != null) || (this.productCategoryID != null && !this.productCategoryID.equals(other.productCategoryID))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "model.ProductCategories[ productCategoryID=" + productCategoryID + " ]";
     }
-    
+
 }
