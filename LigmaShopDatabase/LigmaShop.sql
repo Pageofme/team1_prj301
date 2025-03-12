@@ -22,6 +22,8 @@ values
 (N'Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', N'Hai Phong', 'user'),
 (N'Vu Van G', 'vuvang@example.com', 'password106', '0945566778', N'Quang Ninh', 'user');
 go
+select * from Users
+go
 create table COMPANY (
     CompanyID int primary key identity(1,1), -- ID duy nhất của công ty
     CompanyName nvarchar(255) not null,       -- Tên công ty
@@ -62,7 +64,7 @@ create table PRODUCTS (
     ProductID int primary key identity(1,1),
     ProductName nvarchar(255) not null,
     Description nvarchar(500),
-    Price decimal(10,2) not null,
+	Price decimal(10,2) not null,
     CreatedDate date not null,
 	CompanyID int foreign key (CompanyID) references COMPANY(CompanyID) on delete cascade on update cascade
 );
@@ -115,10 +117,6 @@ values
 (N'Áo chống nắng Nam', N'Áo chống nắng nam', 140000.00, '2025-01-01',4),
 (N'Áo chống nắng Nữ', N'Áo chống nắng nữ', 330000.00, '2025-01-01',4);
 
-SELECT p.ProductID, p.ProductName, p.Description, p.Price, p.CreatedDate, p.CompanyID, pi.ImageURL 
-                 FROM PRODUCTS p 
-                 LEFT JOIN PRODUCTIMAGES pi ON p.ProductID = pi.ProductID
-				 ;
 create table ProductCategories (
     ProductCategoryID int primary key identity(1,1),
     ProductID int not null,
@@ -158,53 +156,144 @@ create table PRODUCTIMAGES (
 go
 --ALTER TABLE PRODUCTIMAGES
 --DROP COLUMN ImageType, ImageOrder;
+
 insert into PRODUCTIMAGES (ProductID, ImageURL)
 values 
 (1, 'https://pageofme.github.io/team1_prj301/images/soMiNam.jpg'),
+(1, 'https://pageofme.github.io/team1_prj301/images/aoSoMiNamXanh.jpg'),
+(1, 'https://pageofme.github.io/team1_prj301/images/aoSoMiNamDen.jpg'),
 (2, 'https://pageofme.github.io/team1_prj301/images/aoSoMiNu.jpg'),
+(2, 'https://pageofme.github.io/team1_prj301/images/aoSoMiNuXanh.png'),
+(2, 'https://pageofme.github.io/team1_prj301/images/aoSoMiNuDen.jpg'),
 (3, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNam.jpg'),
+(3, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNamDen.jpg'),
+(3, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNamTrang.jpg'),
 (4, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNu.jpg'),
-(5, 'https://pageofme.github.io/team1_prj301/images/aoLenNam.jpg'),
-(6, 'https://pageofme.github.io/team1_prj301/images/aoLenNu.jpg'),
+(4, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNuDen.jpg'),
+(4, 'https://pageofme.github.io/team1_prj301/images/aoKhoacNuTrang.jpg'),
+(5, 'https://pageofme.github.io/team1_prj301/images/aoLenNamTrang.jpg'),
+(5, 'https://pageofme.github.io/team1_prj301/images/aoLenNamXanh.png'),
+(5, 'https://pageofme.github.io/team1_prj301/images/aoLenNamDen.jpg'),
+(6, 'https://pageofme.github.io/team1_prj301/images/aoLenNuDen.jpg'),
+(6, 'https://pageofme.github.io/team1_prj301/images/aoLenNuXanh.jpg'),
+(6, 'https://pageofme.github.io/team1_prj301/images/aoLenNuTrang.jpg'),
 (7, 'https://pageofme.github.io/team1_prj301/images/quanJeanNam.jpg'),
-(8, 'https://pageofme.github.io/team1_prj301/images/quanJeanNu.jpg'),
+(7, 'https://pageofme.github.io/team1_prj301/images/quanJeanNamDen.jpg'),
+(7, 'https://pageofme.github.io/team1_prj301/images/quanJeanNamTrang.jpg'),
+(8, 'https://pageofme.github.io/team1_prj301/images/quanJeanNuXanh.jpg'),
+(8, 'https://pageofme.github.io/team1_prj301/images/quanJeanNuTrang.jpg'),
+(8, 'https://pageofme.github.io/team1_prj301/images/quanJeanNuDen.jpg'),
 (9, 'https://pageofme.github.io/team1_prj301/images/quanKakiNam.jpg'),
-(10, 'https://pageofme.github.io/team1_prj301/images/quanKakiNu.jpg'),
+(9, 'https://pageofme.github.io/team1_prj301/images/quanKakiNamXanh.jpg'),
+(9, 'https://pageofme.github.io/team1_prj301/images/quanKakiNamDen.jpg'),
+(10, 'https://pageofme.github.io/team1_prj301/images/quanKakiNuXanh.jpg'),
+(10, 'https://pageofme.github.io/team1_prj301/images/quanKakiNuDen.jpg'),
+(10, 'https://pageofme.github.io/team1_prj301/images/quanKakiNuTrang.png'),
 (11, 'https://pageofme.github.io/team1_prj301/images/quanShortNam.jpg'),
+(11, 'https://pageofme.github.io/team1_prj301/images/quanShortNamDen.jpg'),
+(11, 'https://pageofme.github.io/team1_prj301/images/quanShortNamXanh.jpg'),
 (12, 'https://pageofme.github.io/team1_prj301/images/quanShortNu.jpg'),
-(13, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNam.jpg'),
+(12, 'https://pageofme.github.io/team1_prj301/images/quanShortNuXanh.jpg'),
+(12, 'https://pageofme.github.io/team1_prj301/images/quanShortNuTrang.jpg'),
+(13, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNamDen.jpg'),
+(13, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNamXanh.jpg'),
+(13, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNamTrang.jpg'),
 (14, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNu.jpg'),
-(15, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNam.jpg'),
-(16, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNu.jpg'),
-(17, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNam.jpg'),
-(18, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNu.jpg'),
+(14, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNuDen.jpg'),
+(14, 'https://pageofme.github.io/team1_prj301/images/aoHoodieNuXanh.jpg'),
+(15, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNamDen.jpg'),
+(15, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNamXanh.jpg'),
+(15, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNamTrang.jpg'),
+(16, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNuXanh.jpg'),
+(16, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNuTrang.jpg'),
+(16, 'https://pageofme.github.io/team1_prj301/images/aoKhoacLongNuDen.jpg'),
+(17, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNamXanh.jpg'),
+(17, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNamTrang.jpg'),
+(17, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNamDen.jpg'),
+(18, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNuDen.jpg'),
+(18, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNuTrang.jpg'),
+(18, 'https://pageofme.github.io/team1_prj301/images/aoThunDaiTayNuXanh.jpg'),
 (19, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNam.jpg'),
-(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNu.jpg'),
-(21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNam.jpg'),
+(19, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNamDen.jpg'),
+(19, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNamXanh.jpg'),
+(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuTrang.jpg'),
+(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuXanh.jpg'),
+(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuDen.jpg'),
+(21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamXanh.webp'),
+(21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamTrang.jpg'),
+(21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamDen.jpg'),
 (22, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNu.jpg'),
+(22, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNuTrang.webp'),
+(22, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNuXanh.webp'),
 (23, 'https://pageofme.github.io/team1_prj301/images/quanSoocTheThaoNam.jpeg'),
+(23, 'https://pageofme.github.io/team1_prj301/images/quanShortTheThaoNamXanh.jpg'),
+(23, 'https://pageofme.github.io/team1_prj301/images/quanShortTheThaoNamTrang.jpg'),
 (24, 'https://pageofme.github.io/team1_prj301/images/quanSoocTheThaoNu.jpg'),
+(24, 'https://pageofme.github.io/team1_prj301/images/quanShortTheThaoNuTrang.webp'),
+(24, 'https://pageofme.github.io/team1_prj301/images/quanShortTheThaoNuXanh.png'),
 (25, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNam.jpg'),
-(26, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNu.jpg'),
+(25, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNamXanh.webp'),
+(25, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNamDen.jpg'),
+(26, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNuTrang.jpg'),
+(26, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNuDen.jpg'),
+(26, 'https://pageofme.github.io/team1_prj301/images/aoLenCoCaoNuXanh.jpg'),
 (27, 'https://pageofme.github.io/team1_prj301/images/aoVestNam.jpg'),
+(27, 'https://pageofme.github.io/team1_prj301/images/aoVestNamXanh.jpg'),
+(27, 'https://pageofme.github.io/team1_prj301/images/aoVestNamTrang.webp'),
 (28, 'https://pageofme.github.io/team1_prj301/images/aoVestNu.jpg'),
-(29, 'https://pageofme.github.io/team1_prj301/images/aoCroptop.jpg'),
-(30, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNam.jpg'),
-(31, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNu.jpg'),
-(32, 'https://pageofme.github.io/team1_prj301/images/aoDaiNam.jpg'),
-(33, 'https://pageofme.github.io/team1_prj301/images/aoDaiNu.jpg'),
-(34, 'https://pageofme.github.io/team1_prj301/images/damDaHoi.jpg'),
-(35, 'https://pageofme.github.io/team1_prj301/images/damCongSo.jpg'),
+(28, 'https://pageofme.github.io/team1_prj301/images/aoVestNuDen.jpg'),
+(28, 'https://pageofme.github.io/team1_prj301/images/aoVestNuTrang.jpg'),
+(29, 'https://pageofme.github.io/team1_prj301/images/aoCroptopXanh.jpg'),
+(29, 'https://pageofme.github.io/team1_prj301/images/aoCroptopDen.webp'),
+(29, 'https://pageofme.github.io/team1_prj301/images/aoCroptopTrang.jpg'),
+(30, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNamXanh.jpg'),
+(30, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNamTrang.webp'),
+(30, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNamDen.jpeg'),
+(31, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNuDen.jpg'),
+(31, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNuTrang.jpg'),
+(31, 'https://pageofme.github.io/team1_prj301/images/aoThunNganTayNuXanh.webp'),
+(32, 'https://pageofme.github.io/team1_prj301/images/aoDaiNamXanh.jpg'),
+(32, 'https://pageofme.github.io/team1_prj301/images/aoDaiNamDen.jpg'),
+(32, 'https://pageofme.github.io/team1_prj301/images/aoDaiNamTrang.webp'),
+(33, 'https://pageofme.github.io/team1_prj301/images/aoDaiNuDen.jpg'),
+(33, 'https://pageofme.github.io/team1_prj301/images/aoDaiNuTrang.jpg'),
+(33, 'https://pageofme.github.io/team1_prj301/images/aoDaiNuXanh.webp'),
+(34, 'https://pageofme.github.io/team1_prj301/images/damDaHoiXanh.jpg'),
+(34, 'https://pageofme.github.io/team1_prj301/images/damDaHoiTrang.jpg'),
+(34, 'https://pageofme.github.io/team1_prj301/images/damDaHoiDen.png'),
+(35, 'https://pageofme.github.io/team1_prj301/images/damCongSoDen.jpg'),
+(35, 'https://pageofme.github.io/team1_prj301/images/damCongSoTrang.jpeg'),
+(35, 'https://pageofme.github.io/team1_prj301/images/damCongSoXanh.jpg'),
 (36, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNam.jpg'),
+(36, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNamDen.png'),
+(36, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNamXanh.jpg'),
 (37, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNu.jpg'),
-(38, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNam.jpg'),
-(39, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNu.jpg'),
+(37, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNuDen.jpg'),
+(37, 'https://pageofme.github.io/team1_prj301/images/aoSatNachNuTrang.jpg'),
+(38, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNamXanh.jpg'),
+(38, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNamTrang.jpg'),
+(38, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNamDen.jpg'),
+(39, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNuDen.jpg'),
+(39, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNuXanh.png'),
+(39, 'https://pageofme.github.io/team1_prj301/images/aoThunTheThaoNuTrang.webp'),
 (40, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNu.jpg'),
+(40, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNuTrang.jpg'),
+(40, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNuXanh.png'),
 (41, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNam.jpg'),
+(41, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNamXanh.jpg'),
+(41, 'https://pageofme.github.io/team1_prj301/images/quanLeggingNamTrang.jpg'),
 (42, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNam.jpg'),
+(42, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNamDen.jpg'),
+(42, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNamTrang.jpg'),
 (43, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNu.jpg'),
+(43, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNuXanh.jpg'),
+(43, 'https://pageofme.github.io/team1_prj301/images/aoSoMiKeNuTrang.webp'),
 (44, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNam.jpg'),
-(45, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNu.jpg');
+(44, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNamTrang.jpg'),
+(44, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNamDen.webp'),
+(45, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNu.jpg'),
+(45, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNuDen.jpg'),
+(45, 'https://pageofme.github.io/team1_prj301/images/aoChongNangNuTrang.jpg');
 go
 create table COLORS (
     ColorID int primary key identity(1,1),
@@ -212,11 +301,18 @@ create table COLORS (
     Description nvarchar(50)
 );
 go
+--Xem dữ liệu ảnh của product
+
+SELECT p.ProductID, p.ProductName, p.Description, p.Price, p.CreatedDate, p.CompanyID, pi.ImageURL 
+                 FROM PRODUCTS p 
+                 LEFT JOIN PRODUCTIMAGES pi ON p.ProductID = pi.ProductID
+				 ;
+go
 insert into COLORS (ColorName, Description)
 values 
 (N'Đen', N'Màu đen'),
 (N'Trắng', N'Màu trắng'),
-(N'Be', N'Màu be');
+(N'Xanh', N'Màu xanh');
 go
 create table SIZES (
     SizeID int primary key identity(1,1),
@@ -235,6 +331,7 @@ create table PRODUCTSIZECOLOR (
     ProductID int not null,
     SizeID int not null,
     ColorID int not null,
+	Price decimal(10,2) null,
     foreign key (ProductID) references PRODUCTS(ProductID) on update cascade on delete cascade, 
     foreign key (SizeID) references SIZES(SizeID) on update cascade on delete cascade,
     foreign key (ColorID) references COLORS(ColorID) on update cascade on delete cascade
@@ -552,3 +649,6 @@ BEGIN
     END
 END;
 GO
+
+
+select * from PRODUCTIMAGES pm where pm.ProductID = 23
