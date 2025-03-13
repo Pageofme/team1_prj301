@@ -6,7 +6,6 @@ package controller;
 
 import categoryDAO.CategoryDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -68,6 +67,7 @@ public class CategoryServlet extends HttpServlet {
         categorizeList = categoryDAO.categorizeProduct(categoryID);
         //categorized products list
         products = categorizeProductList(categorizeList);
+
         request.setAttribute("products", products);
         request.setAttribute("category", listCategory);
         request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);
