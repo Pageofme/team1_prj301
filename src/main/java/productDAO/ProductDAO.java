@@ -53,11 +53,13 @@ public class ProductDAO implements IProductDAO {
 
     public static void main(String[] args) {
         ProductDAO cate = new ProductDAO();
-        List<Categories> list = cate.selectAllCategory();
-        for (Categories categories : list) {
-            System.out.println("name: " + categories.getCategoryName());
-            System.out.println("description: " + categories.getDescription());
-        }
+        List<Products> listpro=cate.selectAllProducts();
+        System.out.println(listpro);
+//        List<Categories> list = cate.selectAllCategory();
+//        for (Categories categories : list) {
+//            System.out.println("name: " + categories.getCategoryName());
+//            System.out.println("description: " + categories.getDescription());
+//        }
     }
 
 }

@@ -36,10 +36,10 @@ public class CategoryDAO {
     
     public static void main(String[] args) {
         CategoryDAO c = new CategoryDAO();
-        List<ProductCategories> list = c.categorizeProduct("1");
+        List<ProductCategories> list = c.categorizeProduct("3");
         for (ProductCategories pro : list) {
             //ong noi lay thang bo lay thang con
-            System.out.println(pro.getProductID().getProductID());
+            System.out.println(pro.getProductID().getProductName());
         }
     }
 }

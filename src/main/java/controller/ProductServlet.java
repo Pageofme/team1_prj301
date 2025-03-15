@@ -42,6 +42,10 @@ public class ProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String categoryID = request.getParameter("cID"); // Lấy cID từ URL
+      
+
         List<Products> list = productDAO.selectAllProducts();
         List<Categories> listCategory = productDAO.selectAllCategory();
         //headline for debugging in tomcat log
@@ -56,11 +60,10 @@ public class ProductServlet extends HttpServlet {
 //                }
                 // checking the list of category
                 for (Categories cate : listCategory) {
-                    System.out.println("Product name: " + cate.getCategoryName() 
+                    System.out.println("Product name: " + cate.getCategoryName()
                             + "Description: " + cate.getDescription());
                 }
-
-                request.setAttribute("products", list);
+                request.setAttribute("products", list);             
                 request.setAttribute("category", listCategory);
             } else {
                 System.out.println("No products found!");

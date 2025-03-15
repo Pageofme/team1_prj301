@@ -731,6 +731,10 @@
     color: red;
      
 }
+/*.category-item__link.selected {
+    background-color: red;   Màu nền khi chọn 
+    color: white;   Màu chữ khi chọn 
+}*/
 /*Home sort*/
 .home-filter{
     background-color: rgba(0, 0, 0,0.05);

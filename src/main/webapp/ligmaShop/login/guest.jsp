@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="productDAO" class="productDAO.ProductDAO" scope="page"/> <!-- Kept as is, assumes ProductDAO is correctly implemented -->
+<jsp:useBean id="categoryDAO" class="categoryDAO.CategoryDAO" scope="page"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +75,7 @@
                             </li>
                         </ul>
                     </nav>
+                      <!--Thanh tìm kiếm--> 
                     <div class="header-with-search">
                         <label for="mobile-search-checkbox" class="header__mobile-search">
                             <i class="header__mobile-search-icon fas fa-search"></i>
@@ -100,6 +102,7 @@
                                     </li>
                                 </ul>
                             </div>
+                          
                             <form action="search" method="POST" id="submitSearch">
                                 <input hidden name="query" id="hiddenQuery"/>
                                 <button type="submit" class="header__search-btn" onClick="submitSearch()">
@@ -137,6 +140,10 @@
                     </li>
                 </ul>
             </header>
+
+            <!--Lấy dữ liệu từ database-->
+            
+
             <div class="app__container">
                 <div class="grid wide">
                     <div class="row sm-gutter app__content">
@@ -150,7 +157,7 @@
                                 <ul class="category-list">
                                     <c:forEach items="${category}" var="o">
                                         <li class="category-item">
-                                            <a href="category?cID=${o.categoryID}" class="category-item__link">${o.categoryName}</a>
+                                            <a href="category?cID=${o.categoryID}&page=1" class="category-item__link ${param.cID == o.categoryID ? 'selected' : ''}">${o.categoryName}</a>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -201,13 +208,17 @@
                                             <div class="col l-2-4 m-4 c-6">
                                                 <a class="home-product-item" href="#">
                                                     <!-- Changed to productimagesCollection to match the Products class property -->
-                                                    <c:forEach var="image" items="${product.productimagesCollection}">
-                                                        <div class="home-product-item__img" style="background-image: url('${image.imageURL}');"></div>  
-                                                    </c:forEach>
-                                                    <!-- Added fallback image if productimagesCollection is empty -->
                                                     <c:if test="${empty product.productimagesCollection}">
                                                         <div class="home-product-item__img" style="background-image: url('images/user.jpg');"></div>
                                                     </c:if>
+                                                    <c:forEach var="image" items="${product.productimagesCollection}" varStatus="status">
+                                                        <c:if test="${status.index == 0}">
+                                                            <div class="home-product-item__img" style="background-image: url('${image.imageURL}');"></div>
+                                                        </c:if>
+                                                    </c:forEach>
+
+                                                    <!-- Added fallback image if productimagesCollection is empty -->
+
                                                     <h4 class="home-product-item__name">${product.productName}</h4>
                                                     <div class="home-product-item__price">
                                                         <span class="home-product-item__price-old">${product.price + 200000}</span>
@@ -246,19 +257,19 @@
                                         <li class="pagination-item pagination-item--active">
                                             <c:if test="${currentPage > 1}">
                                                 <!-- Changed to /guest?page=... to match the servlet mapping -->
-                                                <a href="guest?page=${currentPage - 1}" class="pagination-item__link">
+                                                <a href="category?page=${currentPage - 1}&cID=${param.cID}" class="pagination-item__link">
                                                     <i class="pagination-item__icon fas fa-angle-left"></i>
                                                 </a>
                                             </c:if>
                                         </li>
                                         <li class="pagination-item">
                                             <c:forEach var="i" begin="1" end="${totalPages}">
-                                                <a href="guest?page=${i}" class="pagination-item__link">${i}</a>
+                                                <a href="category?page=${i}&cID=${param.cID}" class="pagination-item__link">${i}</a>
                                             </c:forEach>
                                         </li>
                                         <li class="pagination-item">
                                             <c:if test="${currentPage < totalPages}">
-                                                <a href="guest?page=${currentPage + 1}" class="pagination-item__link">
+                                                <a href="category?page=${currentPage + 1}&cID=${param.cID}" class="pagination-item__link">
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>
                                             </c:if>

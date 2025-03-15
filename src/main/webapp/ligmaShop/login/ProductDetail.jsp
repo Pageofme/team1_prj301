@@ -178,7 +178,7 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                 </ul>
             </header>
 
-
+    <!--Body-->
             <div class="container1">
                 <div class="product-container">
                     <!-- Ảnh sản phẩm -->
@@ -257,9 +257,9 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                         <div class="suggested-products">
                             <c:forEach var="product" items="${products}">
                                 <div class="product-card">
-                                    <a href="product-detail.jsp?id=${product.id}">
-                                        <img src="${product.images[0].imageUrl}" alt="${product.name}">
-                                        <p class="product-name">${product.name}</p>
+                                    <a href="product-detail.jsp?id=${product.productID}">
+                                    <img src="${product.productimagesCollection[0].imageURL}" alt="${product.productName}">                                                 
+                                        <p class="product-name">${product.productName}</p>
                                         <p class="rating">★★★★☆ (1 Review)</p>
                                         <p class="product-categories">${product.description}</p>
                                         <p class="product-price">${product.price}</p>

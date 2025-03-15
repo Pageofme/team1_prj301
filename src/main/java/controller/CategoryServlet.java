@@ -55,6 +55,8 @@ public class CategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String categoryID = request.getParameter("cID");
+      
+        
         if (categoryID == null) {
             response.getWriter().println("Invalid category ID");
             return;

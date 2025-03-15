@@ -34,7 +34,7 @@ public class SearchServlet extends HttpServlet {
         for (Products p : productList) {
             System.out.println(p.getProductName()); // Ensure products are being retrieved
         }
-        request.getRequestDispatcher("ligmaShop/login/searchResult.jsp").forward(request, response);
+        request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
