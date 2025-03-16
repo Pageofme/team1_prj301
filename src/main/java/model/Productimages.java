@@ -124,7 +124,7 @@ public class Productimages implements Serializable
     @Override
     public String toString()
     {
-        return "model.Productimages[ imageID=" + imageID + " ]";
+        return "model.Productimages[ imageID=" + imageID + ", imageURL "+imageURL+" ]";
     }
     
 }

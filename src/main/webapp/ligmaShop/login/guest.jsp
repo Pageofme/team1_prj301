@@ -202,11 +202,13 @@
                                     <c:if test="${empty products}">
                                         <p style="text-align: center; color: red;">No products available.</p>
                                     </c:if>
+                                      <!--Chạy in ra tất cả sản phẩm-->
                                     <c:forEach var="product" items="${products}" varStatus="status">
                                         <!-- Changed test to use end instead of start + pageSize for consistency -->
                                         <c:if test="${status.index >= start && status.index < end}">
                                             <div class="col l-2-4 m-4 c-6">
-                                                <a class="home-product-item" href="#">
+                                                <!--Link để vào trang productDetailServlet-->
+                                                <a class="home-product-item" href="productDetail?pID=${product.productID}">
                                                     <!-- Changed to productimagesCollection to match the Products class property -->
                                                     <c:if test="${empty product.productimagesCollection}">
                                                         <div class="home-product-item__img" style="background-image: url('images/user.jpg');"></div>

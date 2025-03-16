@@ -2,39 +2,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="productDAO" class="productDAO.ProductDAO" scope="page"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-
-<!--Xử lí ảnh và thông sản phẩm chính ở dòng 182 đến 248-->
-<!--nếu muốn thay đổi giá cả theo size thì file js tên productDetails.js
-hiện tại đang để giá tăng giảm 5% cho mỗi size-->
-<!--hiện đang thiếu ảnh màu sắc khác của từng sản phẩm nên là gắn đại ảnh với giá cả các thứ đọ-->
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LigMa Shop</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/styleProductDetails.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/base.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/grid.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/main.css">
-        <link rel="shortcut icon" href="${pageContext.request.contextPath}/resource/images/logoLigma.png" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <style>
-            .home-product-item__img{
-                height: 20px;
-                aspect-ratio: 1 / 1;
-                background-size: cover;
-                background-position: center;
-                border-radius: 5px;
+        <title>LigmaShop</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/grid.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/logoLigma.png" />
+        <script>
+            function previewAvatar(event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('avatarPreview');
+                    output.style.backgroundImage = "url('" + reader.result + "')";
+                };
+                reader.readAsDataURL(event.target.files[0]);
             }
-        </style>
+        </script>
     </head>
 
-    <body>
 
-        <div class="app"> 
+    <body>
+        <div class="app">
             <header class="header">
                 <div class="grid wide">
                     <nav class="header__navbar hide-on-mobile-tablet">
@@ -80,28 +75,31 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                                 </a>
                             </li>
 
-                            <!--Người dùng chưa đăng kí và đăng nhập tài khoản-->
-
-                            <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
-                                <a href="${pageContext.request.contextPath}/ligmaShop/register.jsp" >Đăng kí</a>
-                            </li>
-
-                            <li class="header__navbar-item header__navbar-item--strong">
-                                <a href="${pageContext.request.contextPath}/ligmaShop/signIn.jsp" >Đăng nhập</a>
-                            </li> 
 
                             <!--Người dùng đã đăng nhập-->
                             <!--                        <li class="header__navbar-item header__navbar-user">
                                                         <img src="images/user.jpg" alt="" class="header__navbar-user-img">
                                                         <span class="header__navbar-user-name">LigmaShop</span>-->
-                            <ul class="header__navbar-user-menu">
-                                <li class="header__navbar-user-item">
-                                    <a href="">Hồ sơ của tôi</a>
-                                </li>
-                                <li class="header__navbar-user-item">
-                                    <a href="">Đăng Xuất</a>
-                                </li>
-                            </ul>
+                            <li class="header__navbar-item header__navbar-user">
+                                <img src="${pageContext.request.contextPath}/images/user.jpg" alt="hello" class="header__navbar-user-img">
+                                <span class="header__navbar-user-name">LigmaShop</span>
+                                <ul class="header__navbar-user-menu">
+                                    <li class="header__navbar-user-item">
+                                        <a href="${pageContext.request.contextPath}/ligmaShop/adminPage.jsp">Quản lý sản phẩm</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Hồ sơ của tôi</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Vip</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Cài Đặt</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="${pageContext.request.contextPath}/ligmaShop/guest.jsp">Đăng Xuất</a>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
@@ -112,12 +110,11 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                             <i class="header__mobile-search-icon fas fa-search"></i>
                         </label>
                         <div class="header__logo">
-                            <a href="${pageContext.request.contextPath}/ligmaShop/guest.jsp">
-                                <img src="${pageContext.request.contextPath}/images/LIGMA SHOP WHITE ON BLACK.png" alt="" class="header__logo-img">
-                            </a>
+                            <a href="${pageContext.request.contextPath}/ligmaShop/user.jsp" ><img src="${pageContext.request.contextPath}/images/LIGMA SHOP WHITE ON BLACK.png" alt="" class="header__logo-img"></a>
                         </div>
 
                         <input type="checkbox" hidden id="mobile-search-checkbox" class="header__search-checkbox">
+
                         <div class="header__search">
                             <div class="header__search-input-wrap">
 
@@ -162,7 +159,7 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
 
                                 <!--                            No cart: header__cart--no-cart-->
                                 <div class="header__cart-list header__cart--no-cart">
-                                    <img src="${pageContext.request.contextPath}/images/no-cart.jpg" alt="" class="header__cart-no-cart-img">
+                                    <img src="images/no-cart.jpg" alt="" class="header__cart-no-cart-img">
 
                                 </div>
                             </div>
@@ -186,104 +183,137 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                     </li>    
                 </ul>
             </header>
+            <div class="app__container">
+                <div class="grid wide">
+                    <div class="row sm-gutter app__content">
+                        <div class="col l-2 m-0 c-0">
+                            <nav class="category">
+                                <h3 class="category__heading">
+                                    <i class="category__heading-icon fa-solid fa-list"></i>
+                                    Tài Khoản Của Tôi
+                                </h3>
+                                <ul class="category-list">
+                                    <li class="category-item category-item--active">
+                                        <a href="${pageContext.request.contextPath}/ligmaShop/profilePage.jsp" class="category-item__link">Hồ Sơ Cá Nhân</a>
+                                    </li>
+                                    <li class="category-item">
+                                        <a href="" class="category-item__link">Sản Phẩm Đã Mua</a>
+                                    </li>
+                                    <li class="category-item">
+                                        <a href="${pageContext.request.contextPath}/ligmaShop/changePassPage.jsp" class="category-item__link">Đổi Mật Khẩu</a>
+                                    </li>
 
-            <!--Body-->
-            <%
-                request.setAttribute("products", productDAO.selectAllProducts());
-            %>
-            <!-- Thông tin sản phẩm -->
-            <c:set var="product" value="${singleProduct}" />
-            <div class="container1">
-                <div class="product-container">
-                    <!-- Ảnh sản phẩm -->
-                    <div class="image-container-box">
-                        <div class="product-image-container">
-                            <div class="product-image">
-                                <img id="mainImage" src="${product.productimagesCollection[0].imageURL}" alt="Backrest Biotec Dental Equipment">
-                            </div>
-                            <div class="image-overlay">
-                                <span class="close-btn">&times;</span>
-                                <img class="full-image" src="" alt="Ảnh đầy đủ">
-                            </div>
-                            <!-- Ảnh nhỏ bên dưới -->
-                            <div class="image-box">
-                                <div class="additional-images">
-                                    <c:forEach var="image" items="${product.productimagesCollection}" varStatus="status">
-                                        <image class="thumbnail" src="${image.imageURL}" >                                                                              
-                                    </c:forEach>
-
-                                </div>               
-                            </div>
+                                </ul>
+                            </nav>
                         </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Lấy đường dẫn hiện tại, chỉ lấy phần pathname để tránh lỗi so khớp URL đầy đủ
+                                let currentPath = window.location.pathname;
 
-                    </div>
+                                // Lấy tất cả các thẻ <a> trong menu
+                                let links = document.querySelectorAll(".category-item__link");
 
-                    <div class="product-info">
-                        <div class="labels">
-                            <span class="label-sale">SALE</span>
-                            <span class="label-hot">HOT</span>
-                            <span class="label-in-stock">IN STOCK</span>
-                        </div>
-                        <h1 var="product">${product.productName}</h1>
-                        <p class="rating">★★★★★ (1k Review)</p>
-                        <div class="features">
-                            <ul>
-                                <li>${product.description}</li>
+                                links.forEach(link => {
+                                    // Lấy đường dẫn của link (chỉ phần pathname)
+                                    let linkPath = new URL(link.href, window.location.origin).pathname;
 
-                            </ul>
-                        </div>
-                        <div class="price">
-                            <span>${product.price}</span>
-                            <span class="original-price">${product.price+100000}</span>
-                        </div>
+                                    // Kiểm tra nếu đường dẫn trang hiện tại khớp với đường dẫn của link
+                                    if (currentPath === linkPath) {
+                                        // Xóa class active của tất cả
+                                        document.querySelectorAll(".category-item").forEach(item => {
+                                            item.classList.remove("category-item--active");
+                                        });
 
-                        <div class="size-selector">
-                            <button class="size-option selected" data-size="M" data-price="${product.price}">M</button>
-                            <button class="size-option" data-size="L" data-price="${product.price +50000}">L</button>
-                            <button class="size-option" data-size="XL" data-price="${product.price +80000}">XL</button>
+                                        // Thêm class active vào <li> chứa link hiện tại
+                                        link.parentElement.classList.add("category-item--active");
+                                    }
+                                });
+                            });
 
-                        </div>
-                        <div class="quantity-box">
-                            <button class="decrease">-</button>
-                            <input type="text" value="1" readonly>
-                            <button class="increase">+</button>
-                        </div>
-                        <div class="button-container">
-                            <button class="btn-add">
-                                <i class="fas fa-shopping-cart"></i> Thêm Vào Giỏ
-                            </button>
-                            <button class="btn-add1">Mua Ngay</button>
-                        </div>
+                        </script>
+                        <!--                    </div>-->
 
-                    </div>
-                </div>
+                        <!--                                <div class="row sm-gutter">
+                                                                    Product item
+                                                                    <div class="col l-2-4 m-4 c-6">-->
+                        <!--<div class="row sm-gutter">
+                        <div class="col l-2-4 m-4 c-6">-->
+                        <!--<div class="profile-container">-->
+                        <div class="container-profile">
+                            <div class="form-container">
+                                <!-- Phần nội dung form -->
+                                <div class="form-content">
+                                    <form action="profile" method="post" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label class="text-form" for="username">Tên đăng nhập</label>
+                                            <input type="text" id="username" name="username" value="${username}" readonly>
+                                        </div>
 
-                <hr class="separator">
+                                        <div class="form-group">
+                                            <label class="text-form" for="name">Tên</label>
+                                            <input type="text" id="name" name="name" value="${name}" required>
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label class="text-form" for="email">Email</label>
+                                            <input type="email" id="email" name="email" value="${email}" required>
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label class="text-form" for="phone">Số điện thoại</label>
+                                            <input type="text" id="phone" name="phone" value="${phone}" required>
+                                        </div>
 
-                <div class="container2">
-                    <h2>Có thể bạn sẽ thích</h2>
-                    <div class="suggested-products-wrapper">
-                        <button class="scroll-btn left" onclick="scrollLeft()">&#10094;</button>
-                        <div class="suggested-products">
-                            <c:forEach var="product" items="${products}">
-                                <div class="product-card">
-                                    <!--Sản phẩm gợi ý-->
-                                    <a href="productDetail?pID=${product.productID}">
-                                        <img src="${product.productimagesCollection[0].imageURL}" alt="${product.productName}">                                                 
-                                        <p class="product-name">${product.productName}</p>
-                                        <p class="rating">★★★★☆ (1M Review)</p>
-                                        <p class="product-categories">${product.description}</p>
-                                        <p class="product-price">${product.price}</p>
-                                    </a>
+                                        <div class="form-group">
+                                            <label class="text-form">Giới tính</label>
+                                            <div class="gender-group">
+                                                <label><input type="radio" name="gender" value="Nam" ${gender == 'Nam' ? 'checked' : ''}> Nam</label>
+                                                <label><input type="radio" name="gender" value="Nữ" ${gender == 'Nữ' ? 'checked' : ''}> Nữ</label>
+                                                <label><input type="radio" name="gender" value="Khác" ${gender == 'Khác' ? 'checked' : ''}> Khác</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="text-form" for="dateOfBirth">Ngày sinh</label>
+                                            <input type="date" id="dateOfBirth" name="dateOfBirth" value="${dateOfBirth}" required>
+                                        </div>
+
+                                        <!-- Thêm mục địa chỉ -->
+                                        <div class="form-group">
+                                            <label class="text-form">Địa chỉ</label>
+                                            <div class="address-group">
+                                                <input type="text" id="detail" name="detail" value="${detail}" placeholder="Số nhà, tên đường..." required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit">Lưu</button>
+                                        </div>
+                                    </form>
+
+                                    <% if (request.getAttribute("message") != null) { %>
+                                    <p class="success"><%= request.getAttribute("message") %></p>
+                                    <% } %>
+                                    <% if (request.getAttribute("error") != null) { %>
+                                    <p class="error"><%= request.getAttribute("error") %></p>
+                                    <% } %>
                                 </div>
-                            </c:forEach>
+
+                                <!-- Phần chọn ảnh avatar -->
+                                <div class="avatar-container">
+                                    <div id="avatarPreview" class="avatar" style="background-image: url('${avatarUrl != null ? avatarUrl : "https://via.placeholder.com/150"}');"></div>
+                                    <label for="avatar">Chọn ảnh đại diện:</label>
+                                    <input type="file" id="avatar" name="avatar" accept=".jpg, .jpeg, .png" onchange="previewAvatar(event)">
+                                    <p style="font-size: 12px; color: #666;">Dung lượng tối đa 1MB, định dạng .JPEG, .PNG</p>
+                                </div>
+                            </div>
                         </div>
-                        <button class="scroll-btn right" onclick="scrollRight()">&#10095;</button>
+
                     </div>
                 </div>
             </div>
+
 
             <footer class="footer">
                 <div class="grid wide">
@@ -357,6 +387,5 @@ hiện tại đang để giá tăng giảm 5% cho mỗi size-->
                 </div>
             </footer>
         </div>
-        <script src="${pageContext.request.contextPath}/resource/js/productDetails.js"></script>
     </body>
 </html>
