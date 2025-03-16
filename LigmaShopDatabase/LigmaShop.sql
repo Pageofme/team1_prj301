@@ -9,18 +9,19 @@ create table USERS (
     Password varchar(255) not null,
     PhoneNumber varchar(15),
     Address nvarchar(100),
-    Role varchar(10) check (Role in ('user','admin'))
+    Role varchar(10) check (Role in ('user','admin')),
+	Status bit default 1 --Thêm status để xóa mềm 
 );
 go
-insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role)
+insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role,Status)
 values 
-(N'Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', N'Hanoi', 'admin'),
-(N'Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', N'HCM City', 'admin'),
-(N'Le Van C', 'levanc@example.com', 'password102', '0911223344', N'Da Nang', 'user'),
-(N'Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', N'Hue', 'user'),
-(N'Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', N'Can Tho', 'user'),
-(N'Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', N'Hai Phong', 'user'),
-(N'Vu Van G', 'vuvang@example.com', 'password106', '0945566778', N'Quang Ninh', 'user');
+(N'Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', N'Hanoi', 'admin',1),
+(N'Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', N'HCM City', 'admin',1),
+(N'Le Van C', 'levanc@example.com', 'password102', '0911223344', N'Da Nang', 'user',1),
+(N'Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', N'Hue', 'user',1),
+(N'Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', N'Can Tho', 'user',1),
+(N'Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', N'Hai Phong', 'user',1),
+(N'Vu Van G', 'vuvang@example.com', 'password106', '0945566778', N'Quang Ninh', 'user',1);
 go
 select * from Users
 go
@@ -66,56 +67,59 @@ create table PRODUCTS (
     Description nvarchar(500),
 	Price decimal(10,2) not null,
     CreatedDate date not null,
-	CompanyID int foreign key (CompanyID) references COMPANY(CompanyID) on delete cascade on update cascade
+	Discount int, --Thêm giảm giá trên từng sản phẩm
+	Status bit default 1, --Thêm status để xóa mềm 
+	CompanyID int foreign key (CompanyID) references COMPANY(CompanyID) on delete cascade on update cascade,
+	Rating numeric(2,1) null default 0 --Thêm rating trên từng sản phẩm tính toán trung bình cộng rating trong table review
 );
 go
-insert into PRODUCTS (ProductName, Description, Price, CreatedDate, CompanyID)
+insert into PRODUCTS (ProductName, Description, Price, CreatedDate,Discount, CompanyID)
 values
-(N'Áo sơ mi Nam', N'Áo sơ mi nam cao cấp', 150000.00,'2025-01-01',1),
-(N'Áo sơ mi Nữ', N'Áo sơ mi nữ thanh lịch', 140000.00,'2025-01-01',1),
-(N'Áo khoác Nam', N'Áo khoác nam thời trang', 250000.00,'2025-01-01',1),
-(N'Áo khoác Nữ', N'Áo khoác nữ đẹp', 240000.00, '2025-01-01',1),
-(N'Áo len Nam', N'Áo len ấm áp cho nam', 200000.00,'2025-01-01',1),
-(N'Áo len Nữ', N'Áo len dày cho nữ', 190000.00, '2025-01-01',1),
-(N'Quần jeans Nam', N'Quần jeans nam thời trang', 300000.00,'2025-01-01',1),
-(N'Quần jeans Nữ', N'Quần jeans nữ phong cách', 290000.00, '2025-01-01',1),
-(N'Quần kaki Nam', N'Quần kaki cho nam lịch lãm', 220000.00, '2025-01-01',1),
-(N'Quần kaki Nữ', N'Quần kaki nữ xinh xắn', 210000.00,'2025-01-01',1),
-(N'Quần short Nam', N'Quần short cho nam trẻ trung', 180000.00, '2025-01-01',1),
-(N'Quần short Nữ', N'Quần short cho nữ năng động', 170000.00, '2025-01-01',2),
-(N'Áo hoodie Nam', N'Áo hoodie cho nam thoải mái', 250000.00,  '2025-01-01',2),
-(N'Áo hoodie Nữ', N'Áo hoodie nữ dễ thương', 220000.00, '2025-01-01',2),
-(N'Áo khoác lông Nam', N'Áo khoác lông cho nam sang trọng', 35000.00, '2025-01-01',2),
-(N'Áo khoác lông Nữ', N'Áo khoác lông cho nữ ấm áp', 340000.00,  '2025-01-01',2),
-(N'Áo thun dài tay Nam', N'Áo thun dài tay nam mùa đông', 160000.00, '2025-01-01',2),
-(N'Áo thun dài tay Nữ', N'Áo thun dài tay nữ mùa đông', 150000.00, '2025-01-01',2),
-(N'Áo sơ mi họa tiết Nam', N'Áo sơ mi họa tiết nam thời trang', 170000.00,  '2025-01-01',2),
-(N'Áo sơ mi họa tiết Nữ', N'Áo sơ mi họa tiết nữ thanh lịch', 160000.00, '2025-01-01',2),
-(N'Áo khoác dáng dài Nam', N'Áo khoác dáng dài cho nam', 400000.00,  '2025-01-01',2),
-(N'Áo khoác dáng dài Nữ', N'Áo khoác dáng dài cho nữ', 450000.00,  '2025-01-01',2),
-(N'Quần sooc thể thao Nam', N'Quần sooc thể thao nam', 120000.00,  '2025-01-01',2),
-(N'Quần sooc thể thao Nữ', N'Quần sooc thể thao nữ', 110000.00, '2025-01-01',2),
-(N'Áo len cổ cao Nam', N'Áo len cổ cao nam', 200000.00,  '2025-01-01',3),
-(N'Áo len cổ cao Nữ', N'Áo len cổ cao nữ', 190000.00, '2025-01-01',3),
-(N'Áo vest Nam', N'Áo vest nam thanh lịch', 1500000.00, '2025-01-01',3),
-(N'Áo vest Nữ', N'Áo vest nữ duyên dáng', 1200000.00, '2025-01-01',3),
-(N'Áo croptop Nữ', N'Áo croptop cho nữ', 800000.00,  '2025-01-01',3),
-(N'Áo thun ngắn tay Nam', N'Áo thun ngắn tay cho nam', 85000.00, '2025-01-01',3),
-(N'Áo thun ngắn tay Nữ', N'Áo thun ngắn tay cho nữ', 75000.00, '2025-01-01',3),
-(N'Áo dài Nam', N'Áo dài nam truyền thống', 300000.00,  '2025-01-01',3),
-(N'Áo dài Nữ', N'Áo dài nữ truyền thống', 280000.00, '2025-01-01',3),
-(N'Đầm dạ hội Nữ', N'Đầm dạ hội nữ sang trọng', 500000.00,  '2025-01-01',3),
-(N'Đầm công sở Nữ', N'Đầm công sở nữ thanh lịch', 450000.00,  '2025-01-01',3),
-(N'Áo sát nách Nam', N'Áo sát nách nam', 70000.00, '2025-01-01',4),
-(N'Áo sát nách Nữ', N'Áo sát nách nữ', 60000.00,  '2025-01-01',4),
-(N'Áo thun thể thao Nam', N'Áo thun thể thao nam', 130000.00,  '2025-01-01',4),
-(N'Áo thun thể thao Nữ', N'Áo thun thể thao nữ', 120000.00, '2025-01-01',4),
-(N'Quần legging Nữ', N'Quần legging nữ', 100000.00,  '2025-01-01',4),
-(N'Quần legging Nam', N'Quần legging nam', 190000.00, '2025-01-01',4),
-(N'Áo sơ mi kẻ Nam', N'Áo sơ mi kẻ nam', 180000.00,  '2025-01-01',4),
-(N'Áo sơ mi kẻ Nữ', N'Áo sơ mi kẻ nữ', 170000.00,  '2025-01-01',4),
-(N'Áo chống nắng Nam', N'Áo chống nắng nam', 140000.00, '2025-01-01',4),
-(N'Áo chống nắng Nữ', N'Áo chống nắng nữ', 330000.00, '2025-01-01',4);
+(N'Áo sơ mi Nam', N'Áo sơ mi nam cao cấp', 150000.00,'2025-01-01',10,1),
+(N'Áo sơ mi Nữ', N'Áo sơ mi nữ thanh lịch', 140000.00,'2025-01-01',10,1),
+(N'Áo khoác Nam', N'Áo khoác nam thời trang', 250000.00,'2025-01-01',10,1),
+(N'Áo khoác Nữ', N'Áo khoác nữ đẹp', 240000.00, '2025-01-01',10,1),
+(N'Áo len Nam', N'Áo len ấm áp cho nam', 200000.00,'2025-01-01',10,1),
+(N'Áo len Nữ', N'Áo len dày cho nữ', 190000.00, '2025-01-01',10,1),
+(N'Quần jeans Nam', N'Quần jeans nam thời trang', 300000.00,'2025-01-01',10,1),
+(N'Quần jeans Nữ', N'Quần jeans nữ phong cách', 290000.00, '2025-01-01',10,1),
+(N'Quần kaki Nam', N'Quần kaki cho nam lịch lãm', 220000.00, '2025-01-01',10,1),
+(N'Quần kaki Nữ', N'Quần kaki nữ xinh xắn', 210000.00,'2025-01-01',10,1),
+(N'Quần short Nam', N'Quần short cho nam trẻ trung', 180000.00, '2025-01-01',10,1),
+(N'Quần short Nữ', N'Quần short cho nữ năng động', 170000.00, '2025-01-01',10,2),
+(N'Áo hoodie Nam', N'Áo hoodie cho nam thoải mái', 250000.00,  '2025-01-01',10,2),
+(N'Áo hoodie Nữ', N'Áo hoodie nữ dễ thương', 220000.00, '2025-01-01',10,2),
+(N'Áo khoác lông Nam', N'Áo khoác lông cho nam sang trọng', 35000.00, '2025-01-01',10,2),
+(N'Áo khoác lông Nữ', N'Áo khoác lông cho nữ ấm áp', 340000.00,  '2025-01-01',10,2),
+(N'Áo thun dài tay Nam', N'Áo thun dài tay nam mùa đông', 160000.00, '2025-01-01',10,2),
+(N'Áo thun dài tay Nữ', N'Áo thun dài tay nữ mùa đông', 150000.00, '2025-01-01',10,2),
+(N'Áo sơ mi họa tiết Nam', N'Áo sơ mi họa tiết nam thời trang', 170000.00,  '2025-01-01',10,2),
+(N'Áo sơ mi họa tiết Nữ', N'Áo sơ mi họa tiết nữ thanh lịch', 160000.00, '2025-01-01',10,2),
+(N'Áo khoác dáng dài Nam', N'Áo khoác dáng dài cho nam', 400000.00,  '2025-01-01',10,2),
+(N'Áo khoác dáng dài Nữ', N'Áo khoác dáng dài cho nữ', 450000.00,  '2025-01-01',10,2),
+(N'Quần sooc thể thao Nam', N'Quần sooc thể thao nam', 120000.00,  '2025-01-01',10,2),
+(N'Quần sooc thể thao Nữ', N'Quần sooc thể thao nữ', 110000.00, '2025-01-01',10,2),
+(N'Áo len cổ cao Nam', N'Áo len cổ cao nam', 200000.00,  '2025-01-01',10,3),
+(N'Áo len cổ cao Nữ', N'Áo len cổ cao nữ', 190000.00, '2025-01-01',10,3),
+(N'Áo vest Nam', N'Áo vest nam thanh lịch', 1500000.00, '2025-01-01',10,3),
+(N'Áo vest Nữ', N'Áo vest nữ duyên dáng', 1200000.00, '2025-01-01',15,3),
+(N'Áo croptop Nữ', N'Áo croptop cho nữ', 800000.00,  '2025-01-01',15,3),
+(N'Áo thun ngắn tay Nam', N'Áo thun ngắn tay cho nam', 85000.00, '2025-01-01',15,3),
+(N'Áo thun ngắn tay Nữ', N'Áo thun ngắn tay cho nữ', 75000.00, '2025-01-01',15,3),
+(N'Áo dài Nam', N'Áo dài nam truyền thống', 300000.00,  '2025-01-01',15,3),
+(N'Áo dài Nữ', N'Áo dài nữ truyền thống', 280000.00, '2025-01-01',15,3),
+(N'Đầm dạ hội Nữ', N'Đầm dạ hội nữ sang trọng', 500000.00,  '2025-01-01',15,3),
+(N'Đầm công sở Nữ', N'Đầm công sở nữ thanh lịch', 450000.00,  '2025-01-01',15,3),
+(N'Áo sát nách Nam', N'Áo sát nách nam', 70000.00, '2025-01-01',15,4),
+(N'Áo sát nách Nữ', N'Áo sát nách nữ', 60000.00,  '2025-01-01',15,4),
+(N'Áo thun thể thao Nam', N'Áo thun thể thao nam', 130000.00,  '2025-01-01',15,4),
+(N'Áo thun thể thao Nữ', N'Áo thun thể thao nữ', 120000.00, '2025-01-01',15,4),
+(N'Quần legging Nữ', N'Quần legging nữ', 100000.00,  '2025-01-01',15,4),
+(N'Quần legging Nam', N'Quần legging nam', 190000.00, '2025-01-01',15,4),
+(N'Áo sơ mi kẻ Nam', N'Áo sơ mi kẻ nam', 180000.00,  '2025-01-01',15,4),
+(N'Áo sơ mi kẻ Nữ', N'Áo sơ mi kẻ nữ', 170000.00,  '2025-01-01',20,4),
+(N'Áo chống nắng Nam', N'Áo chống nắng nam', 140000.00, '2025-01-01',20,4),
+(N'Áo chống nắng Nữ', N'Áo chống nắng nữ', 330000.00, '2025-01-01',20,4);
 
 create table ProductCategories (
     ProductCategoryID int primary key identity(1,1),
@@ -144,6 +148,7 @@ ON (
 	OR (c.CategoryName = N'Thời trang mùa đông' AND (p.ProductName LIKE N'%len%' OR p.ProductName LIKE N'%hoodie%'  OR p.ProductName LIKE N'%khoác lông%' OR p.ProductName LIKE N'%jeans%' OR p.ProductName LIKE N'%dài tay%' OR p.ProductName LIKE N'%dáng dài%'))
 	OR (c.CategoryName = N'Thời trang mùa hè' AND (p.ProductName LIKE N'%sơ mi%' OR p.ProductName LIKE N'%short%'  OR p.ProductName LIKE N'%croptop%' OR p.ProductName LIKE N'%ngắn tay%' OR p.ProductName LIKE N'%chống nắng%' ))
 );
+
 go
 create table PRODUCTIMAGES (
     ImageID int primary key identity(1,1),
@@ -368,7 +373,61 @@ values
 (5, '2025-01-01'),
 (6, '2025-01-02'),
 (7, '2025-01-01'),
-(7, '2025-01-03');
+(7, '2025-01-03'),
+(1, '2025-01-01'),
+(1, '2025-01-01'),
+(2, '2025-01-01'),
+(2, '2025-01-01'),
+(2, '2025-01-05'),
+(2, '2025-01-06'),
+(3, '2025-01-07'),
+(3, '2025-01-07'),
+(4, '2025-01-07'),
+(4, '2025-01-08'),
+(5, '2025-01-01'),
+(6, '2025-01-02'),
+(7, '2025-01-01'),
+(7, '2025-01-03'),
+(1, '2025-01-01'),
+(1, '2025-01-01'),
+(1, '2025-01-07'),
+(2, '2025-01-01'),
+(2, '2025-01-01'),
+(2, '2025-01-05'),
+(2, '2025-01-06'),
+(3, '2025-01-07'),
+(3, '2025-01-07'),
+(4, '2025-01-07'),
+(4, '2025-01-08'),
+(5, '2025-01-01'),
+(5, '2025-01-05'),
+(6, '2025-01-02'),
+(6, '2025-01-04'),
+(6, '2025-01-08'),
+(7, '2025-01-01'),
+(7, '2025-01-03'),
+(7, '2025-01-07'),
+(1, '2025-01-02'),
+(1, '2025-01-03'),
+(1, '2025-01-04'),
+(1, '2025-01-06'),
+(1, '2025-01-08'),
+(2, '2025-01-02'),
+(2, '2025-01-03'),
+(2, '2025-01-04'),
+(2, '2025-01-08'),
+(3, '2025-01-02'),
+(3, '2025-01-03'),
+(3, '2025-01-04'),
+(3, '2025-01-06'),
+(3, '2025-01-08'),
+(4, '2025-01-02'),
+(4, '2025-01-03'),
+(4, '2025-01-05'),
+(5, '2025-01-02'),
+(5, '2025-01-04'),
+(5, '2025-01-06'),
+(5, '2025-01-08');
 go
 create table CARTITEMS (
     CartItemID int primary key identity(1,1),
@@ -382,6 +441,286 @@ create table CARTITEMS (
 go
 --Thêm dữ liệu bảng CartItem
 INSERT INTO CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
+VALUES
+(1, 1, 2, '2025-01-01'),
+(1, 2, 1, '2025-01-01'),
+(1, 3, 1, '2025-01-01'),
+(1, 4, 3, '2025-01-01'),
+(1, 5, 1, '2025-01-01'),
+(2, 6, 2, '2025-01-02'),
+(2, 7, 1, '2025-01-02'),
+(2, 8, 3, '2025-01-02'),
+(2, 9, 1, '2025-01-02'),
+(2, 10, 2, '2025-01-02'),
+(3, 11, 2, '2025-01-03'),
+(3, 12, 1, '2025-01-03'),
+(3, 13, 1, '2025-01-03'),
+(3, 14, 2, '2025-01-03'),
+(4, 15, 3, '2025-01-04'),
+(4, 16, 2, '2025-01-04'),
+(4, 17, 1, '2025-01-04'),
+(5, 18, 2, '2025-01-05'),
+(5, 19, 1, '2025-01-05'),
+(5, 20, 3, '2025-01-05'),
+(5, 21, 1, '2025-01-05'),
+(6, 22, 2, '2025-01-06'),
+(6, 23, 1, '2025-01-06'),
+(6, 24, 3, '2025-01-06'),
+(6, 25, 1, '2025-01-06'),
+(7, 26, 3, '2025-01-07'),
+(7, 27, 2, '2025-01-07'),
+(7, 28, 1, '2025-01-07'),
+(7, 29, 2, '2025-01-07'),
+(7, 30, 1, '2025-01-07'),
+(8, 1, 2, '2025-01-01'),
+(8, 2, 1, '2025-01-01'),
+(8, 3, 1, '2025-01-01'),
+(8, 4, 3, '2025-01-01'),
+(9, 6, 2, '2025-01-02'),
+(9, 7, 1, '2025-01-02'),
+(9, 8, 3, '2025-01-02'),
+(9, 9, 1, '2025-01-02'),
+(10, 11, 2, '2025-01-03'),
+(10, 12, 1, '2025-01-03'),
+(10, 13, 1, '2025-01-03'),
+(10, 14, 2, '2025-01-03'),
+(11, 15, 3, '2025-01-04'),
+(11, 16, 2, '2025-01-04'),
+(11, 17, 1, '2025-01-04'),
+(12, 18, 2, '2025-01-05'),
+(12, 19, 1, '2025-01-05'),
+(12, 20, 3, '2025-01-05'),
+(12, 21, 1, '2025-01-05'),
+(13, 22, 2, '2025-01-06'),
+(13, 23, 1, '2025-01-06'),
+(13, 24, 3, '2025-01-06'),
+(13, 25, 1, '2025-01-06'),
+(14, 26, 3, '2025-01-07'),
+(14, 27, 2, '2025-01-07'),
+(14, 28, 1, '2025-01-07'),
+(14, 29, 2, '2025-01-07'),
+(14, 30, 1, '2025-01-07'),
+(15, 1, 2, '2025-01-01'),
+(15, 2, 1, '2025-01-01'),
+(15, 3, 1, '2025-01-01'),
+(15, 4, 3, '2025-01-01'),
+(16, 6, 2, '2025-01-02'),
+(16, 7, 1, '2025-01-02'),
+(16, 8, 3, '2025-01-02'),
+(16, 9, 1, '2025-01-02'),
+(17, 11, 2, '2025-01-03'),
+(17, 12, 1, '2025-01-03'),
+(17, 13, 1, '2025-01-03'),
+(17, 14, 2, '2025-01-03'),
+(18, 15, 3, '2025-01-04'),
+(18, 16, 2, '2025-01-04'),
+(18, 17, 1, '2025-01-04'),
+(19, 18, 2, '2025-01-05'),
+(19, 19, 1, '2025-01-05'),
+(19, 20, 3, '2025-01-05'),
+(19, 21, 1, '2025-01-05'),
+(20, 22, 2, '2025-01-06'),
+(20, 23, 1, '2025-01-06'),
+(20, 24, 3, '2025-01-06'),
+(20, 25, 1, '2025-01-06'),
+(21, 26, 3, '2025-01-07'),
+(21, 27, 2, '2025-01-07'),
+(21, 28, 1, '2025-01-07'),
+(21, 29, 2, '2025-01-07'),
+(21, 30, 1, '2025-01-07'),
+(22, 1, 2, '2025-01-01'),
+(22, 2, 1, '2025-01-01'),
+(22, 3, 1, '2025-01-01'),
+(22, 4, 3, '2025-01-01'),
+(23, 6, 2, '2025-01-02'),
+(23, 7, 1, '2025-01-02'),
+(23, 8, 3, '2025-01-02'),
+(23, 9, 1, '2025-01-02'),
+(24, 11, 2, '2025-01-03'),
+(24, 12, 1, '2025-01-03'),
+(24, 13, 1, '2025-01-03'),
+(24, 14, 2, '2025-01-03'),
+(25, 15, 3, '2025-01-04'),
+(25, 16, 2, '2025-01-04'),
+(25, 17, 1, '2025-01-04'),
+(26, 18, 2, '2025-01-05'),
+(26, 19, 1, '2025-01-05'),
+(26, 20, 3, '2025-01-05'),
+(26, 21, 1, '2025-01-05'),
+(27, 22, 2, '2025-01-06'),
+(27, 23, 1, '2025-01-06'),
+(27, 24, 3, '2025-01-06'),
+(27, 25, 1, '2025-01-06'),
+(28, 26, 3, '2025-01-07'),
+(28, 27, 2, '2025-01-07'),
+(28, 28, 1, '2025-01-07'),
+(28, 29, 2, '2025-01-07'),
+(28, 30, 1, '2025-01-07'),
+(29, 1, 2, '2025-01-01'),
+(29, 2, 1, '2025-01-01'),
+(29, 3, 1, '2025-01-01'),
+(29, 4, 3, '2025-01-01'),
+(30, 6, 2, '2025-01-02'),
+(30, 7, 1, '2025-01-02'),
+(30, 8, 3, '2025-01-02'),
+(30, 9, 1, '2025-01-02'),
+(31, 11, 2, '2025-01-03'),
+(31, 12, 1, '2025-01-03'),
+(31, 13, 1, '2025-01-03'),
+(31, 14, 2, '2025-01-03'),
+(32, 15, 3, '2025-01-04'),
+(32, 16, 2, '2025-01-04'),
+(32, 17, 1, '2025-01-04'),
+(33, 18, 2, '2025-01-05'),
+(33, 19, 1, '2025-01-05'),
+(33, 20, 3, '2025-01-05'),
+(33, 21, 1, '2025-01-05'),
+(34, 22, 2, '2025-01-06'),
+(34, 23, 1, '2025-01-06'),
+(34, 24, 3, '2025-01-06'),
+(34, 25, 1, '2025-01-06'),
+(35, 26, 3, '2025-01-07'),
+(35, 27, 2, '2025-01-07'),
+(35, 28, 1, '2025-01-07'),
+(35, 29, 2, '2025-01-07'),
+(35, 30, 1, '2025-01-07'),
+(36, 1, 2, '2025-01-01'),
+(36, 2, 1, '2025-01-01'),
+(36, 3, 1, '2025-01-01'),
+(36, 4, 3, '2025-01-01'),
+(37, 6, 2, '2025-01-02'),
+(37, 7, 1, '2025-01-02'),
+(37, 8, 3, '2025-01-02'),
+(37, 9, 1, '2025-01-02'),
+(38, 11, 2, '2025-01-03'),
+(38, 12, 1, '2025-01-03'),
+(38, 13, 1, '2025-01-03'),
+(38, 14, 2, '2025-01-03'),
+(39, 15, 3, '2025-01-04'),
+(39, 16, 2, '2025-01-04'),
+(39, 17, 1, '2025-01-04'),
+(40, 18, 2, '2025-01-05'),
+(40, 19, 1, '2025-01-05'),
+(40, 20, 3, '2025-01-05'),
+(40, 21, 1, '2025-01-05'),
+(41, 22, 2, '2025-01-06'),
+(41, 23, 1, '2025-01-06'),
+(41, 24, 3, '2025-01-06'),
+(41, 25, 1, '2025-01-06'),
+(42, 26, 3, '2025-01-07'),
+(42, 27, 2, '2025-01-07'),
+(42, 28, 1, '2025-01-07'),
+(42, 29, 2, '2025-01-07'),
+(42, 30, 1, '2025-01-07'),
+(43, 1, 2, '2025-01-01'),
+(43, 2, 1, '2025-01-01'),
+(43, 3, 1, '2025-01-01'),
+(43, 4, 3, '2025-01-01'),
+(44, 6, 2, '2025-01-02'),
+(44, 7, 1, '2025-01-02'),
+(44, 8, 3, '2025-01-02'),
+(44, 9, 1, '2025-01-02'),
+(45, 11, 2, '2025-01-03'),
+(45, 12, 1, '2025-01-03'),
+(45, 13, 1, '2025-01-03'),
+(45, 14, 2, '2025-01-03'),
+(46, 15, 3, '2025-01-04'),
+(46, 16, 2, '2025-01-04'),
+(46, 17, 1, '2025-01-04'),
+(47, 18, 2, '2025-01-05'),
+(47, 19, 1, '2025-01-05'),
+(47, 20, 3, '2025-01-05'),
+(47, 21, 1, '2025-01-05'),
+(48, 22, 2, '2025-01-06'),
+(48, 23, 1, '2025-01-06'),
+(48, 24, 3, '2025-01-06'),
+(48, 25, 1, '2025-01-06'),
+(49, 26, 3, '2025-01-07'),
+(49, 27, 2, '2025-01-07'),
+(49, 28, 1, '2025-01-07'),
+(49, 29, 2, '2025-01-07'),
+(49, 30, 1, '2025-01-07'),
+(50, 1, 2, '2025-01-01'),
+(50, 2, 1, '2025-01-01'),
+(50, 3, 1, '2025-01-01'),
+(50, 4, 3, '2025-01-01'),
+(51, 6, 2, '2025-01-02'),
+(51, 7, 1, '2025-01-02'),
+(51, 8, 3, '2025-01-02'),
+(51, 9, 1, '2025-01-02'),
+(52, 11, 2, '2025-01-03'),
+(52, 12, 1, '2025-01-03'),
+(52, 13, 1, '2025-01-03'),
+(52, 14, 2, '2025-01-03'),
+(53, 15, 3, '2025-01-04'),
+(53, 16, 2, '2025-01-04'),
+(53, 17, 1, '2025-01-04'),
+(54, 18, 2, '2025-01-05'),
+(54, 19, 1, '2025-01-05'),
+(54, 20, 3, '2025-01-05'),
+(54, 21, 1, '2025-01-05'),
+(55, 22, 2, '2025-01-06'),
+(55, 23, 1, '2025-01-06'),
+(55, 24, 3, '2025-01-06'),
+(55, 25, 1, '2025-01-06'),
+(56, 26, 3, '2025-01-07'),
+(56, 27, 2, '2025-01-07'),
+(56, 28, 1, '2025-01-07'),
+(56, 29, 2, '2025-01-07'),
+(56, 30, 1, '2025-01-07'),
+(57, 1, 2, '2025-01-01'),
+(57, 2, 1, '2025-01-01'),
+(57, 3, 1, '2025-01-01'),
+(57, 4, 3, '2025-01-01'),
+(58, 6, 2, '2025-01-02'),
+(58, 7, 1, '2025-01-02'),
+(58, 8, 3, '2025-01-02'),
+(58, 9, 1, '2025-01-02'),
+(59, 11, 2, '2025-01-03'),
+(59, 12, 1, '2025-01-03'),
+(59, 13, 1, '2025-01-03'),
+(59, 14, 2, '2025-01-03'),
+(60, 15, 3, '2025-01-04'),
+(60, 16, 2, '2025-01-04'),
+(60, 17, 1, '2025-01-04'),
+(61, 18, 2, '2025-01-05'),
+(61, 19, 1, '2025-01-05'),
+(61, 20, 3, '2025-01-05'),
+(61, 21, 1, '2025-01-05'),
+(62, 22, 2, '2025-01-06'),
+(62, 23, 1, '2025-01-06'),
+(62, 24, 3, '2025-01-06'),
+(62, 25, 1, '2025-01-06'),
+(63, 26, 3, '2025-01-07'),
+(63, 27, 2, '2025-01-07'),
+(63, 28, 1, '2025-01-07'),
+(63, 29, 2, '2025-01-07'),
+(63, 30, 1, '2025-01-07'),
+(64, 1, 2, '2025-01-01'),
+(64, 2, 1, '2025-01-01'),
+(64, 3, 1, '2025-01-01'),
+(64, 4, 3, '2025-01-01'),
+(65, 6, 2, '2025-01-02'),
+(65, 7, 1, '2025-01-02'),
+(65, 8, 3, '2025-01-02'),
+(65, 9, 1, '2025-01-02'),
+(66, 11, 2, '2025-01-03'),
+(66, 12, 1, '2025-01-03'),
+(66, 13, 1, '2025-01-03'),
+(66, 14, 2, '2025-01-03'),
+(67, 15, 3, '2025-01-04'),
+(67, 16, 2, '2025-01-04'),
+(67, 17, 1, '2025-01-04'),
+(68, 18, 2, '2025-01-05'),
+(68, 19, 1, '2025-01-05'),
+(68, 20, 3, '2025-01-05'),
+(68, 21, 1, '2025-01-05'),
+(69, 22, 2, '2025-01-06'),
+(69, 23, 1, '2025-01-06'),
+(69, 24, 3, '2025-01-06'),
+(69, 25, 1, '2025-01-06');
+
+/*INSERT INTO CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
 SELECT 
     C.CartID, 
     PS.ProductSizeColorID, 
@@ -395,9 +734,8 @@ WHERE
     C.CartID IN (1, 2, 3, 4, 5, 6, 7) -- Bạn có thể thay đổi CartID tùy vào dữ liệu của bạn
 ORDER BY 
     C.CartID, PS.ProductSizeColorID;
-
-
-go
+*/
+go 
 create table PaymentMethods (
 	PaymentMethodID int primary key identity(1,1), -- ID duy nhất của phương thức thanh toán
 	MethodName varchar(255) not null,             -- Tên phương thức thanh toán (ví dụ: COD, Credit Card)
@@ -413,7 +751,7 @@ go
 create table ORDERS (
 	OrderID int primary key identity(1,1),
 	UserID int not null,
-	OrderDate date not null,
+	OrderDate date not null default getDate(),
 	TotalAmount decimal(10,2) null,
 	PaymentMethodID int references PaymentMethods(PaymentMethodID) on update cascade on delete cascade,
 	foreign key (UserID) references USERS(UserID) on update cascade on delete cascade
@@ -422,19 +760,44 @@ go
 --Cần check để bảng này không thể nhiều dữ liệu hơn bảng Cart
 INSERT INTO ORDERS (UserID, OrderDate, TotalAmount, PaymentMethodID)
 VALUES
-(1, '2025-01-01', NULL, 1),
-(1, '2025-01-02', NULL, 1),
-(1, '2025-01-03', NULL, 2),
-(2, '2025-01-01', NULL, 1),
-(2, '2025-01-05', NULL, 2),
-(3, '2025-01-07', NULL, 1),
-(3, '2025-01-07', NULL, 2),
-(4, '2025-01-07', NULL, 1),
-(4, '2025-01-08', NULL, 2),
-(5, '2025-01-01', NULL, 1),
-(6, '2025-01-02', NULL, 2),	
-(7, '2025-01-01', NULL, 1),
-(7, '2025-01-03', NULL, 2);
+(1, '2025-02-01', NULL, 1),
+(1, '2025-02-02', NULL, 2),
+(2, '2025-02-03', NULL, 1),
+(2, '2025-02-04', NULL, 2),
+(3, '2025-02-05', NULL, 1),
+(3, '2025-02-06', NULL, 2),
+(4, '2025-02-07', NULL, 1),
+(4, '2025-02-08', NULL, 2),
+(5, '2025-02-01', NULL, 1),
+(5, '2025-02-02', NULL, 2),
+(6, '2025-02-03', NULL, 1),
+(6, '2025-02-04', NULL, 2),
+(7, '2025-02-05', NULL, 1),
+(7, '2025-02-06', NULL, 2),
+(1, '2025-02-07', NULL, 1),
+(1, '2025-02-08', NULL, 2),
+(2, '2025-02-01', NULL, 1),
+(2, '2025-02-02', NULL, 2),
+(3, '2025-02-03', NULL, 1),
+(3, '2025-02-04', NULL, 2),
+(4, '2025-02-05', NULL, 1),
+(4, '2025-02-06', NULL, 2),
+(5, '2025-02-07', NULL, 1),
+(5, '2025-02-08', NULL, 2),
+(6, '2025-02-01', NULL, 1),
+(6, '2025-02-02', NULL, 2),
+(7, '2025-02-03', NULL, 1),
+(7, '2025-02-04', NULL, 2),
+(1, '2025-02-05', NULL, 1),
+(1, '2025-02-06', NULL, 2),
+(2, '2025-02-07', NULL, 1),
+(2, '2025-02-08', NULL, 2),
+(3, '2025-02-01', NULL, 1),
+(3, '2025-02-02', NULL, 2),
+(4, '2025-02-03', NULL, 1),
+(4, '2025-02-04', NULL, 2),
+(5, '2025-02-05', NULL, 1),
+(5, '2025-02-06', NULL, 2);
 go
 create table ORDERSTATUS (
     OrderID int foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
@@ -456,20 +819,54 @@ VALUES
 (10, 'Processing'),
 (11, 'Shipped'),
 (12, 'Pending'),
-(13, 'Shipped');
+(13, 'Shipped'),
+(14, 'Pending'),
+(15, 'Shipped'),
+(16, 'Processing'),
+(17, 'Pending'),
+(18, 'Shipped'),
+(19, 'Processing'),
+(20, 'Pending'),
+(21, 'Shipped'),
+(22, 'Pending'),
+(23, 'Processing'),
+(24, 'Shipped'),
+(25, 'Pending'),
+(26, 'Processing'),
+(27, 'Shipped'),
+(28, 'Pending'),
+(29, 'Shipped'),
+(30, 'Processing'),
+(31, 'Pending'),
+(32, 'Shipped'),
+(33, 'Processing'),
+(34, 'Pending'),
+(35, 'Shipped'),
+(36, 'Processing'),
+(37, 'Pending'),
+(38, 'Shipped');
+
 go
 create table ORDERDETAILS (
     OrderDetailID int primary key identity(1,1),
     OrderID int not null,
     ProductSizeColorID int not null,
     Quantity int not null,
-    Price decimal(10,2) not null,
+    Price decimal(10,2) null,
     foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
 go	
 --Thêm dữ liệu vào ORDERDETAILS
-DECLARE @OrderID INT, @ProductSizeColorID INT, @Quantity INT, @Price DECIMAL(10, 2);
+INSERT INTO ORDERDETAILS (OrderID, ProductSizeColorID, Quantity, Price)
+SELECT o.OrderID, ci.ProductSizeColorID, ci.Quantity, ps.Price
+FROM ORDERS o
+JOIN CART c ON o.UserID = c.UserID
+JOIN CARTITEMS ci ON c.CartID = ci.CartID
+JOIN PRODUCTSIZECOLOR ps ON ci.ProductSizeColorID = ps.ProductSizeColorID
+WHERE o.OrderID BETWEEN 1 AND 38;
+
+/*DECLARE @OrderID INT, @ProductSizeColorID INT, @Quantity INT, @Price DECIMAL(10, 2);
 SET @Quantity = 1; -- Số lượng sản phẩm (có thể thay đổi)
 SET @Price = 100.00; -- Giá sản phẩm (có thể thay đổi)
 
@@ -494,6 +891,8 @@ BEGIN
 
     SET @i = @i + 1;
 END
+*/
+
 go
 create table REVIEWS (
     ReviewID int primary key identity(1,1),
@@ -521,20 +920,112 @@ VALUES
 (6, 1, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-23'),
 (6, 2, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-23'),
 (7, 3, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-24'),
-(7, 4, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-24');
+(7, 4, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-24'),
+(5, 1, 4, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-27'),
+(1, 1, 3, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-03-14'),
+(2, 1, 4, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-27'),
+(2, 2, 1, N'Không hợp với tôi, sẽ không mua nữa.', '2025-02-27'),
+(1, 2, 3, N'Rất thích sản phẩm này, sẽ mua lại.', '2025-02-22'),
+(5, 3, 5, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-21'),
+(2, 3, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-24'),
+(1, 3, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-23'),
+(4, 4, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-22'),
+(7, 4, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-24'),
+(3, 5, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-21'),
+(1, 5, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-23'),
+(5, 6, 5, N'Rất thích sản phẩm này, sẽ mua lại.', '2025-02-22'),
+(7, 6, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-24'),
+(6, 7, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-22'),
+(2, 7, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-20'),
+(4, 8, 3, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-23'),
+(1, 8, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-24'),
+(3, 9, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-21'),
+(2, 9, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-23'),
+(7, 10, 3, N'Không hợp với tôi, sẽ không mua nữa.', '2025-02-25'),
+(1, 10, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-26'),
+(4, 11, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-24'),
+(7, 11, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-28'),
+(3, 12, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-21'),
+(1, 12, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-22'),
+(6, 13, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-27'),
+(2, 13, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-20'),
+(1, 14, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-24'),
+(5, 14, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-03-01'),
+(6, 15, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-20'),
+(7, 15, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-26'),
+(2, 16, 3, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-23'),
+(4, 16, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-25'),
+(3, 17, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-22'),
+(1, 17, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-28'),
+(6, 18, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-23'),
+(2, 18, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-25'),
+(5, 19, 4, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-22'),
+(4, 19, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-24'),
+(7, 20, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-27'),
+(6, 20, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-23'),
+(1, 21, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-24'),
+(2, 21, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-26'),
+(3, 22, 3, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-21'),
+(7, 22, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-25'),
+(6, 23, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-28'),
+(5, 23, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-23'),
+(1, 24, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-22'),
+(4, 24, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-27'),
+(7, 25, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-26'),
+(2, 25, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-25'),
+(5, 26, 4, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-03-01'),
+(6, 26, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-23'),
+(3, 27, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-23'),
+(2, 27, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-20'),
+(5, 28, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-24'),
+(7, 28, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-21'),
+(1, 29, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-28'),
+(6, 29, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-25'),
+(4, 30, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-22'),
+(7, 30, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-26'),
+(2, 31, 4, N'Sản phẩm khá tốt, nhưng cần cải thiện độ bền.', '2025-02-23'),
+(1, 31, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-22'),
+(6, 32, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-20'),
+(5, 32, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-21'),
+(4, 33, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-22'),
+(7, 33, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-24'),
+(1, 34, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-27'),
+(2, 34, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-23'),
+(6, 35, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-28'),
+(7, 35, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-26'),
+(5, 36, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-25'),
+(6, 36, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-24'),
+(4, 37, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-22'),
+(1, 37, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-23'),
+(3, 38, 4, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-25'),
+(2, 38, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-26'),
+(5, 39, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-20'),
+(7, 39, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-24'),
+(6, 40, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-22'),
+(4, 40, 5, N'Rất hài lòng với sản phẩm này, chất lượng tuyệt vời!', '2025-02-23'),
+(3, 41, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-25'),
+(2, 41, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-27'),
+(1, 42, 4, N'Chất liệu ổn, nhưng thiết kế chưa thực sự đẹp.', '2025-02-28'),
+(7, 42, 3, N'Sản phẩm không như mong đợi, có thể cải thiện.', '2025-02-20'),
+(6, 43, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-22'),
+(5, 43, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-21'),
+(4, 44, 2, N'Không như kỳ vọng, chất liệu kém.', '2025-02-23'),
+(7, 44, 3, N'Sản phẩm ổn, nhưng có một số điểm chưa hoàn hảo.', '2025-02-27'),
+(3, 45, 5, N'Mọi thứ đều tuyệt vời, sản phẩm đẹp và chất lượng tốt.', '2025-02-24'),
+(1, 45, 4, N'Sản phẩm đẹp, nhưng giao hàng chậm.', '2025-02-26');
 
 go
 --theo dõi và ghi nhận hành vi của người dùng đối với các sản phẩm cụ thể.
 create table PRODUCTVIEWS (
     ViewID int primary key identity(1,1),
-    ProductID int not null,
-    UserID int not null,
-    ViewDate date not null,
+    ProductID int  null,
+    UserID int  null,
+    ViewDate date  null,
     foreign key (ProductID) references PRODUCTS(ProductID) on update cascade on delete cascade,
     foreign key (UserID) references USERS(UserID) on update cascade on delete cascade
 );
 go
-create table CHATSESSIONS (
+/*create table CHATSESSIONS (
     SessionID int primary key identity(1,1), -- ID duy nhất cho mỗi phiên trò chuyện
     UserID int,                              -- ID người dùng tham gia trò chuyện
     StartTime datetime not null default getdate(), -- Thời điểm bắt đầu phiên
@@ -550,17 +1041,19 @@ create table CHATMESSAGES (
     Timestamp datetime not null default getdate(), -- Thời gian gửi tin nhắn
     foreign key (SessionID) references CHATSESSIONS(SessionID) on update cascade on delete cascade -- Liên kết tới phiên trò chuyện
 );
+*/
 go
 create table INVENTORY (
     InventoryID int primary key identity(1,1), -- ID duy nhất của tồn kho
 	ProductSizeColorID int, 
-    Stock int not null,              -- Số lượng sản phẩm trong kho
+    Stock int  null,              -- Số lượng sản phẩm trong kho
     LastUpdated datetime not null default getdate(), -- Thời điểm cập nhật tồn kho
     foreign key (ProductSizeColorID) references ProductSizeColor(ProductSizeColorID) on delete cascade on update cascade
 );
 go
+--Thêm dữ liệu inventory mặc định stock 100
 INSERT INTO INVENTORY (ProductSizeColorID, Stock, LastUpdated)
-SELECT ProductSizeColorID, 20 AS Stock, GETDATE() AS LastUpdated
+SELECT ProductSizeColorID, 100 AS Stock, GETDATE() AS LastUpdated
 FROM PRODUCTSIZECOLOR;
 go
 create table ShippingCompanies (
@@ -611,20 +1104,23 @@ create table Voucher(
 go 
 INSERT INTO Voucher (VoucherDay, DiscountValue)
 VALUES
-    ('2025-02-15', 10),     -- Voucher giảm 10% 
-    ('2025-02-16', 15),     -- Voucher giảm 15% 
-    ('2025-02-17', 20),     -- Voucher giảm 20% 
-    ('2025-02-18', 25),     -- Voucher giảm 25% 
-    ('2025-02-19', 30),     -- Voucher giảm 30% 
-    ('2025-02-20', 50);     -- Voucher giảm 50%
+    ('2025-01-5', 10),     -- Voucher giảm 10% 
+    ('2025-01-10', 15),     -- Voucher giảm 15% 
+    ('2025-01-15', 20),     -- Voucher giảm 20% 
+    ('2025-01-18', 25),     -- Voucher giảm 25% 
+    ('2025-01-20', 30),     -- Voucher giảm 30% 
+    ('2025-01-25', 50);     -- Voucher giảm 50%
 
 
 --Check dữ liệu trong ProductCategories
+/*
 select ProductCategoryID,pc.ProductID,pc.CategoryID,CategoryName,ProductName
 from ProductCategories pc inner join PRODUCTS p on p.ProductID=pc.ProductID
 inner join CATEGORIES c on c.CategoryID=pc.CategoryID
+*/
 
 --Tạo trigger check ngày thêm vào giỏ hàng phải lớn hơn ngày tạo giỏ
+/*
 CREATE TRIGGER trg_CheckAddedDate
 ON CARTITEMS
 AFTER INSERT
@@ -649,6 +1145,6 @@ BEGIN
     END
 END;
 GO
-
+*/
 
 select * from PRODUCTIMAGES pm where pm.ProductID = 23
