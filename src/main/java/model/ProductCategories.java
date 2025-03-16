@@ -28,7 +28,8 @@ import java.io.Serializable;
 @NamedQueries(
         {
             @NamedQuery(name = "ProductCategories.findAll", query = "SELECT p FROM ProductCategories p"),
-            @NamedQuery(name = "ProductCategories.categorizeProductByCategoryID", query = "SELECT p FROM ProductCategories p WHERE p.categoryID.categoryID = :categoryID"),})
+            @NamedQuery(name = "ProductCategories.categorizeProductByCategoryID", query = "SELECT p FROM ProductCategories p WHERE p.categoryID.categoryID = :categoryID"),
+        })
 public class ProductCategories implements Serializable {
 
     private static final long serialVersionUID = 1L;

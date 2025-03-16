@@ -31,7 +31,9 @@ import java.util.Date;
         {
             @NamedQuery(name = "Products.selectAll", query = "SELECT p FROM Products p LEFT JOIN FETCH p.productimagesCollection"),
             @NamedQuery(name = "Products.selectByID", query = "SELECT p FROM Products p WHERE p.productID = :productID"),
-            @NamedQuery(name = "Products.searchProducts", query = "SELECT p FROM Products p WHERE p.productName LIKE :keyword")
+            @NamedQuery(name = "Products.searchProducts", query = "SELECT p FROM Products p WHERE p.productName LIKE :keyword"),
+            @NamedQuery(name = "Products.findCategoryByWeather", query = "SELECT p FROM Products p JOIN ProductCategories pc ON p.id = pc.productID.productID WHERE pc.categoryID.categoryID = :categoryID AND LOWER(p.productName) LIKE :keyword")
+
         })
 public class Products implements Serializable {
 

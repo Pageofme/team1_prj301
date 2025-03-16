@@ -41,6 +41,13 @@ public class ProductDAO implements IProductDAO {
         TypedQuery<Categories> query = em.createNamedQuery("Categories.findAll", Categories.class);
         return query.getResultList();
     }
+    
+    public List<Products> findProductsCategoryByWeather(int categoryID, String keyword) {
+        TypedQuery<Products> query = (TypedQuery<Products>) em.createNamedQuery("Products.findCategoryByWeather");
+        query.setParameter("categoryID", categoryID);
+        query.setParameter("keyword", "%" + keyword + "%");
+        return query.getResultList();
+    }
 
     public void close() {
         if (em != null && em.isOpen()) {
@@ -53,11 +60,21 @@ public class ProductDAO implements IProductDAO {
 
     public static void main(String[] args) {
         ProductDAO cate = new ProductDAO();
-        List<Categories> list = cate.selectAllCategory();
-        for (Categories categories : list) {
-            System.out.println("name: " + categories.getCategoryName());
-            System.out.println("description: " + categories.getDescription());
+//        List<Categories> list = cate.selectAllCategory();
+//        for (Categories categories : list) {
+//            System.out.println("name: " + categories.getCategoryName());
+//            System.out.println("description: " + categories.getDescription());
+//        }
+        
+        int categoryID = 3;
+        String keyword = "Áo";
+        
+        
+        List<Products> listP = cate.findProductsCategoryByWeather(categoryID, keyword);
+        for (Products products : listP) {
+            System.out.println(products.getProductName());
         }
+        
     }
 
 }
