@@ -9,19 +9,20 @@ create table USERS (
     Password varchar(255) not null,
     PhoneNumber varchar(15),
     Address nvarchar(100),
-    Role varchar(10) check (Role in ('user','admin')),
+    Role varchar(10) check (Role in ('user','admin')) default 'user',
 	Status bit default 1 --Thêm status để xóa mềm 
 );
 go
-insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role,Status)
+insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role, Status)
 values 
-(N'Nguyen Van A', 'nguyenvana@example.com', 'password100', '0123456789', N'Hanoi', 'admin',1),
-(N'Tran Thi B', 'tranthib@example.com', 'password101', '0987654321', N'HCM City', 'admin',1),
-(N'Le Van C', 'levanc@example.com', 'password102', '0911223344', N'Da Nang', 'user',1),
-(N'Pham Thi D', 'phamthid@example.com', 'password103', '0933445566', N'Hue', 'user',1),
-(N'Hoang Van E', 'hoangvane@example.com', 'password104', '0922334455', N'Can Tho', 'user',1),
-(N'Ngo Thi F', 'ngothif@example.com', 'password105', '0911332233', N'Hai Phong', 'user',1),
-(N'Vu Van G', 'vuvang@example.com', 'password106', '0945566778', N'Quang Ninh', 'user',1);
+(N'Nguyen Minh Hieu', 'admgnusam123@gmail.com', 'daden69420', '0357116420', N'Nigeria', 'admin',1),
+(N'Dinh Huy Hoang', 'hahoang05092004@gmail.com', 'daden2', '0829701569', N'HCM City', 'admin',1),
+(N'Nguyen Duc Huy Hoang', 'hoangndhde180637@fpt.edu.vn', 'daden3', '0899886249', N'Da Nang', 'user',1),
+(N'Le Xuan Hoang', 'lehoang160204@gmail.com', 'daden4', '0706160204', N'Hue', 'user',1),
+(N'Le Thanh Dat', 'lethanhdat23062004@gmail.com', 'daden5', '0848884158', N'Can Tho', 'user',1),
+(N'Nguyen Dinh Duy', 'ndduy269@gmail.com', 'daden6', '0392858466', N'Hai Phong', 'user',1),
+(N'Hoang Cong Binh', 'huyhoang05092004hoa@gmail.com', 'daden7', '0945566778', N'Quang Ninh', 'user',1);
+
 go
 select * from Users
 go
