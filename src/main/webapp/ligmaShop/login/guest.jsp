@@ -300,16 +300,16 @@
                                 <h3 class="footer__heading">Chăm sóc khách hàng</h3>
                                 <ul class="footer__list">
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">Đinh Huy Hoàng</a>
+                                        <a href="https://www.facebook.com/profile.php?id=100024348281258" class="footer__list-item__link">Đinh Huy Hoàng</a>
                                     </li>
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">Lê Xuân Hoàng</a>
+                                        <a href="https://www.facebook.com/le.xuan.hoang.107822" class="footer__list-item__link">Lê Xuân Hoàng</a>
                                     </li>
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">Nguyễn Đức Huy Hoàng</a>
+                                        <a href="https://www.facebook.com/hoang.nguyen.209793#" class="footer__list-item__link">Nguyễn Đức Huy Hoàng</a>
                                     </li>
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">Lê Thành Đạt</a>
+                                        <a href="https://www.facebook.com/levy090523" class="footer__list-item__link">Lê Thành Đạt</a>
                                     </li>
                                     <li class="footer__list-item">
                                         <a href="" class="footer__list-item__link">Nguyễn Đình Duy</a>
