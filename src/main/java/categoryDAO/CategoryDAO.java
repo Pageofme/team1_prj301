@@ -2,12 +2,14 @@ package categoryDAO;
 
 import dao.DBConnection;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import jakarta.xml.soap.SOAPFault;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import model.ProductCategories;
+import model.Products;
 
 public class CategoryDAO
 {
@@ -59,14 +61,44 @@ public class CategoryDAO
         System.out.println("Generated Query: " + query.toString());
         return typedQuery.getResultList();
     }
+    
+    public List<Products> categorizeProductWithWeather(List<Products> products, String condition) {
+        String[] hotKeywords =
+        {
+            "ngắn", "sơ", "jean", "kaki", "thể thao", "croptop", "sát", "nắng"
+        };
+        String[] coldKeywords =
+        {
+            "khoác", "jean", "kaki", "len", "hoodie", "dài", "cổ"
+        };
+        List<Products> newProducts = new ArrayList<>();
+        for (Products p : products) {
+            if (condition.equals("hot")) {
+                for (String hotKeyword : hotKeywords)
+                    if (p.getProductName().toLowerCase().contains(hotKeyword))
+                        newProducts.add(p);
+            }
+            else if (condition.equals("cold")) {
+                for (String coldKeyword : coldKeywords)
+                    if (p.getProductName().toLowerCase().contains(coldKeyword))
+                        newProducts.add(p);
+            }
+        }
+        return newProducts;
+    }
+    
+    public List<Products> categorizeProducts(int categoryID) throws NoResultException {
+        TypedQuery<Products> query = em.createNamedQuery("ProductCategories.categorizeProducts", Products.class);
+        query.setParameter("categoryID", categoryID);
+        return query.getResultList();
+    }
 
     public static void main(String[] args)
     {
-        CategoryDAO c = new CategoryDAO();
-//        List<ProductCategories> list = c.categorizeProduct(1, "nô lệ");
-//        for (ProductCategories pro : list) {
-//            //ong noi lay thang bo lay thang con
-//            System.out.println(pro.getProductID());
-//        }
+        CategoryDAO cata = new CategoryDAO();
+        List<Products> list = cata.categorizeProducts(1);
+        System.out.println("MORE  NIGGA LIST");
+        List<Products> niggaList = cata.categorizeProductWithWeather(list, "hot");
+        niggaList.forEach(System.out::println);
     }
 }

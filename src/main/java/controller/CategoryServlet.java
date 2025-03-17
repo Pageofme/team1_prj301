@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Categories;
@@ -31,11 +32,12 @@ public class CategoryServlet extends HttpServlet {
             response.getWriter().println("Invalid category ID");
             return;
         }
-        List<Products> products = new ArrayList<>();
         List<Categories> listCategory = productDAO.selectAllCategory();
+        List<Products> products = categoryDAO.categorizeProducts(Integer.parseInt(categoryID));
 
         //categorized products list
-        products = categorizeProductWithWeather(Integer.parseInt(categoryID));
+        HttpSession session = request.getSession();
+        session.setAttribute("categorizedProducts", products);
 
         request.setAttribute("products", products);
         request.setAttribute("category", listCategory);
@@ -43,30 +45,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        location = request.getParameter("location");
-    }
-
-    @Override
     public String getServletInfo() {
         return "Short description";
     }
-    
-    private List<Products> categorizeProductWithWeather(int categoryID) {
-        List<ProductCategories> productsWithWeather = new ArrayList<>();
-        double temp = (double) WeatherFunction.getWeatherData(location).get("temperature");
-        if (temp >= 10)
-            productsWithWeather = categoryDAO.categorizeProductWithWeather(categoryID, "hot");
-        else
-            productsWithWeather = categoryDAO.categorizeProductWithWeather(categoryID, "cold");
-        
-        List<Products> productList = new ArrayList<>();
-        
-        for (ProductCategories items : productsWithWeather) {
-            //this productID IS A PRODUCT
-            productList.add(items.getProductID());
-        }
-        return productList;
-    } 
 }

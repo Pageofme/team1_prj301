@@ -1,13 +1,11 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
 import productDAO.*;
 import model.*;
@@ -26,7 +24,7 @@ public class SearchServlet extends HttpServlet {
      */
     protected void searchProduct(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("query");
+        String keyword = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
         List<Products> productList = productDAO.searchProduct(keyword);
         request.setAttribute("products", productList);
@@ -34,7 +32,7 @@ public class SearchServlet extends HttpServlet {
         for (Products p : productList) {
             System.out.println(p.getProductName()); // Ensure products are being retrieved
         }
-        request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);
+        request.getRequestDispatcher("ligmaShop/login/searchResult.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

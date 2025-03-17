@@ -75,7 +75,7 @@
                             </li>
                         </ul>
                     </nav>
-                      <!--Thanh tìm kiếm--> 
+                    <!--Thanh tìm kiếm--> 
                     <div class="header-with-search">
                         <label for="mobile-search-checkbox" class="header__mobile-search">
                             <i class="header__mobile-search-icon fas fa-search"></i>
@@ -102,9 +102,9 @@
                                     </li>
                                 </ul>
                             </div>
-                          
-                            <form action="search" method="POST" id="submitSearch">
-                                <input hidden name="query" id="hiddenQuery"/>
+
+                            <form action="<%=request.getContextPath()%>/search" method="POST" id="submitSearch">
+                                <input hidden name="action" id="hiddenQuery"/>
                                 <button type="submit" class="header__search-btn" onClick="submitSearch()">
                                     <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
@@ -142,7 +142,7 @@
             </header>
 
             <!--Lấy dữ liệu từ database-->
-            
+
 
             <div class="app__container">
                 <div class="grid wide">
@@ -161,12 +161,14 @@
                                         </li>
                                     </c:forEach>
                                 </ul>
-                                <form method="POST" action="category">
-                                    <p>Gợi ý đồ mặc dựa vào thời tiết</p>
-                                    <input type="hidden" name="action" value="weather"/>
-                                    <input type="text" name="location" placeholder="Nhập thành phố của bạn"/>
-                                    <button type="submit" placeholder="OK"/>
-                                </form>
+                                <div class="weather-form">
+                                    <form method="get" action="weather">
+                                        <p class="weather-form__label">Gợi ý đồ mặc dựa vào thời tiết</p>
+                                        <input type="text" name="location" placeholder="Nhập thành phố của bạn" class="weather-form__input"/>
+                                        <button type="submit" class="weather-form__btn">OK</button>
+                                    </form>
+                                </div>
+
                             </nav>
                         </div>
                         <div class="col l-10 m-12 c-12">
