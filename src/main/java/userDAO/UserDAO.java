@@ -1,0 +1,100 @@
+package userDAO;
+
+import jakarta.persistence.*;
+import java.util.List;
+import model.*;
+import dao.*;
+
+public class UserDAO implements IUserDAO
+{
+    private EntityManager em;
+    
+    public UserDAO()
+    {
+        em = DBConnection.getEntityManager();
+    }
+
+    @Override
+    public void insertUser(Users user)
+    {
+        if (user == null)
+            throw new IllegalArgumentException("User is null");
+        em.getTransaction().begin();
+        try
+        {
+            em.persist(user);
+            em.getTransaction().commit();
+        } catch (NoResultException e)
+        {
+            em.getTransaction().rollback();
+        }
+    }
+
+    @Override
+    public Users selectUser(int id) throws NoResultException
+    {
+        TypedQuery<Users> query = em.createNamedQuery("Users.selectByID", Users.class);
+        query.setParameter("userID", id);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Users> selectAllUsers() throws NoResultException
+    {
+        TypedQuery<Users> query = em.createNamedQuery("Users.selectAll", Users.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public void deleteUser(int id)
+    {
+        Integer userID = id;
+        if (userID == null) 
+            throw new IllegalArgumentException("UserID cannot be null");
+        em.getTransaction().begin();
+        try 
+        {
+            Users user = em.find(Users.class, userID);
+            if (user == null) 
+            {
+                em.getTransaction().rollback();
+                throw new RuntimeException("User not found with ID: " + userID);
+            }
+            em.remove(user);
+            em.getTransaction().commit();
+        } catch (Exception e) 
+        {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to delete user: " + e.getMessage(), e);
+        }
+    }
+    
+    @Override
+    public void updateUser(Users updatedUser) 
+    {
+        if (updatedUser == null || updatedUser.getUserID() == null)
+            throw new IllegalArgumentException("User and UserID cannot be null");
+        em.getTransaction().begin();
+        try 
+        {
+            Users existingUser = em.find(Users.class, updatedUser.getUserID());
+            if (existingUser == null) 
+            {
+                em.getTransaction().rollback();
+                throw new RuntimeException("User not found with ID: " + updatedUser.getUserID());
+            }
+            // Update fields
+            existingUser.setFullName(updatedUser.getFullName());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setPassword(updatedUser.getPassword());
+            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setRole(updatedUser.getRole());
+            em.getTransaction().commit();
+        } catch (Exception e) 
+        {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to update user: " + e.getMessage(), e);
+        }
+    }
+}
