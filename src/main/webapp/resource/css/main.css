@@ -155,7 +155,7 @@
 /*Header QR code*/
 
 .header__qr{
-    width: 180px;
+    width: 250px;
     background-color: var(--white-color);
     position: absolute;
     left: 0;
@@ -192,7 +192,7 @@
 }
 
 .header__qr-download-img{
-    height: 16px;
+    height: 32px;
 }
 /*header sort bar*/
 .header__sort-bar{

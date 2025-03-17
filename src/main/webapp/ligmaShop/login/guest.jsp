@@ -33,24 +33,35 @@
                             <li class="header__navbar-item header__navbar-item--hasqr header__navbar-item--separate">
                                 Tải ứng dụng
                                 <div class="header__qr">
-                                    <img src="images/5b6e787c2e5ee052.png" alt="QR code" class="header__qr-img">
+                                    <!--                                    <img src="images/5b6e787c2e5ee052.png" alt="QR code" class="header__qr-img">
+                                                                        <div class="header__qr-apps">
+                                                                            <a href="" class="header__qr-link">
+                                                                                <img src="images/1fddd5ee3e2ead84.png" alt="Google Play" class="header__qr-download-img">
+                                                                            </a>
+                                                                            <a href="" class="header__qr-link">
+                                                                                <img src="images/135555214a82d8e1.png" alt="AppStore" class="header__qr-download-img">
+                                                                            </a>
+                                                                        </div>-->
                                     <div class="header__qr-apps">
                                         <a href="" class="header__qr-link">
-                                            <img src="images/1fddd5ee3e2ead84.png" alt="Google Play" class="header__qr-download-img">
+                                            <img src="https://pageofme.github.io/team1_prj301/images/googleplay.png" alt="Google Play" class="header__qr-download-img">
                                         </a>
                                         <a href="" class="header__qr-link">
-                                            <img src="images/135555214a82d8e1.png" alt="AppStore" class="header__qr-download-img">
+                                            <img src="https://pageofme.github.io/team1_prj301/images/appstore.png" alt="AppStore" class="header__qr-download-img">
                                         </a>
                                     </div>
                                 </div>
                             </li>
                             <li class="header__navbar-item">
                                 Kết nối
-                                <a href="" class="header__navbar-icon-link">
+                                <a href="https://www.facebook.com/groups/836319625350559" class="header__navbar-icon-link">
                                     <i class="fa-brands fa-facebook"></i>
                                 </a>
-                                <a href="" class="header__navbar-icon-link">
+                                <a href="https://www.instagram.com/ligmashop?igsh=anV5YnBwNXJrbW8x&utm_source=qr" class="header__navbar-icon-link">
                                     <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                 <a href="https://www.tiktok.com/@ligmashop?_t=ZS-8ujjzch4geg&_r=1" class="header__navbar-icon-link">
+                                    <i class="fa-brands fa-tiktok"></i>
                                 </a>
                             </li>
                         </ul>
@@ -75,13 +86,13 @@
                             </li>
                         </ul>
                     </nav>
-                      <!--Thanh tìm kiếm--> 
+                    <!--Thanh tìm kiếm--> 
                     <div class="header-with-search">
                         <label for="mobile-search-checkbox" class="header__mobile-search">
                             <i class="header__mobile-search-icon fas fa-search"></i>
                         </label>
                         <div class="header__logo">
-                            <img src="images/LIGMA SHOP WHITE ON BLACK.png" alt="" class="header__logo-img">
+                            <img src="https://pageofme.github.io/team1_prj301/LigmaShop/web/images/LIGMA%20SHOP%20WHITE%20ON%20BLACK.png" alt="" class="header__logo-img">
                         </div>
                         <input type="checkbox" hidden id="mobile-search-checkbox" class="header__search-checkbox">
                         <div class="header__search">
@@ -102,7 +113,7 @@
                                     </li>
                                 </ul>
                             </div>
-                          
+
                             <form action="search" method="POST" id="submitSearch">
                                 <input hidden name="query" id="hiddenQuery"/>
                                 <button type="submit" class="header__search-btn" onClick="submitSearch()">
@@ -142,7 +153,7 @@
             </header>
 
             <!--Lấy dữ liệu từ database-->
-            
+
 
             <div class="app__container">
                 <div class="grid wide">
@@ -202,7 +213,7 @@
                                     <c:if test="${empty products}">
                                         <p style="text-align: center; color: red;">No products available.</p>
                                     </c:if>
-                                      <!--Chạy in ra tất cả sản phẩm-->
+                                    <!--Chạy in ra tất cả sản phẩm-->
                                     <c:forEach var="product" items="${products}" varStatus="status">
                                         <!-- Changed test to use end instead of start + pageSize for consistency -->
                                         <c:if test="${status.index >= start && status.index < end}">
@@ -242,7 +253,7 @@
                                                     </div>
                                                     <div class="home-product-item__origin">
                                                         <span class="home-product-item__brand">${product.companyID.companyName}</span>
-                                                        <span class="home-product-item__origin-name">America</span>
+                                                        <!--                                                        <span class="home-product-item__origin-name">America</span>-->
                                                     </div>
                                                     <div class="home-product-item__favourite">
                                                         <i class="fa-solid fa-check"></i> Yêu thích
@@ -266,12 +277,12 @@
                                         </li>
                                         <li class="pagination-item">
                                             <c:forEach var="i" begin="1" end="${totalPages}">
-                                                <a href="category?page=${i}&cID=${param.cID}" class="pagination-item__link">${i}</a>
+                                                <a href="category?page=${i}&cID=${param.cID==null?1:param.cID}" class="pagination-item__link">${i}</a>
                                             </c:forEach>
                                         </li>
                                         <li class="pagination-item">
                                             <c:if test="${currentPage < totalPages}">
-                                                <a href="category?page=${currentPage + 1}&cID=${param.cID}" class="pagination-item__link">
+                                                <a href="category?page=${currentPage + 1}&cID=${param.cID==null?1:param.cID}" class="pagination-item__link">
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>
                                             </c:if>
@@ -312,19 +323,19 @@
                                 <h3 class="footer__heading">Theo dõi chúng tôi trên</h3>
                                 <ul class="footer__list">
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">
+                                        <a href="https://www.facebook.com/groups/836319625350559" class="footer__list-item__link">
                                             <i class="footer__list-item-icon fab fa-facebook"></i>
                                             Facebook
                                         </a>
                                     </li>
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">
+                                        <a href="https://www.instagram.com/ligmashop?igsh=anV5YnBwNXJrbW8x&utm_source=qr" class="footer__list-item__link">
                                             <i class="footer__list-item-icon fab fa-instagram"></i>
                                             Instagram
                                         </a>
                                     </li>
                                     <li class="footer__list-item">
-                                        <a href="" class="footer__list-item__link">
+                                        <a href="https://www.tiktok.com/@ligmashop?_t=ZS-8ujjzch4geg&_r=1" class="footer__list-item__link">
                                             <i class="footer__list-item-icon fab fa-tiktok"></i>
                                             Tiktok
                                         </a>
@@ -334,7 +345,9 @@
                             <div class="col l-3 m-3 c-6">
                                 <h3 class="footer__heading">Vào cửa hàng</h3>
                                 <div class="footer__download">
-                                    <img src="${pageContext.request.contextPath}/resource/images/5b6e787c2e5ee052.png" alt="" class="footer__download-qr">                            
+<!--                                    <img src="${pageContext.request.contextPath}/resource/images/5b6e787c2e5ee052.png" alt="" class="footer__download-qr">  -->
+                                    <img src="https://pageofme.github.io/team1_prj301/images/qrcode.png" alt="QR_Code" class="footer__download-qr">
+
                                     <div class="footer__download-apps">
                                         <a href="" class="footer__download-apps-link">
                                             <img src="${pageContext.request.contextPath}/resource/images/1fddd5ee3e2ead84.png" alt="Google Play" class="footer__download-apps-img">
