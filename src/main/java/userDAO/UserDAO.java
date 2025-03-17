@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import model.*;
 import dao.*;
+import productDAO.ProductDAO;
 
 public class UserDAO implements IUserDAO
 {
@@ -95,6 +96,13 @@ public class UserDAO implements IUserDAO
         {
             em.getTransaction().rollback();
             throw new RuntimeException("Failed to update user: " + e.getMessage(), e);
+        }
+    }
+    public static void main(String[] args) {
+        UserDAO u=new UserDAO();
+        List<Users> use=u.selectAllUsers();
+        for(Users us:use){
+            System.out.println(us.getEmail()+", "+us.getPassword());
         }
     }
 }

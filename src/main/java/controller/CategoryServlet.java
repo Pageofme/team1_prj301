@@ -28,17 +28,23 @@ public class CategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String categoryID = request.getParameter("cID");
+        String query = request.getParameter("query");
+        query= (query==null ?"" : query);
+        if(query.equals("rong")){
+            query="";
+        }
         if (categoryID == null) {
             response.getWriter().println("Invalid category ID");
             return;
         }
         List<Categories> listCategory = productDAO.selectAllCategory();
-        List<Products> products = categoryDAO.categorizeProducts(Integer.parseInt(categoryID));
-
+        List<Products> products = categoryDAO.categorizeProducts(Integer.parseInt(categoryID),query);
+//        List<Products> products=
         //categorized products list
         HttpSession session = request.getSession();
         session.setAttribute("categorizedProducts", products);
-
+        
+        request.setAttribute("query", query);
         request.setAttribute("products", products);
         request.setAttribute("category", listCategory);
         request.getRequestDispatcher("ligmaShop/login/guest.jsp").forward(request, response);

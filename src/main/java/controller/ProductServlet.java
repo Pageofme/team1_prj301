@@ -43,15 +43,19 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String categoryID = request.getParameter("cID"); // Lấy cID từ URL
-      
-
+//        String categoryID = request.getParameter("cID"); // Lấy cID từ URL
+        String query=(String)request.getAttribute("query");
+        query= (query==null ?"" : query);
+        if(query.equals("rong")){
+            query="";
+        }
         List<Products> list = productDAO.selectAllProducts();
         List<Categories> listCategory = productDAO.selectAllCategory();
+        List<Products> listQuery=productDAO.searchProduct(query);
         //headline for debugging in tomcat log
 //        System.out.println("THE LIST OF RETRIEVED PRODUCTS: \n"); 
         try {
-            if (list != null && !list.isEmpty() && listCategory != null && !listCategory.isEmpty()) {
+            if (listQuery != null && !listQuery.isEmpty() && listCategory != null && !listCategory.isEmpty()) {
 //            // Kiểm tra và in dữ liệu của mỗi sản phẩm
 //                for (Products product : list) {
 //                    System.out.println("Product name: " + product.getProductName()
@@ -63,7 +67,8 @@ public class ProductServlet extends HttpServlet {
                     System.out.println("Product name: " + cate.getCategoryName()
                             + "Description: " + cate.getDescription());
                 }
-                request.setAttribute("products", list);             
+                request.setAttribute("query", query);
+                request.setAttribute("products", listQuery);             
                 request.setAttribute("category", listCategory);
             } else {
                 System.out.println("No products found!");

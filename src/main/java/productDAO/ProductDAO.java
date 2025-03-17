@@ -39,4 +39,6 @@ public class ProductDAO implements IProductDAO {
         TypedQuery<Categories> query = em.createNamedQuery("Categories.findAll", Categories.class);
         return query.getResultList();
     }
+    
 }
+   
