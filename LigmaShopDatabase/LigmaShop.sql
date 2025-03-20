@@ -2,6 +2,12 @@
 go
 use LigmaShop
 go
+/*
+SELECT * FROM ProductCategories pc INNER JOIN Products p  ON p.productID=pc.ProductID
+WHERE pc.categoryID = 1 AND LOWER(p.productName) LIKE LOWER(N'% %')
+select* from ProductCategories
+*/
+
 create table USERS (
     UserID int primary key identity(1,1),
     FullName nvarchar(255) not null,
@@ -36,10 +42,10 @@ create table COMPANY (
 go
 insert into COMPANY (CompanyName, Address, ContactNumber, Email)
 values 
-(N'Company A', N'123 Street, Hanoi', '0123456789', 'contact@companya.com'),
-(N'Company B', N'456 Street, HCM City', '0987654321', 'contact@companyb.com'),
-(N'Company C', N'789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
-(N'Company D', N'321 Street, Can Tho', '0933445566', 'contact@companyd.com');
+(N'UNIQUE', N'123 Street, Hanoi', '0123456789', 'contact@companya.com'),
+(N'Chalen', N'456 Street, HCM City', '0987654321', 'contact@companyb.com'),
+(N'Droi', N'789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
+(N'Guxif', N'321 Street, Can Tho', '0933445566', 'contact@companyd.com');
 go
 create table CATEGORIES (
     CategoryID int primary key identity(1,1),
@@ -328,9 +334,9 @@ create table SIZES (
 go
 insert into SIZES (SizeName, Description)
 values 
+('M', 'Size Medium'),
 ('L', 'Size Large'),
-('XL', 'Size Extra Large'),
-('XXL', 'Size Double Extra Large');
+('XL', 'Size Extra Large');
 go
 create table PRODUCTSIZECOLOR (
     ProductSizeColorID int primary key identity(1,1),
@@ -857,6 +863,7 @@ create table ORDERDETAILS (
     foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
+select *from ORDERDETAILS
 go	
 --Thêm dữ liệu vào ORDERDETAILS
 INSERT INTO ORDERDETAILS (OrderID, ProductSizeColorID, Quantity, Price)
@@ -1057,6 +1064,7 @@ INSERT INTO INVENTORY (ProductSizeColorID, Stock, LastUpdated)
 SELECT ProductSizeColorID, 100 AS Stock, GETDATE() AS LastUpdated
 FROM PRODUCTSIZECOLOR;
 go
+select*from company
 create table ShippingCompanies (
     ShippingCompanyID int primary key identity(1,1), -- ID duy nhất cho từng đơn vị vận chuyển
     CompanyName nvarchar(255) not null,              -- Tên đơn vị vận chuyển
