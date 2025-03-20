@@ -63,7 +63,7 @@ public class CategoryDAO {
                 };
         String[] coldKeywords
                 = {
-                    "khoác", "jean", "kaki", "len", "hoodie", "dài", "cổ"
+                    "khoác", "jean", "kaki", "len", "hoodie", "dài tay"
                 };
         List<Products> newProducts = new ArrayList<>();
         for (Products p : products) {
@@ -79,6 +79,9 @@ public class CategoryDAO {
                         newProducts.add(p);
                     }
                 }
+//            } else if (condition.equals("all")) {
+//                newProducts.add(p);
+//            }
             }
         }
         return newProducts;
@@ -89,13 +92,19 @@ public class CategoryDAO {
         query.setParameter("categoryID", categoryID);
         query.setParameter("keyword", "%" + keyword + "%"); // Thêm dấu % để tìm kiếm LIKE
         return query.getResultList();
-    }   
+    }
 
-//    public static void main(String[] args) {
-//        CategoryDAO cata = new CategoryDAO();
-//        List<Products> list = cata.categorizeProducts(1);
+    public static void main(String[] args) {
+        CategoryDAO cata = new CategoryDAO();
+        List<Products> list = cata.categorizeProducts(1, "");
+        List<Products> niggaList = cata.categorizeProductWithWeather(list, "hot");
+        for (Products ng : niggaList) {
+            System.out.println(ng.getProductID() + ", " + ng.getProductName());
+        }
+        System.out.println("MORE  NIGGA LIST\n\n");
+//        for (Products ng : list) {
+//            System.out.println(ng.getProductID() + ", " + ng.getProductName());
+//        }
 //        System.out.println("MORE  NIGGA LIST");
-//        List<Products> niggaList = cata.categorizeProductWithWeather(list, "hot");
-//        niggaList.forEach(System.out::println);
-//    }
+    }
 }

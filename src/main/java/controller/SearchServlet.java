@@ -1,6 +1,3 @@
-
-
-
 package controller;
 
 import java.io.IOException;
@@ -30,12 +27,18 @@ public class SearchServlet extends HttpServlet {
      */
     protected void searchProduct(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("query");     
-        HttpSession session=request.getSession();
+        String keyword = request.getParameter("query");
+        String weather = request.getParameter("weather");
+        weather = (weather == null ? "all" : weather);
+
+//        HttpSession session = request.getSession();
         ProductDAO productDAO = new ProductDAO();
         List<Products> productList = productDAO.searchProduct(keyword);
+        List<Categories> listCategory = productDAO.selectAllCategory();
+        request.setAttribute("category", listCategory);
         request.setAttribute("products", productList);
         request.setAttribute("query", keyword);
+        request.setAttribute("weather", weather);
         System.out.println("Search results: " + productList.size() + " query = " + keyword);
         for (Products p : productList) {
             System.out.println(p.getProductName()); // Ensure products are being retrieved
@@ -44,14 +47,12 @@ public class SearchServlet extends HttpServlet {
 //        response.sendRedirect("test");
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         searchProduct(request, response);
     }
 
-   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

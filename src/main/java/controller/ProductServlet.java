@@ -49,6 +49,9 @@ public class ProductServlet extends HttpServlet {
         if(query.equals("rong")){
             query="";
         }
+        String weather = request.getParameter("weather");
+        weather= (weather==null ?"all" : weather);
+        
         List<Products> list = productDAO.selectAllProducts();
         List<Categories> listCategory = productDAO.selectAllCategory();
         List<Products> listQuery=productDAO.searchProduct(query);
@@ -67,6 +70,7 @@ public class ProductServlet extends HttpServlet {
                     System.out.println("Product name: " + cate.getCategoryName()
                             + "Description: " + cate.getDescription());
                 }
+                request.setAttribute("weather", weather);
                 request.setAttribute("query", query);
                 request.setAttribute("products", listQuery);             
                 request.setAttribute("category", listCategory);

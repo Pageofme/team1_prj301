@@ -99,22 +99,57 @@ public class AuthServlet extends HttpServlet {
     }
 
     protected void handleRegister(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String fullname = request.getParameter("fullname");
-        String email = request.getParameter("email");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        throws ServletException, IOException {
+    String fullname = request.getParameter("fullname");
+    String email = request.getParameter("email");
+    String phone = request.getParameter("phone");
+    String password = request.getParameter("password");
 
-        System.out.println(fullname + email + username + password);
-
-        if (!isValidEmail(email)) {
-            response.sendRedirect("register.jsp?error=invalid_email");
-        } else if (!isValidPassword(password)) {
-            response.sendRedirect("register.jsp?error=invalid_password");
-        } else {
-            response.sendRedirect("signIn.jsp");
-        }
+    if (!isValidEmail(email)) {
+        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_email");
+        return;
     }
+//    if (!isValidPassword(password)) {
+//        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_password");
+//        return;
+//    }
+//    if (!isValidPhone(phone)) {
+//        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_phone");
+//        return;
+//    }
+
+    EntityManager em = emf.createEntityManager();
+    try {
+        // Kiểm tra email đã tồn tại chưa
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class);
+        query.setParameter("email", email);
+        Long count = query.getSingleResult();
+
+        if (count > 0) {
+            response.sendRedirect("ligmaShop/login/register.jsp?error=email_exists");
+            return;
+        }
+
+        // Băm mật khẩu
+//        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+        // Lưu user mới vào database
+        em.getTransaction().begin();
+        Users newUser = new Users();
+        newUser.setFullName(fullname);
+        newUser.setEmail(email);
+        newUser.setPhoneNumber(phone);
+        newUser.setPassword(password);
+        em.persist(newUser);
+        em.getTransaction().commit();
+
+        response.sendRedirect("ligmaShop/login/signIn.jsp?success=registered");
+    } catch (Exception e) {
+        response.sendRedirect("ligmaShop/login/register.jsp?error=registration_failed");
+    } finally {
+        em.close();
+    }
+}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
