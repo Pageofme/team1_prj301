@@ -1,5 +1,10 @@
 # team1_prj301
 Clothing Website Project
+
+Link mới vào là branch main gồm database và ảnh, cùng với document là ảnh diagram cùng như giới thiệu và phân công của dự án
+
+branch đang làm việc hiện tại là ligmaballsofficial_v3, để mọi người chạy thử code của nhau rồi mới kết nối lại, thống nhất mới up lên sau
+
 file pom.xml
 
 
