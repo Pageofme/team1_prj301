@@ -27,11 +27,7 @@ public class ProductServlet extends HttpServlet {
             query = "";
         }
         String weather = request.getParameter("weather");
-<<<<<<< HEAD
         weather = (weather ==null ? "all" : weather);
-=======
-        weather= (weather==null ?"all" : weather);
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
         
         List<Products> list = productDAO.selectAllProducts();
         List<Categories> listCategory = productDAO.selectAllCategory();

@@ -21,7 +21,7 @@ public class CategoryServlet extends HttpServlet {
 
     ProductDAO productDAO = new ProductDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
-    
+    String location = " ";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,24 +33,17 @@ public class CategoryServlet extends HttpServlet {
         if(query.equals("rong")){
             query="";
         }
-       
-        String condition=request.getParameter("weather");
-        condition= (condition==null ?"all" : condition);
         if (categoryID == null) {
             response.getWriter().println("Invalid category ID");
             return;
         }
         List<Categories> listCategory = productDAO.selectAllCategory();
         List<Products> products = categoryDAO.categorizeProducts(Integer.parseInt(categoryID),query);
-        if(condition!=null && !condition.equals("all")){
-            products=categoryDAO.categorizeProductWithWeather(products, condition);
-        }
 //        List<Products> products=
         //categorized products list
         HttpSession session = request.getSession();
         session.setAttribute("categorizedProducts", products);
         
-        request.setAttribute("weather", condition);
         request.setAttribute("query", query);
         request.setAttribute("products", products);
         request.setAttribute("category", listCategory);

@@ -713,88 +713,12 @@
 .category-item__link:hover{
     right: -12px;
     color: red;
-     
-}
-.category-item__link.selected {
-    background-color: red;   
-    color: white;  
-}
-.category-item--active .category-item__link {
-    color: red;
-}
-.category-item--active .category-item__link::before {
-    position: absolute;
-    top: 50%;
-    left: 4px;
-    content: "";
-    border: 4px solid;
-    transform: translateY(calc(-50% - 1px));
-    border-color: transparent transparent transparent red;
-}
 
-/*weather*/
-.weather-form {
-    padding: 12px 8px; /* Reduced padding to fit better in the sidebar */
-    background-color: var(--white-color);
-    border-radius: 4px;
-    margin: 12px 0; /* Slightly reduced margin */
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
-
-.weather-form__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.weather-form__title {
-    font-size: 1.6rem; /* Slightly smaller font size to fit better */
-    font-weight: 500;
-    color: red;
-    margin: 0 0 10px 0;
-    text-align: center;
-    line-height: 1.4; /* Prevent text overflow */
-}
-
-.weather-form__input-group {
-    display: flex;
-    width: 100%; /* Use full width of the parent container */
-    gap: 6px; /* Slightly reduced gap */
-}
-
-.weather-form__input {
-    flex: 1;
-    height: 36px; /* Slightly shorter input */
-    padding: 0 8px;
-    font-size: 1.4rem; /* Smaller font size to fit better */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.3s ease;
-    min-width: 0; /* Allow the input to shrink properly */
-}
-
-.weather-form__input:focus {
-    border-color: #236e91;
-    box-shadow: 0 0 4px rgba(35, 110, 145, 0.3);
-}
-
-.weather-form__btn {
-    height: 36px;
-    padding: 0 12px; /* Reduced padding to make the button smaller */
-    font-size: 1.4rem;
-    background-color: #236e91;
-    color: var(--white-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    white-space: nowrap; /* Prevent button text from wrapping */
-}
-
-.weather-form__btn:hover {
-    background-color: #1b5572;
-}
+/*.category-item__link.selected {
+    background-color: red;   Màu nền khi chọn 
+    color: white;   Màu chữ khi chọn 
+}*/
 /*Home sort*/
 .home-filter{
     background-color: rgba(0, 0, 0,0.05);

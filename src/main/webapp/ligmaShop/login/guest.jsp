@@ -1,13 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<<<<<<< HEAD
 <jsp:useBean id="productDAO" class="productDAO.ProductDAO" scope="request" />
 <!-- Kept as is, assumes ProductDAO is correctly implemented -->
 <jsp:useBean id="categoryDAO" class="categoryDAO.CategoryDAO" scope="page" />
-=======
-<jsp:useBean id="productDAO" class="productDAO.ProductDAO" scope="request"/> <!-- Kept as is, assumes ProductDAO is correctly implemented -->
-<jsp:useBean id="categoryDAO" class="categoryDAO.CategoryDAO" scope="page"/>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -25,7 +20,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/main.css">
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resource/images/logomini2.png" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<<<<<<< HEAD
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/chat.css">
         <script src="${pageContext.request.contextPath}/resource/js/chatbox.js" defer></script>
         
@@ -42,22 +36,6 @@
     </head>
     <body>
         <!-- Chatbox -->
-=======
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/chat.css"> 
-        <script src="${pageContext.request.contextPath}/resource/js/chatbox.js" defer></script>
-        <!--        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-            <df-messenger
-                intent="WELCOME"
-                chat-title="LigmaShop"
-                agent-id="42e42aa4-d213-4073-8915-61238c1db98f"
-                language-code="vi">
-            </df-messenger>-->
-
-    </head>
-    <body>
-
-        <!--chatbox-->
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
         <div id="chat-toggle">💬</div>
         <div id="chatbox" class="minimized">
             <div id="messages">
@@ -65,7 +43,6 @@
             </div>
             <div id="input-container">
                 <input id="input" type="text" placeholder="Nhập câu hỏi..." onkeydown="if (event.key === 'Enter')
-<<<<<<< HEAD
                             sendMessage()">
                 <button id="sendButton" onclick="sendMessage()">Gửi</button>
             </div>
@@ -82,26 +59,6 @@
         <div class="app">
             <header class="header">
                 <div class="grid wide">
-=======
-                    sendMessage()">
-                <button id="sendButton" onclick="sendMessage()">Gửi</button>
-            </div>
-        </div>
-        
-        <!--cài đặt phân trang-->
-        <c:set var="pageSize" value="10"/> <!-- Kept as is, defines the number of products per page -->
-        <c:set var="currentPage" value="${param.page != null ? param.page : 1}"/> <!-- Kept as is, sets current page from param or defaults to 1 -->
-        <c:set var="start" value="${(currentPage - 1) * pageSize}"/> <!-- Kept as is, calculates the start index for pagination -->
-        <c:set var="end" value="${start + pageSize}"/> <!-- Kept as is, calculates the end index for pagination -->
-        <!-- Changed from ${fn:length(list)} to ${fn:length(products)} to match the attribute name set by GuestServlet -->
-        <c:set var="totalProducts" value="${fn:length(products)}"/>
-        <!-- Changed to handle case where totalProducts is 0, avoiding division by zero; defaults to 1 page if no products -->
-        <c:set var="totalPages" value="${totalProducts > 0 ? Math.ceil(totalProducts / pageSize) : 1}"/>
-        <div class="app">
-            <header class="header">
-                <div class="grid wide">
-
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                     <nav class="header__navbar hide-on-mobile-tablet">
                         <ul class="header__navbar-list">
                             <li class="header__navbar-item header__navbar-item--hasqr header__navbar-item--separate">
@@ -115,103 +72,6 @@
                                             <img src="https://pageofme.github.io/team1_prj301/images/appstore.png" alt="AppStore" class="header__qr-download-img">
                                         </a>
                                     </div>
-<<<<<<< HEAD
-=======
-                                </div>
-                            </li>
-                            <li class="header__navbar-item">
-                                Kết nối
-                                <a href="https://www.facebook.com/groups/836319625350559" class="header__navbar-icon-link">
-                                    <i class="fa-brands fa-facebook"></i>
-                                </a>
-                                <a href="https://www.instagram.com/ligmashop?igsh=anV5YnBwNXJrbW8x&utm_source=qr" class="header__navbar-icon-link">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
-                                <a href="https://www.tiktok.com/@ligmashop?_t=ZS-8ujjzch4geg&_r=1" class="header__navbar-icon-link">
-                                    <i class="fa-brands fa-tiktok"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="header__navbar-list">
-                            <li class="header__navbar-item header__navbar-item-hasnotify">
-                                <a href="" class="header__navbar-item-link header__navbar-icon-link">
-                                    <i class="fa-regular fa-bell icon-notice-help"></i>
-                                    Thông báo
-                                </a>
-                            </li>
-                            <li class="header__navbar-item">
-                                <a href="" class="header__navbar-item-link header__navbar-icon-link">
-                                    <i class="fa-duotone fa-solid fa-question icon-notice-help"></i>
-                                    Trợ giúp
-                                </a>
-                            </li>
-                            <c:choose>
-
-                                <c:when test="${empty sessionScope.user}">
-                                    <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
-                                        <a href="${pageContext.request.contextPath}/ligmaShop/login/register.jsp">Đăng kí</a>
-                                    </li>
-                                    <li class="header__navbar-item header__navbar-item--strong">
-                                        <a href="${pageContext.request.contextPath}/ligmaShop/login/signIn.jsp">Đăng nhập</a>
-                                    </li>
-                                </c:when>
-
-                                <c:otherwise>
-                                    <li class="header__navbar-item header__navbar-user">
-                                        <img src="${pageContext.request.contextPath}/resource/images/user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${sessionScope.user.getFullName()}</span>
-                                        <ul class="header__navbar-user-menu">
-
-                                            <li class="header__navbar-user-item">
-                                                <a href="${pageContext.request.contextPath}/ligmaShop/login/profilePage.jsp">Hồ sơ của tôi</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="${pageContext.request.contextPath}/authservlet">Đăng Xuất</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </c:otherwise>
-                            </c:choose>
-
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <!--Thanh tìm kiếm--> 
-                    <div class="header-with-search">
-                        <label for="mobile-search-checkbox" class="header__mobile-search">
-                            <i class="header__mobile-search-icon fas fa-search"></i>
-                        </label>
-                        <div class="header__logo">
-                            <a href="${pageContext.request.contextPath}/test">
-                                <img src="https://pageofme.github.io/team1_prj301/images/logo.png" alt="" class="header__logo-img">
-                            </a>
-                        </div>
-                        <input type="checkbox" hidden id="mobile-search-checkbox" class="header__search-checkbox">
-                        <div class="header__search">
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm" id="searchQuery">
-                            </div>
-
-
-                            <form action="<%=request.getContextPath()%>/search" method="POST" id="submitSearch">
-                                <input hidden name="query" id="hiddenQuery"/>
-                                <button type="submit" class="header__search-btn" onClick="submitSearch()">
-                                    <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form>
-                            <script>
-                                function submitSearch() {
-                                    document.getElementById('hiddenQuery').value = document.getElementById('searchQuery').value;
-                                }
-                            </script>
-                        </div>
-                        <div class="header__cart">
-                            <div class="header__cart-wrap">
-                                <i class="header__cart-icon fa-solid fa-cart-plus"></i>
-                                <div class="header__cart-list header__cart--no-cart">
-                                    <img src="images/no-cart.jpg" alt="" class="header__cart-no-cart-img">
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                 </div>
                             </li>
                             <li class="header__navbar-item">
@@ -306,7 +166,6 @@
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm" id="searchQuery">
                             </div>
-<<<<<<< HEAD
                             <form action="<%=request.getContextPath()%>/search" method="POST" id="submitSearch">
                                 <input hidden name="query" id="hiddenQuery" />
                                 <button type="submit" class="header__search-btn" onClick="submitSearch()">
@@ -395,17 +254,6 @@
             </header>
 
             <!-- Main content -->
-=======
-                        </div>
-                    </div>
-                </div>
-
-            </header>
-
-            <!--Lấy dữ liệu từ database-->
-
-
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
             <div class="app__container">
                 <div class="grid wide">
                     <div class="row sm-gutter app__content">
@@ -415,10 +263,6 @@
                                     <i class="category__heading-icon fa-solid fa-list"></i>
                                     Danh mục
                                 </h3>
-<<<<<<< HEAD
-=======
-                                <!--category option list -->
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                 <ul class="category-list">
                                     <c:forEach items="${category}" var="o">
                                         <li class="category-item ${param.cID == o.categoryID ? 'category-item--active' : ''}">
@@ -440,12 +284,6 @@
                         <div class="col l-10 m-12 c-12">
                             <div class="home-filter hide-on-mobile-tablet">
                                 <span class="home-filter__label">Sắp xếp theo</span>
-<<<<<<< HEAD
-=======
-                                <!--                            <button class="home-filter__btn btn">Phổ biến</button>
-                                                            <button class="home-filter__btn btn">Mới nhất</button>
-                                                            <button class="home-filter__btn btn">Bán chạy</button>-->
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                 <div class="select-input">
                                     <span class="select-input__label">Giá</span>
                                     <i class="select-input__icon fas fa-angle-down"></i>
@@ -462,16 +300,10 @@
                                     <span class="home-filter__page-num">
                                         <span class="home-filter__page-current">${currentPage}</span>/${totalPages}
                                     </span>
-<<<<<<< HEAD
                                 </div>
                             </div>
 
                             <!-- Products -->
-=======
-                                    <!-- Xóa phần điều hướng vì không hoạt động -->
-                                </div>
-                            </div>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                             <div class="home-product">
                                 <div class="row sm-gutter">
                                     <c:if test="${empty products}">
@@ -484,25 +316,15 @@
                                                     <c:if test="${empty product.productimagesCollection}">
                                                         <div class="home-product-item__img" style="background-image: url('images/user.jpg');"></div>
                                                     </c:if>
-<<<<<<< HEAD
                                                     <c:forEach var="image" items="${product.productimagesCollection}" varStatus="imgStatus">
                                                         <c:if test="${imgStatus.index == 0}">
-=======
-                                                    <c:forEach var="image" items="${product.productimagesCollection}" varStatus="status">
-                                                        <c:if test="${status.index == 0}">
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                                             <div class="home-product-item__img" style="background-image: url('${image.imageURL}');"></div>
                                                         </c:if>
                                                     </c:forEach>
                                                     <h4 class="home-product-item__name">${product.productName}</h4>
                                                     <div class="home-product-item__price">
-<<<<<<< HEAD
                                                         <span class="home-product-item__price-old">${product.price}</span>
                                                         <span class="home-product-item__price-current">${product.price - (product.price * product.discount / 100)}</span>
-=======
-                                                        <span class="home-product-item__price-old">${(product.price)}</span>
-                                                        <span class="home-product-item__price-current">${product.price-(product.price*product.discount/100)}</span>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                                     </div>
                                                     <div class="home-product-item__action">
                                                         <span class="home-product-item__like home-product-item__like--liked">
@@ -511,10 +333,6 @@
                                                         </span>
                                                         <c:set var="ratingMap" value="${productDAO.getAverageRatingByProduct()}" />
                                                         <div class="home-product-item__rating">
-<<<<<<< HEAD
-=======
-                                                            <!-- Hiển thị số sao dựa trên rating trung bình -->
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                                             <c:set var="avgRating" value="${ratingMap[product.productID] != null ? ratingMap[product.productID] : 0}" />
                                                             <c:forEach begin="1" end="5" var="i">
                                                                 <c:choose>
@@ -527,21 +345,11 @@
                                                                 </c:choose>
                                                             </c:forEach>
                                                         </div>
-<<<<<<< HEAD
                                                         <c:set var="soldMap" value="${productDAO.getTotalSoldByProduct()}" />
                                                         <span class="home-product-item__sold">${soldMap[product.productID] != null ? soldMap[product.productID] : 0} đã bán</span>
                                                     </div>
                                                     <div class="home-product-item__origin">
                                                         <span class="home-product-item__brand">${product.companyID.companyName}</span>
-=======
-                                                        <c:set var="products" value="${productDAO.selectAllProducts()}" />
-                                                        <c:set var="soldMap" value="${productDAO.getTotalSoldByProduct()}" />
-                                                        <span class="home-product-item__sold">${soldMap[product.productID] != null ? soldMap[product.productID] : 0} đã bán</span>  
-                                                    </div>
-                                                    <div class="home-product-item__origin">
-                                                        <span class="home-product-item__brand">${product.companyID.companyName}</span>
-
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                                     </div>
                                                     <div class="home-product-item__favourite">
                                                         <i class="fa-solid fa-check"></i> Yêu thích
@@ -555,10 +363,7 @@
                                         </c:if>
                                     </c:forEach>
                                 </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                 <!-- Pagination -->
                                 <div class="pagination-wrapper">
                                     <ul class="pagination home-product__pagination">
@@ -575,11 +380,7 @@
                                             </c:if>
                                         </li>
                                         <c:forEach var="i" begin="1" end="${totalPages}">
-<<<<<<< HEAD
                                             <li class="pagination-item ${currentPage == i ? 'pagination-item--active' : ''}">
-=======
-                                            <li class="pagination-item ${currentPage == i ? 'pagination-item--active' : 1}">
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                                 <a href="category?page=${i}&cID=${param.cID != null ? param.cID : 1}&query=${param.query}&weather=${requestScope.weather}" class="pagination-item__link">${i}</a>
                                             </li>
                                         </c:forEach>
@@ -594,10 +395,6 @@
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </span>
                                             </c:if>
-<<<<<<< HEAD
-=======
-                                            <h5>${requestScope.weather}</h5>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                         </li>
                                     </ul>
                                 </div>
@@ -605,11 +402,8 @@
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
 
                 <!-- Footer -->
-=======
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                 <footer class="footer">
                     <div class="grid wide">
                         <div class="row">
@@ -662,11 +456,7 @@
                             <div class="col l-3 m-3 c-6">
                                 <h3 class="footer__heading">Vào cửa hàng</h3>
                                 <div class="footer__download">
-<<<<<<< HEAD
                                     <img src="https://pageofme.github.io/team1_prj301/images/qrcode.png" alt="" class="footer__download-qr">
-=======
-                                    <img src="https://pageofme.github.io/team1_prj301/images/qrcode.png" alt="" class="footer__download-qr">                            
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                     <div class="footer__download-apps">
                                         <a href="" class="footer__download-apps-link">
                                             <img src="${pageContext.request.contextPath}/resource/images/1fddd5ee3e2ead84.png" alt="Google Play" class="footer__download-apps-img">
@@ -686,9 +476,6 @@
                     </div>
                 </footer>
             </div>
-<<<<<<< HEAD
         </div>
-=======
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
     </body>
 </html>

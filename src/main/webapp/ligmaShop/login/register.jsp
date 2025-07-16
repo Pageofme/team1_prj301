@@ -23,31 +23,12 @@
                         <div class="form-w3-agile">
                             <h2>Register Now</h2>
 
-<<<<<<< HEAD
                             <!-- error handle with user hit the cancel button or login google failed -->
                             <c:if test="${param.error == 'user_existed'}">
                                 <div class="alert alert-danger">
                                     <c:out value="${user_existed_message}"/>
                                 </div>
                             </c:if>
-=======
-                            <!-- error handle with user hit the cancel button or login google failed 
-                            <c:if test="${not empty message}">
-                                <div class="alert alert-${messageType}">
-                                <c:out value="${message}"/>
-                            </div>
-                            </c:if>-->
-                            <c:if test="${param.error == 'invalid_email'}">
-                                <div class="alert alert-${messageType}">
-                                    <c:out value="${message}"/>
-                                </div>
-                            </c:if>
-                            <c:if test="${param.error == 'invalid_password'}">
-                                <div class="alert alert-${messageType}">
-                                    <c:out value="${message}"/>
-                                </div>
-                            </c:if>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
 
                             <form action="${pageContext.request.contextPath}/authservlet" method="POST" onsubmit="return validateRegister()">
                                 <input type="hidden" name="action" value="register"/>
@@ -153,13 +134,7 @@
                                     <div class="clear"></div>
                                 </div>
                                 <div class="icons">
-<<<<<<< HEAD
                                     <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/LigmaBallsOfficial/logingg&response_type=code&client_id=104499240705-951rk6sn3o4g8cbj0kmf8toc06i934ln.apps.googleusercontent.com&approval_prompt=force">
-=======
-
-
-                                    <a  href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/LigmaBallsOfficial/logingg&response_type=code&client_id=104499240705-951rk6sn3o4g8cbj0kmf8toc06i934ln.apps.googleusercontent.com&approval_prompt=force">
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
                                         <i class="fa-brands fa-google"></i>
                                     </a>
                                     <div class="clear"></div>

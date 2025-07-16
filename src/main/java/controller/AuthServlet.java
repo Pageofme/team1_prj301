@@ -84,7 +84,6 @@ public class AuthServlet extends HttpServlet {
             }
       }
 
-<<<<<<< HEAD
       protected void handleRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
@@ -116,98 +115,6 @@ public class AuthServlet extends HttpServlet {
             session.invalidate();
             request.getRequestDispatcher("/ligmaShop/login/signIn.jsp").forward(request, response);
       }
-=======
-    protected void handleRegister(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String fullname = request.getParameter("fullname");
-    String email = request.getParameter("email");
-    String phone = request.getParameter("phone");
-    String password = request.getParameter("password");
-
-    if (!isValidEmail(email)) {
-        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_email");
-        return;
-    }
-//    if (!isValidPassword(password)) {
-//        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_password");
-//        return;
-//    }
-//    if (!isValidPhone(phone)) {
-//        response.sendRedirect("ligmaShop/login/register.jsp?error=invalid_phone");
-//        return;
-//    }
-
-    EntityManager em = emf.createEntityManager();
-    try {
-        // Kiểm tra email đã tồn tại chưa
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class);
-        query.setParameter("email", email);
-        Long count = query.getSingleResult();
-
-        if (count > 0) {
-            response.sendRedirect("ligmaShop/login/register.jsp?error=email_exists");
-            return;
-        }
-
-        // Băm mật khẩu
-//        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
-
-        // Lưu user mới vào database
-        em.getTransaction().begin();
-        Users newUser = new Users();
-        newUser.setFullName(fullname);
-        newUser.setEmail(email);
-        newUser.setPhoneNumber(phone);
-        newUser.setPassword(password);
-        em.persist(newUser);
-        em.getTransaction().commit();
-
-        response.sendRedirect("ligmaShop/login/signIn.jsp?success=registered");
-    } catch (Exception e) {
-        response.sendRedirect("ligmaShop/login/register.jsp?error=registration_failed");
-    } finally {
-        em.close();
-    }
-}
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session=request.getSession();
-        session.invalidate();
-        response.sendRedirect(request.getContextPath()+"/test");
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "";
-            System.out.println("action empty");
-        } else {
-            System.out.println(action);
-        }
-        switch (action) {
-            case "login":
-                handleLogin(request, response);
-                break;
-            case "register":
-                handleRegister(request, response);
-                break;
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
->>>>>>> 0504289d8f046b30ba61e49c04d7b09aec36d9d7
 
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response)

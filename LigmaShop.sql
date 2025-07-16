@@ -2,17 +2,6 @@
 go
 use LigmaShop
 go
-/*
-SELECT * FROM ProductCategories pc INNER JOIN Products p  ON p.productID=pc.ProductID
-WHERE pc.categoryID = 1 AND LOWER(p.productName) LIKE LOWER(N'% %')
-select* from ProductCategories
-*/
-select* from ProductImage
-/*
-delete from Users
-where UserID=8
-*/
-go
 create table USERS (
     UserID int primary key identity(1,1),
     FullName nvarchar(255) not null,
@@ -23,6 +12,7 @@ create table USERS (
     Role varchar(10) check (Role in ('user','admin')) default 'user',
 	Status bit default 1 --Thêm status để xóa mềm 
 );
+
 go
 insert into USERS (FullName, Email, Password, PhoneNumber, Address, Role, Status)
 values 
@@ -33,7 +23,6 @@ values
 (N'Le Thanh Dat', 'lethanhdat23062004@gmail.com', 'daden5', '0848884158', N'Can Tho', 'user',1),
 (N'Nguyen Dinh Duy', 'ndduy269@gmail.com', 'daden6', '0392858466', N'Hai Phong', 'user',1),
 (N'Hoang Cong Binh', 'huyhoang05092004hoa@gmail.com', 'daden7', '0945566778', N'Quang Ninh', 'user',1);
-
 go
 select * from Users
 go
@@ -47,10 +36,10 @@ create table COMPANY (
 go
 insert into COMPANY (CompanyName, Address, ContactNumber, Email)
 values 
-(N'UNIQUE', N'123 Street, Hanoi', '0123456789', 'contact@companya.com'),
-(N'Chalen', N'456 Street, HCM City', '0987654321', 'contact@companyb.com'),
-(N'Droi', N'789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
-(N'Guxif', N'321 Street, Can Tho', '0933445566', 'contact@companyd.com');
+(N'Company A', N'123 Street, Hanoi', '0123456789', 'contact@companya.com'),
+(N'Company B', N'456 Street, HCM City', '0987654321', 'contact@companyb.com'),
+(N'Company C', N'789 Street, Da Nang', '0911223344', 'contact@companyc.com'),
+(N'Company D', N'321 Street, Can Tho', '0933445566', 'contact@companyd.com');
 go
 create table CATEGORIES (
     CategoryID int primary key identity(1,1),
@@ -235,7 +224,7 @@ values
 (19, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNamXanh.jpg'),
 (20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuTrang.jpg'),
 (20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuXanh.jpg'),
-(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuDen.webp'),
+(20, 'https://pageofme.github.io/team1_prj301/images/aoSoMiHoaTietNuDen.jpg'),
 (21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamXanh.webp'),
 (21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamTrang.jpg'),
 (21, 'https://pageofme.github.io/team1_prj301/images/aoKhoacDangDaiNamDen.jpg'),
@@ -341,7 +330,7 @@ insert into SIZES (SizeName, Description)
 values 
 ('L', 'Size Large'),
 ('XL', 'Size Extra Large'),
-('XXL', 'Size Extra Extra Large');
+('XXL', 'Size Double Extra Large');
 go
 create table PRODUCTSIZECOLOR (
     ProductSizeColorID int primary key identity(1,1),
@@ -367,7 +356,6 @@ create table CART (
     CreatedDate date not null default getdate(),
     foreign key (UserID) references USERS(UserID) on delete cascade on update cascade
 );	
-/*
 go
 insert into CART (UserID, CreatedDate)
 values 
@@ -441,7 +429,6 @@ values
 (5, '2025-01-04'),
 (5, '2025-01-06'),
 (5, '2025-01-08');
-*/
 go
 create table CARTITEMS (
     CartItemID int primary key identity(1,1),
@@ -453,7 +440,6 @@ create table CARTITEMS (
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
 go
-/*
 --Thêm dữ liệu bảng CartItem
 INSERT INTO CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
 VALUES
@@ -734,8 +720,22 @@ VALUES
 (69, 23, 1, '2025-01-06'),
 (69, 24, 3, '2025-01-06'),
 (69, 25, 1, '2025-01-06');
-*/
 
+/*INSERT INTO CARTITEMS (CartID, ProductSizeColorID, Quantity, AddedDate)
+SELECT 
+    C.CartID, 
+    PS.ProductSizeColorID, 
+    1 AS Quantity, -- hoặc số lượng bạn muốn (1 ở đây là ví dụ)
+    GETDATE() AS AddedDate
+FROM 
+    CART C
+JOIN 
+    PRODUCTSIZECOLOR PS ON PS.ProductSizeColorID BETWEEN 1 AND 100
+WHERE 
+    C.CartID IN (1, 2, 3, 4, 5, 6, 7) -- Bạn có thể thay đổi CartID tùy vào dữ liệu của bạn
+ORDER BY 
+    C.CartID, PS.ProductSizeColorID;
+*/
 go 
 create table PaymentMethods (
 	PaymentMethodID int primary key identity(1,1), -- ID duy nhất của phương thức thanh toán
@@ -761,44 +761,44 @@ go
 --Cần check để bảng này không thể nhiều dữ liệu hơn bảng Cart
 INSERT INTO ORDERS (UserID, OrderDate, TotalAmount, PaymentMethodID)
 VALUES
-(1, '2025-02-01', 200000, 1),
-(1, '2025-02-02', 135000, 2),
-(2, '2025-02-03', 200000, 1),
-(2, '2025-02-04', 135000, 2),
-(3, '2025-02-05', 456000, 1),
-(3, '2025-02-06', 152000, 2),
-(4, '2025-02-07', 334000, 1),
-(4, '2025-02-08', 210000, 2),
-(5, '2025-02-01', 135000, 1),
-(5, '2025-02-02', 320000, 2),
-(6, '2025-02-03', 456000, 1),
-(6, '2025-02-04', 135000, 2),
-(7, '2025-02-05', 200000, 1),
-(7, '2025-02-06', 135000, 2),
-(1, '2025-02-07', 456000, 1),
-(1, '2025-02-08', 334000, 2),
-(2, '2025-02-01', 125000, 1),
-(2, '2025-02-02', 955000, 2),
-(3, '2025-02-03', 200000, 1),
-(3, '2025-02-04', 125000, 2),
-(4, '2025-02-05', 955000, 1),
-(4, '2025-02-06', 135000, 2),
-(5, '2025-02-07', 955000, 1),
-(5, '2025-02-08', 955000, 2),
-(6, '2025-02-01', 200000, 1),
-(6, '2025-02-02', 110000, 2),
-(7, '2025-02-03', 456000, 1),
-(7, '2025-02-04', 334000, 2),
-(1, '2025-02-05', 125000, 1),
-(1, '2025-02-06', 125000, 2),
-(2, '2025-02-07', 456000, 1),
-(2, '2025-02-08', 200000, 2),
-(3, '2025-02-01', 125000, 1),
-(3, '2025-02-02', 125000, 2),
-(4, '2025-02-03', 135000, 1),
-(4, '2025-02-04', 334000, 2),
-(5, '2025-02-05', 334000, 1),
-(5, '2025-02-06', 135000, 2);
+(1, '2025-02-01', NULL, 1),
+(1, '2025-02-02', NULL, 2),
+(2, '2025-02-03', NULL, 1),
+(2, '2025-02-04', NULL, 2),
+(3, '2025-02-05', NULL, 1),
+(3, '2025-02-06', NULL, 2),
+(4, '2025-02-07', NULL, 1),
+(4, '2025-02-08', NULL, 2),
+(5, '2025-02-01', NULL, 1),
+(5, '2025-02-02', NULL, 2),
+(6, '2025-02-03', NULL, 1),
+(6, '2025-02-04', NULL, 2),
+(7, '2025-02-05', NULL, 1),
+(7, '2025-02-06', NULL, 2),
+(1, '2025-02-07', NULL, 1),
+(1, '2025-02-08', NULL, 2),
+(2, '2025-02-01', NULL, 1),
+(2, '2025-02-02', NULL, 2),
+(3, '2025-02-03', NULL, 1),
+(3, '2025-02-04', NULL, 2),
+(4, '2025-02-05', NULL, 1),
+(4, '2025-02-06', NULL, 2),
+(5, '2025-02-07', NULL, 1),
+(5, '2025-02-08', NULL, 2),
+(6, '2025-02-01', NULL, 1),
+(6, '2025-02-02', NULL, 2),
+(7, '2025-02-03', NULL, 1),
+(7, '2025-02-04', NULL, 2),
+(1, '2025-02-05', NULL, 1),
+(1, '2025-02-06', NULL, 2),
+(2, '2025-02-07', NULL, 1),
+(2, '2025-02-08', NULL, 2),
+(3, '2025-02-01', NULL, 1),
+(3, '2025-02-02', NULL, 2),
+(4, '2025-02-03', NULL, 1),
+(4, '2025-02-04', NULL, 2),
+(5, '2025-02-05', NULL, 1),
+(5, '2025-02-06', NULL, 2);
 go
 create table ORDERSTATUS (
     OrderID int foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
@@ -857,43 +857,16 @@ create table ORDERDETAILS (
     foreign key (OrderID) references ORDERS(OrderID) on update cascade on delete cascade,
     foreign key (ProductSizeColorID) references PRODUCTSIZECOLOR(ProductSizeColorID) on update cascade on delete cascade
 );
-select *from PRODUCTS
 go	
-/*
+--Thêm dữ liệu vào ORDERDETAILS
 INSERT INTO ORDERDETAILS (OrderID, ProductSizeColorID, Quantity, Price)
-VALUES
-(1, 1, 2, 200000),
-(1, 2, 1, 200000),
-(2, 3, 3, 120000),
-(2, 4, 2, 130000),
-(3, 5, 1, 110000),
-(3, 6, 4, 140000),
-(4, 7, 2, 125000),
-(4, 8, 3, 135000),
-(5, 9, 1, 200000),
-(5, 10, 2, 115000),
-(6, 11, 3, 145000),
-(6, 12, 2, 150000),
-(7, 13, 1, 160000),
-(7, 14, 3, 155000),
-(8, 15, 2, 175000),
-(8, 16, 4, 185000),
-(9, 17, 1, 125000),
-(9, 18, 2, 200000),
-(10, 19, 3, 200000),
-(10, 20, 1, 130.00),
-(11, 21, 2, 200000),
-(11, 22, 4, 140000),
-(12, 23, 1, 115000),
-(12, 24, 2, 125000),
-(13, 25, 3, 150000),
-(13, 26, 1, 160000),
-(14, 27, 2, 170000),
-(14, 28, 4, 180000),
-(15, 29, 1, 140000),
-(15, 30, 2, 150000);
+SELECT o.OrderID, ci.ProductSizeColorID, ci.Quantity, ps.Price
+FROM ORDERS o
+JOIN CART c ON o.UserID = c.UserID
+JOIN CARTITEMS ci ON c.CartID = ci.CartID
+JOIN PRODUCTSIZECOLOR ps ON ci.ProductSizeColorID = ps.ProductSizeColorID
+WHERE o.OrderID BETWEEN 1 AND 38;
 
-*/
 /*DECLARE @OrderID INT, @ProductSizeColorID INT, @Quantity INT, @Price DECIMAL(10, 2);
 SET @Quantity = 1; -- Số lượng sản phẩm (có thể thay đổi)
 SET @Price = 100.00; -- Giá sản phẩm (có thể thay đổi)
@@ -932,7 +905,6 @@ create table REVIEWS (
     foreign key (UserID) references USERS(UserID) on update cascade on delete cascade,
     foreign key (ProductID) references PRODUCTS(ProductID) on update cascade on delete cascade
 );
-
 go
 INSERT INTO REVIEWS (UserID, ProductID, Rating, Comment, ReviewDate)
 VALUES
@@ -1085,7 +1057,6 @@ INSERT INTO INVENTORY (ProductSizeColorID, Stock, LastUpdated)
 SELECT ProductSizeColorID, 100 AS Stock, GETDATE() AS LastUpdated
 FROM PRODUCTSIZECOLOR;
 go
-select*from company
 create table ShippingCompanies (
     ShippingCompanyID int primary key identity(1,1), -- ID duy nhất cho từng đơn vị vận chuyển
     CompanyName nvarchar(255) not null,              -- Tên đơn vị vận chuyển
@@ -1142,7 +1113,12 @@ VALUES
     ('2025-01-25', 50);     -- Voucher giảm 50%
 
 
-
+--Check dữ liệu trong ProductCategories
+/*
+select ProductCategoryID,pc.ProductID,pc.CategoryID,CategoryName,ProductName
+from ProductCategories pc inner join PRODUCTS p on p.ProductID=pc.ProductID
+inner join CATEGORIES c on c.CategoryID=pc.CategoryID
+*/
 
 --Tạo trigger check ngày thêm vào giỏ hàng phải lớn hơn ngày tạo giỏ
 /*
@@ -1171,3 +1147,5 @@ BEGIN
 END;
 GO
 */
+
+select * from PRODUCTIMAGES pm where pm.ProductID = 23
